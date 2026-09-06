@@ -7,6 +7,8 @@ import csv
 import os
 import sqlite3
 
+import places as places_mod
+
 _HERE = os.path.dirname(os.path.abspath(__file__))
 SCHEMA_PATH = os.path.join(_HERE, "schema.sql")
 DEFAULT_DB = os.path.join(_HERE, "data", "trip.db")
@@ -193,3 +195,81 @@ def import_takeout(conn, csv_path):
             total["places_merged"] += r["places_merged"]
             total["warnings"].extend(r["warnings"])
     return total
+
+
+# --------------------------------------------------------------------------
+# 검증 — 네트워크·과금 단계. 수집과 분리되어 있어 실패해도 원문은 안전하다.
+# --------------------------------------------------------------------------
+
+def verify_places(conn, api_key, limit=50, search=None):
+    """pending 장소를 Places API 로 조회해 사실을 채운다.
+
+    조회 실패(E7)는 장애가 아니다. pending 을 유지하면 다음 실행이 재시도한다.
+    """
+    search = search or places_mod.search
+    stats = {"matched": 0, "ambiguous": 0, "not_found": 0, "failed": 0}
+    rows = conn.execute(
+        "SELECT id, name FROM place WHERE verify_status = 'pending' "
+        "ORDER BY id LIMIT ?", (limit,)).fetchall()
+    for pid, name in rows:
+        try:
+            candidates = search(name, api_key)
+        except places_mod.MissingApiKey:
+            raise
+        except Exception as e:
+            print(f"[verify] E7 조회 실패 (pending 유지): {name} — {e}")
+            stats["failed"] += 1
+            continue
+        status, chosen = places_mod.judge(name, candidates)
+        try:
+            if chosen:
+                conn.execute(
+                    "UPDATE place SET verify_status=?, place_id=?, name_verified=?, "
+                    "address=?, lat=?, lng=?, maps_url=? WHERE id=?",
+                    (status, chosen.get("place_id"), chosen.get("name"),
+                     chosen.get("address"), chosen.get("lat"), chosen.get("lng"),
+                     places_mod.maps_url(chosen.get("place_id")), pid))
+            else:
+                conn.execute(
+                    "UPDATE place SET verify_status=? WHERE id=?", (status, pid))
+            conn.commit()
+        except sqlite3.IntegrityError as e:
+            # 같은 place_id 를 다른 이름으로 이미 확정한 경우. pending 유지가 안전하다.
+            conn.rollback()
+            print(f"[verify] place_id 중복으로 건너뜀 (pending 유지): {name} — {e}")
+            stats["failed"] += 1
+            continue
+        stats[status] += 1
+    return stats
+
+
+def mark_saved(conn, ids):
+    cur = conn.executemany(
+        "UPDATE place SET saved_to_mymaps = 1 WHERE id = ?", [(i,) for i in ids])
+    conn.commit()
+    return cur.rowcount
+
+
+def list_places(conn, category=None, status=None):
+    conn.row_factory = sqlite3.Row
+    sql = ("SELECT id, name, name_verified, category, verify_status, "
+           "saved_to_mymaps, maps_url, note FROM place WHERE 1=1")
+    args = []
+    if category:
+        sql += " AND category = ?"
+        args.append(category)
+    if status:
+        sql += " AND verify_status = ?"
+        args.append(status)
+    return conn.execute(sql + " ORDER BY category, name", args).fetchall()
+
+
+def list_plan(conn, day=None):
+    conn.row_factory = sqlite3.Row
+    sql = ("SELECT i.day_no, i.slot, i.seq, i.memo, p.name AS place_name, p.maps_url "
+           "FROM itinerary i LEFT JOIN place p ON p.id = i.place_id WHERE 1=1")
+    args = []
+    if day:
+        sql += " AND i.day_no = ?"
+        args.append(day)
+    return conn.execute(sql + " ORDER BY i.day_no, i.seq", args).fetchall()

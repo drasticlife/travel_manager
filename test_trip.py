@@ -207,6 +207,131 @@ def test_get_transcript_returns_none_on_total_failure():
     assert youtube.get_transcript("x", api=DeadApi()) is None
 
 
+# ---------- Task 6: Places API ----------
+
+import places
+
+
+def test_normalize_strips_noise():
+    assert places.normalize("이치란 라멘 (나카스점)") == "이치란라멘나카스점"
+    assert places.normalize("Ichiran・Nakasu") == "ichirannakasu"
+
+
+def test_judge_not_found():
+    assert places.judge("이치란", [])[0] == "not_found"
+
+
+def test_judge_multiple_is_always_ambiguous():
+    cands = [{"name": "이치란 나카스점"}, {"name": "이치란 텐진점"}]
+    status, chosen = places.judge("이치란 나카스점", cands)
+    assert status == "ambiguous", status
+    assert chosen == cands[0]
+
+
+def test_judge_single_substring_is_matched():
+    status, chosen = places.judge("이치란 라멘 나카스점",
+                                  [{"name": "이치란 라멘 (나카스점)"}])
+    assert status == "matched", status
+
+
+def test_judge_single_mismatch_is_ambiguous():
+    status, _ = places.judge("이치란 라멘", [{"name": "스타벅스 하카타점"}])
+    assert status == "ambiguous", status
+
+
+def test_maps_url_format():
+    assert places.maps_url("ChIJabc") == \
+        "https://www.google.com/maps/place/?q=place_id:ChIJabc"
+
+
+def test_search_uses_injected_fetch_and_no_billing_fields():
+    seen = {}
+
+    def fake_fetch(url, body, headers):
+        seen["headers"] = headers
+        return {"places": [{"id": "ChIJx", "displayName": {"text": "이치란"},
+                            "formattedAddress": "후쿠오카",
+                            "location": {"latitude": 33.5, "longitude": 130.4}}]}
+    out = places.search("이치란", "KEY", fetch=fake_fetch)
+    mask = seen["headers"]["X-Goog-FieldMask"]
+    for billing_trap in ("rating", "opening", "review", "photo"):
+        assert billing_trap not in mask, \
+            f"과금 등급을 올리는 필드 {billing_trap} 포함됨: {mask}"
+    assert out[0]["place_id"] == "ChIJx" and out[0]["lat"] == 33.5, out
+
+
+def test_search_without_key_raises():
+    try:
+        places.search("x", "", fetch=lambda *a: {})
+        assert False, "키 없이 통과했다"
+    except places.MissingApiKey:
+        pass
+
+
+# ---------- Task 7: verify 배치 ----------
+
+def _seed_places(conn, names):
+    for n in names:
+        trip.insert_payload(conn, {
+            "source": {"kind": "text", "raw_text": n},
+            "places": [{"name": n, "category": "맛집"}]})
+
+
+def test_verify_status_transitions():
+    conn = trip.connect(":memory:")
+    _seed_places(conn, ["이치란 라멘 나카스점", "애매한집", "없는집"])
+
+    def fake_search(query, api_key, fetch=None):
+        if query == "이치란 라멘 나카스점":
+            return [{"place_id": "ChIJ1", "name": "이치란 라멘 (나카스점)",
+                     "address": "후쿠오카", "lat": 33.5, "lng": 130.4}]
+        if query == "애매한집":
+            return [{"place_id": "ChIJ2", "name": "애매한집 A", "address": "a",
+                     "lat": 1.0, "lng": 2.0},
+                    {"place_id": "ChIJ3", "name": "애매한집 B", "address": "b",
+                     "lat": 3.0, "lng": 4.0}]
+        return []
+    r = trip.verify_places(conn, "KEY", search=fake_search)
+    assert r == {"matched": 1, "ambiguous": 1, "not_found": 1, "failed": 0}, r
+    row = conn.execute("SELECT verify_status, place_id, lat, maps_url FROM place "
+                       "WHERE name='이치란 라멘 나카스점'").fetchone()
+    assert row[0] == "matched" and row[1] == "ChIJ1" and row[2] == 33.5, tuple(row)
+    assert row[3] == "https://www.google.com/maps/place/?q=place_id:ChIJ1"
+    amb = conn.execute("SELECT maps_url FROM place WHERE name='애매한집'").fetchone()[0]
+    assert amb, "ambiguous 여도 maps_url 은 생성되어야 한다"
+
+
+def test_verify_keeps_pending_on_api_failure():
+    conn = trip.connect(":memory:")
+    _seed_places(conn, ["실패집"])
+
+    def dead_search(query, api_key, fetch=None):
+        raise RuntimeError("503")
+    r = trip.verify_places(conn, "KEY", search=dead_search)
+    assert r["failed"] == 1, r
+    assert conn.execute("SELECT verify_status FROM place").fetchone()[0] == "pending"
+
+
+def test_verify_respects_limit():
+    conn = trip.connect(":memory:")
+    _seed_places(conn, ["a집", "b집", "c집"])
+    calls = []
+
+    def counting_search(query, api_key, fetch=None):
+        calls.append(query)
+        return []
+    trip.verify_places(conn, "KEY", limit=2, search=counting_search)
+    assert len(calls) == 2, calls
+
+
+def test_mark_saved():
+    conn = trip.connect(":memory:")
+    _seed_places(conn, ["가게"])
+    pid = conn.execute("SELECT id FROM place").fetchone()[0]
+    assert trip.mark_saved(conn, [pid]) == 1
+    assert conn.execute("SELECT saved_to_mymaps FROM place").fetchone()[0] == 1
+
+
 if __name__ == "__main__":
     fails = 0
     for name, fn in sorted(globals().items()):
