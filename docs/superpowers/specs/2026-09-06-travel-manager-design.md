@@ -63,7 +63,8 @@ C:\GIT\travel manager\
 └─ docs/superpowers/specs/    # 이 문서
 ```
 
-파일 7개. 프레임워크·서버·봇 없음.
+**코드·스키마 파일 7개** (`trip.md`, `schema.sql`, `trip.py`, `youtube.py`, `places.py`, `export.py`, `test_trip.py`).
+나머지 3개(`CLAUDE.md`, `requirements.txt`, `.env.example`)는 설정·문서. 프레임워크·서버·봇 없음.
 
 ### 1.3 의존성
 
@@ -91,7 +92,9 @@ C:\GIT\travel manager\
 | `trip.py` | stdin JSON 검증 → SQLite 쓰기. 조회 커맨드 | LLM 호출 안 함 |
 | `youtube.py` | video id 추출, 자막 3단 폴백, 30초 병합 | DB 접근 안 함 |
 | `places.py` | Places API 조회, 이름 대조, maps_url 생성 | DB 쓰기 안 함 (결과 반환만) |
-| `export.py` | DB 읽기 → Todoist / 지도링크 / JSON | **DB 쓰기 안 함** (`todoist_task_id` 기록 제외) |
+| `export.py` | DB 읽기 → Todoist / 지도링크 / JSON | **`todoist_task_id` 외 어떤 컬럼도 쓰지 않는다** |
+
+`export.py`의 유일한 쓰기는 푸시 성공 후 `todoist_task_id` 기록이다. 이것을 쓰지 않으면 재푸시가 태스크를 중복 생성하므로 읽기 전용을 유지할 수 없다. 그 외 컬럼에 대한 UPDATE/INSERT/DELETE는 금지한다.
 
 경계 판정: `export.py`를 지워도 수집은 돌아간다. `trip.md`를 지워도 `trip.py`는 손으로 JSON을 넣어 쓸 수 있다.
 
@@ -270,6 +273,23 @@ Takeout URL에서 좌표를 파싱할 수도 있으나 하지 않는다 — Plac
 
 `saved_to_mymaps`로 이미 저장한 곳을 다시 확인하지 않도록 추적한다.
 
+#### 3.4.1 `matched` 판정 규칙 (명시)
+
+일본 장소는 한국어 표기·일본어 원표기·로마자가 섞이므로 **완전 일치를 요구하지 않는다.** 다음 순서로 판정한다.
+
+```
+1. 결과가 0건            → not_found
+2. 결과가 2건 이상        → ambiguous  (1등만 취해 확정하지 않는다)
+3. 결과가 1건일 때:
+     정규화(공백·중점·괄호 제거, 소문자화) 후
+     검색어와 반환 이름이 서로 부분문자열 관계이면  → matched
+     아니면                                        → ambiguous
+```
+
+**결과가 여러 건이면 무조건 `ambiguous`다.** Places API의 1순위 결과를 자동 채택하면 "이치란 나카스점"을 찾다가 "이치란 텐진점"이 확정될 수 있다. 여행지에서 다른 지점 앞에 서 있는 것이 이 설계에서 막아야 할 최악의 실패다.
+
+`ambiguous`여도 `maps_url`은 생성한다 — 사용자가 링크를 열어 확인하는 것이 판정 절차의 일부이기 때문이다.
+
 ---
 
 ## 4. 데이터 흐름과 LLM 계약
@@ -347,7 +367,7 @@ LLM이 채우는 것은 **이름·분류·메모·원문**뿐이다. 사실(fact
 | :--- | :--- | :--- | :--- |
 | `trip.py add` | stdin JSON | 검증 → 트랜잭션 INSERT | ❌ |
 | `trip.py import-takeout <csv>` | CSV 경로 | Takeout 목록 → place 시드 | ❌ |
-| `trip.py verify [--limit N]` | — | pending 장소 Places API 조회 | ✅ 과금 |
+| `trip.py verify [--limit N]` | — | pending 장소 Places API 조회. **`--limit` 기본값 50** | ✅ 과금 |
 | `trip.py list [--category] [--status]` | — | 장소 조회 | ❌ |
 | `trip.py plan [--day N]` | — | 일정 슬롯 조회 | ❌ |
 | `trip.py mark-saved <id...>` | id 목록 | 내 지도 저장 완료 표시 | ❌ |
@@ -399,7 +419,7 @@ with conn:                 # sqlite3 컨텍스트매니저 = 자동 커밋/롤�
 | E2 | 필수 키 누락 / enum 위반 | 파이썬 검증 | 어떤 필드가 왜 틀렸는지 명시 | 2 |
 | E3 | 금지 필드 포함 | 화이트리스트 대조 | 거부 + "이 필드는 Places API만 채웁니다" | 2 |
 | E4 | `itinerary.place_name` 미해석 | id 해석 실패 | 롤백 + 이름 출력. NULL로 조용히 넣지 않음 | 2 |
-| E5 | 유튜브 자막 없음 | 3단 폴백 전부 실패 | 제목·설명만 `source` 저장, `places=[]`. 텍스트 붙여넣기 안내 | 0 (경고) |
+| E5 | 유튜브 자막 없음 | 3단 폴백 전부 실패 | 제목·설명만 `source` 저장, `places=[]`. **stderr에 `WARN E5: 자막 없음 — 텍스트를 직접 붙여넣어 주세요` 출력** | 0 (경고) |
 | E6 | `GOOGLE_MAPS_API_KEY` 없음 | 환경변수 확인 | 발급 링크 출력 후 중단. **검색 URL 폴백 안 함** | 1 |
 | E7 | Places API 5xx / 타임아웃 | HTTP 상태 | 해당 장소 `pending` 유지 → 다음 `verify`가 재시도 | 0 (부분) |
 | E8 | Places 결과 이름 불일치 | 검색어 vs 반환 이름 대조 | `ambiguous` + `maps_url` 생성 → 사용자 육안 확인 | 0 |
