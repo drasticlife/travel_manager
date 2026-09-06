@@ -3,6 +3,7 @@
 핵심 원칙: LLM 은 추출·분류만 한다. 좌표·place_id 같은 사실은 Places API 만 채운다.
 스펙: docs/superpowers/specs/2026-09-06-travel-manager-design.md
 """
+import csv
 import os
 import sqlite3
 
@@ -90,3 +91,105 @@ def validate_payload(payload):
         _enum(f"packing[{i}].owner", pk.get("owner", "공용"), OWNER)
 
     return payload
+
+
+# --------------------------------------------------------------------------
+# 쓰기 — all-or-nothing
+# --------------------------------------------------------------------------
+
+def insert_payload(conn, payload, force=False):
+    """검증 후 트랜잭션으로 쓴다. 어디서든 실패하면 전부 롤백한다."""
+    validate_payload(payload)
+    warnings = []
+    result = {"source_id": None, "places_new": 0, "places_merged": 0,
+              "itinerary": 0, "packing": 0, "warnings": warnings}
+    try:
+        conn.execute("BEGIN")
+        src = payload["source"]
+        cur = conn.execute(
+            "INSERT INTO source (kind, url, title, raw_text) VALUES (?,?,?,?)",
+            (src["kind"], src.get("url"), src.get("title"), src["raw_text"]))
+        source_id = cur.lastrowid
+        result["source_id"] = source_id
+
+        name_to_id = {}
+        for p in payload.get("places") or []:
+            existing = None if force else conn.execute(
+                "SELECT id, note FROM place WHERE name = ?", (p["name"],)).fetchone()
+            if existing:
+                pid, old_note = existing
+                new_note = p.get("note")
+                if new_note and new_note not in (old_note or ""):
+                    merged = f"{old_note}\n{new_note}" if old_note else new_note
+                    conn.execute("UPDATE place SET note = ? WHERE id = ?", (merged, pid))
+                warnings.append(f"이미 존재: {p['name']} (id={pid}) — note 추가함")
+                result["places_merged"] += 1
+            else:
+                cur = conn.execute(
+                    "INSERT INTO place (name, category, note, source_id) "
+                    "VALUES (?,?,?,?)",
+                    (p["name"], p["category"], p.get("note"), source_id))
+                pid = cur.lastrowid
+                result["places_new"] += 1
+            name_to_id[p["name"]] = pid
+
+        for it in payload.get("itinerary") or []:
+            pname = it.get("place_name")
+            pid = None
+            if pname:
+                pid = name_to_id.get(pname)
+                if pid is None:
+                    row = conn.execute(
+                        "SELECT id FROM place WHERE name = ?", (pname,)).fetchone()
+                    pid = row[0] if row else None
+                if pid is None:
+                    raise ValidationError("E4",
+                        f"itinerary 의 place_name {pname!r} 을 places 에서도 "
+                        "DB 에서도 찾을 수 없습니다.")
+            conn.execute(
+                "INSERT INTO itinerary (day_no, date, slot, seq, place_id, memo) "
+                "VALUES (?,?,?,?,?,?)",
+                (it["day_no"], it.get("date"), it["slot"], it.get("seq", 0),
+                 pid, it.get("memo")))
+            result["itinerary"] += 1
+
+        for pk in payload.get("packing") or []:
+            conn.execute(
+                "INSERT INTO packing (item, category, qty, owner) VALUES (?,?,?,?)",
+                (pk["item"], pk.get("category", "기타"),
+                 pk.get("qty", 1), pk.get("owner", "공용")))
+            result["packing"] += 1
+
+        conn.execute("COMMIT")
+    except Exception:
+        conn.execute("ROLLBACK")
+        raise
+    return result
+
+
+def import_takeout(conn, csv_path):
+    """Google Takeout 의 저장 목록 CSV 를 place 시드로 넣는다.
+
+    CSV 에는 좌표도 카테고리도 없다. 전부 '기타' 로 넣고 verify 가 사실을 채운다.
+    """
+    total = {"places_new": 0, "places_merged": 0, "itinerary": 0,
+             "packing": 0, "warnings": []}
+    with open(csv_path, newline="", encoding="utf-8-sig") as f:
+        for row in csv.DictReader(f):
+            title = (row.get("Title") or "").strip()
+            if not title:
+                continue
+            note = (row.get("Note") or "").strip()
+            comment = (row.get("Comment") or "").strip()
+            raw = "\n".join(x for x in (title, note, comment) if x)
+            r = insert_payload(conn, {
+                "source": {"kind": "takeout",
+                           "url": (row.get("URL") or "").strip() or None,
+                           "title": title, "raw_text": raw},
+                "places": [{"name": title, "category": "기타",
+                            "note": note or None}],
+            })
+            total["places_new"] += r["places_new"]
+            total["places_merged"] += r["places_merged"]
+            total["warnings"].extend(r["warnings"])
+    return total

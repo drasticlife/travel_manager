@@ -71,6 +71,102 @@ def test_accepts_minimal_valid():
     assert ok["places"][0]["name"] == "이치란"
 
 
+# ---------- Task 3: 트랜잭션 쓰기 ----------
+
+BASE = {
+    "source": {"kind": "youtube", "url": "https://youtu.be/a", "title": "후쿠오카",
+               "raw_text": "[00:00] 이치란 라멘 추천"},
+    "places": [{"name": "이치란 라멘 나카스점", "category": "맛집", "note": "돈코츠"}],
+    "itinerary": [{"day_no": 3, "slot": "점심", "place_name": "이치란 라멘 나카스점"}],
+    "packing": [{"item": "우산", "category": "기타", "owner": "공용", "qty": 1}],
+}
+
+
+def test_insert_payload_writes_all_tables():
+    conn = trip.connect(":memory:")
+    r = trip.insert_payload(conn, BASE)
+    assert r["places_new"] == 1, r
+    assert conn.execute("SELECT COUNT(*) FROM itinerary").fetchone()[0] == 1
+    assert conn.execute("SELECT COUNT(*) FROM packing").fetchone()[0] == 1
+    assert conn.execute("SELECT verify_status FROM place").fetchone()[0] == "pending"
+
+
+def test_duplicate_name_appends_note():
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, BASE)
+    second = {"source": {"kind": "web", "url": "https://b.com", "raw_text": "또 추천"},
+              "places": [{"name": "이치란 라멘 나카스점", "category": "맛집",
+                          "note": "두번째 영상에서도 추천"}]}
+    r = trip.insert_payload(conn, second)
+    assert r["places_new"] == 0 and r["places_merged"] == 1, r
+    assert conn.execute("SELECT COUNT(*) FROM place").fetchone()[0] == 1
+    note = conn.execute("SELECT note FROM place").fetchone()[0]
+    assert "돈코츠" in note and "두번째" in note, note
+
+
+def test_force_creates_separate_row():
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, BASE)
+    trip.insert_payload(conn, BASE, force=True)
+    assert conn.execute("SELECT COUNT(*) FROM place").fetchone()[0] == 2
+
+
+def test_reject_unknown_place_name():
+    conn = trip.connect(":memory:")
+    bad = {"source": {"kind": "text", "raw_text": "x"}, "places": [],
+           "itinerary": [{"day_no": 1, "slot": "오전", "place_name": "없는집"}]}
+    try:
+        trip.insert_payload(conn, bad)
+        assert False, "미해석 place_name이 통과했다"
+    except trip.ValidationError as e:
+        assert e.code == "E4", e.code
+        assert "없는집" in str(e)
+
+
+def test_rollback_on_partial_failure():
+    conn = trip.connect(":memory:")
+    bad = {"source": {"kind": "text", "raw_text": "원문"},
+           "places": [{"name": "좋은집", "category": "맛집"}],
+           "itinerary": [{"day_no": 1, "slot": "오전", "place_name": "없는집"}]}
+    try:
+        trip.insert_payload(conn, bad)
+    except trip.ValidationError:
+        pass
+    assert conn.execute("SELECT COUNT(*) FROM source").fetchone()[0] == 0
+    assert conn.execute("SELECT COUNT(*) FROM place").fetchone()[0] == 0
+
+
+# ---------- Task 4: Takeout CSV ----------
+
+import os as _os
+import tempfile
+
+TAKEOUT_CSV = (
+    "Title,Note,URL,Comment\n"
+    "이치란 라멘 나카스점,줄 서더라도 가볼 것,https://maps.app.goo.gl/aaa,\n"
+    "캐널시티 하카타,쇼핑몰,https://maps.app.goo.gl/bbb,분수쇼 시간 확인\n")
+
+
+def test_takeout_csv_parse():
+    conn = trip.connect(":memory:")
+    fd, path = tempfile.mkstemp(suffix=".csv")
+    _os.close(fd)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(TAKEOUT_CSV)
+    try:
+        r = trip.import_takeout(conn, path)
+    finally:
+        _os.unlink(path)
+    assert r["places_new"] == 2, r
+    rows = dict(conn.execute("SELECT name, note FROM place").fetchall())
+    assert rows["이치란 라멘 나카스점"] == "줄 서더라도 가볼 것", rows
+    kinds = [x[0] for x in conn.execute("SELECT kind FROM source").fetchall()]
+    assert kinds == ["takeout", "takeout"], kinds
+    assert conn.execute(
+        "SELECT verify_status FROM place WHERE name='캐널시티 하카타'"
+    ).fetchone()[0] == "pending"
+
+
 if __name__ == "__main__":
     fails = 0
     for name, fn in sorted(globals().items()):
