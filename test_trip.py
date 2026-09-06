@@ -167,6 +167,46 @@ def test_takeout_csv_parse():
     ).fetchone()[0] == "pending"
 
 
+# ---------- Task 5: 유튜브 자막 ----------
+
+import youtube
+
+
+def test_extract_youtube_id():
+    assert youtube.extract_youtube_id("https://youtu.be/dQw4w9WgXcQ") == "dQw4w9WgXcQ"
+    assert youtube.extract_youtube_id(
+        "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=3s") == "dQw4w9WgXcQ"
+    assert youtube.extract_youtube_id("https://naver.com") is None
+
+
+def test_merge_transcripts_groups_by_30s():
+    srt = [{"start": 0.0, "text": "가"}, {"start": 10.0, "text": "나"},
+           {"start": 35.0, "text": "다"}]
+    out = youtube.merge_transcripts(srt)
+    assert out == "[00:00] 가 나\n[00:35] 다", repr(out)
+
+
+def test_merge_transcripts_empty():
+    assert youtube.merge_transcripts([]) == ""
+
+
+def test_get_transcript_uses_injected_api():
+    class FakeApi:
+        def fetch(self, vid, languages=None):
+            return [{"start": 0.0, "text": "안녕"}]
+    assert youtube.get_transcript("x", api=FakeApi()) == "[00:00] 안녕"
+
+
+def test_get_transcript_returns_none_on_total_failure():
+    class DeadApi:
+        def fetch(self, vid, languages=None):
+            raise RuntimeError("no captions")
+
+        def list(self, vid):
+            raise RuntimeError("no list")
+    assert youtube.get_transcript("x", api=DeadApi()) is None
+
+
 if __name__ == "__main__":
     fails = 0
     for name, fn in sorted(globals().items()):
