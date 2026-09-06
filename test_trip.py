@@ -332,6 +332,60 @@ def test_mark_saved():
     assert conn.execute("SELECT saved_to_mymaps FROM place").fetchone()[0] == 1
 
 
+# ---------- Task 8: export ----------
+
+import export
+
+
+def test_maps_links_only_unconfirmed():
+    conn = trip.connect(":memory:")
+    _seed_places(conn, ["확인필요집", "이미저장집"])
+    conn.execute("UPDATE place SET verify_status='matched' WHERE name='확인필요집'")
+    conn.execute("UPDATE place SET verify_status='matched', saved_to_mymaps=1 "
+                 "WHERE name='이미저장집'")
+    conn.commit()
+    names = [r["name"] for r in export.maps_links(conn)]
+    assert names == ["확인필요집"], names
+
+
+def test_build_todoist_tasks():
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, BASE)
+    tasks = export.build_todoist_tasks(conn)
+    contents = sorted(t["content"] for t in tasks)
+    assert contents == ["3일차 [점심] 이치란 라멘 나카스점", "우산 x1"], contents
+    pack = [t for t in tasks if t["table"] == "packing"][0]
+    assert pack["labels"] == ["공용"], pack
+
+
+def test_todoist_idempotent():
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, BASE)
+    posted = []
+
+    def fake_post(token, project_id, task):
+        posted.append(task["content"])
+        return {"id": f"t{len(posted)}"}
+    r1 = export.push_todoist(conn, "TOK", "P1", dry_run=False, post=fake_post)
+    assert r1["created"] == 2, r1
+    r2 = export.push_todoist(conn, "TOK", "P1", dry_run=False, post=fake_post)
+    assert r2["created"] == 0 and r2["skipped"] == 2, r2
+    assert len(posted) == 2, posted
+
+
+def test_todoist_dry_run_posts_nothing():
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, BASE)
+
+    def boom(*a, **k):
+        raise AssertionError("dry-run 인데 실제 푸시가 일어났다")
+    r = export.push_todoist(conn, "TOK", "P1", dry_run=True, post=boom)
+    assert r["would_create"] == 2, r
+    assert conn.execute(
+        "SELECT COUNT(*) FROM packing WHERE todoist_task_id IS NOT NULL"
+    ).fetchone()[0] == 0
+
+
 if __name__ == "__main__":
     fails = 0
     for name, fn in sorted(globals().items()):
