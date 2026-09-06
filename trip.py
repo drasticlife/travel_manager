@@ -3,9 +3,12 @@
 핵심 원칙: LLM 은 추출·분류만 한다. 좌표·place_id 같은 사실은 Places API 만 채운다.
 스펙: docs/superpowers/specs/2026-09-06-travel-manager-design.md
 """
+import argparse
 import csv
+import json
 import os
 import sqlite3
+import sys
 
 import places as places_mod
 
@@ -273,3 +276,127 @@ def list_plan(conn, day=None):
         sql += " AND i.day_no = ?"
         args.append(day)
     return conn.execute(sql + " ORDER BY i.day_no, i.seq", args).fetchall()
+
+
+# --------------------------------------------------------------------------
+# CLI
+# --------------------------------------------------------------------------
+
+def load_env(path=None):
+    """.env 를 읽고 실제 환경변수가 있으면 그쪽을 우선한다."""
+    path = path or os.path.join(_HERE, ".env")
+    env = {}
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                k, v = line.split("=", 1)
+                env[k.strip()] = v.strip()
+    for k in ("GOOGLE_MAPS_API_KEY", "TODOIST_TOKEN", "TODOIST_PROJECT_ID"):
+        if os.environ.get(k):
+            env[k] = os.environ[k]
+    return env
+
+
+def cmd_add(conn, stream, force=False):
+    """stdin 의 정규화 JSON 을 저장한다. 실패하면 Claude 가 읽고 고칠 수 있게 말한다."""
+    raw = stream.read()
+    try:
+        payload = json.loads(raw)
+    except json.JSONDecodeError as e:
+        print(f"ERROR E1: JSON 파싱 실패 — {e}\n  받은 내용 앞부분: {raw[:200]!r}",
+              file=sys.stderr)
+        return 2
+    try:
+        r = insert_payload(conn, payload, force=force)
+    except ValidationError as e:
+        print(f"ERROR {e}", file=sys.stderr)
+        return 2
+    for w in r["warnings"]:
+        print(f"WARN {w}", file=sys.stderr)
+    print(f"OK source={r['source_id']} 장소 신규 {r['places_new']} / 병합 "
+          f"{r['places_merged']}, 일정 {r['itinerary']}, 준비물 {r['packing']}")
+    return 0
+
+
+def main(argv=None):
+    # Windows 기본 cp949 로는 파이프로 들어온 UTF-8 한국어 JSON 이 깨진다.
+    # stdin 을 안 고치면 '맛집' 이 '留쏆쭛' 으로 읽혀 전 입력 경로가 죽는다.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    if hasattr(sys.stdin, "reconfigure"):
+        sys.stdin.reconfigure(encoding="utf-8")
+
+    ap = argparse.ArgumentParser(prog="trip", description="여행 자료 수집·검증 CLI")
+    ap.add_argument("--db", default=DEFAULT_DB)
+    sub = ap.add_subparsers(dest="cmd", required=True)
+
+    p_add = sub.add_parser("add", help="stdin 으로 정규화 JSON 을 받아 저장")
+    p_add.add_argument("--force", action="store_true", help="동명 장소도 새 행으로")
+
+    p_imp = sub.add_parser("import-takeout", help="Google Takeout CSV 임포트")
+    p_imp.add_argument("csv_path")
+
+    p_ver = sub.add_parser("verify", help="pending 장소를 Places API 로 검증")
+    p_ver.add_argument("--limit", type=int, default=50)
+
+    p_list = sub.add_parser("list", help="장소 조회")
+    p_list.add_argument("--category")
+    p_list.add_argument("--status")
+
+    p_plan = sub.add_parser("plan", help="일정 조회")
+    p_plan.add_argument("--day", type=int)
+
+    p_mark = sub.add_parser("mark-saved", help="내 지도 저장 완료 표시")
+    p_mark.add_argument("ids", nargs="+", type=int)
+
+    args = ap.parse_args(argv)
+    conn = connect(args.db)
+
+    if args.cmd == "add":
+        return cmd_add(conn, sys.stdin, force=args.force)
+
+    if args.cmd == "import-takeout":
+        r = import_takeout(conn, args.csv_path)
+        for w in r["warnings"]:
+            print(f"WARN {w}", file=sys.stderr)
+        print(f"OK 장소 신규 {r['places_new']} / 병합 {r['places_merged']}")
+        return 0
+
+    if args.cmd == "verify":
+        env = load_env()
+        try:
+            r = verify_places(conn, env.get("GOOGLE_MAPS_API_KEY", ""),
+                              limit=args.limit)
+        except places_mod.MissingApiKey as e:
+            print(f"ERROR E6: {e}", file=sys.stderr)
+            return 1
+        print(f"OK matched {r['matched']} / ambiguous {r['ambiguous']} / "
+              f"not_found {r['not_found']} / failed {r['failed']}")
+        return 0
+
+    if args.cmd == "list":
+        for r in list_places(conn, args.category, args.status):
+            flag = "*" if r["saved_to_mymaps"] else " "
+            print(f"{flag} [{r['id']:>3}] {r['verify_status']:<10} "
+                  f"{r['category']:<4} {r['name']}")
+        return 0
+
+    if args.cmd == "plan":
+        for r in list_plan(conn, args.day):
+            print(f"{r['day_no']}일차 [{r['slot']}] "
+                  f"{r['place_name'] or '(미정)'} {r['memo'] or ''}".rstrip())
+        return 0
+
+    if args.cmd == "mark-saved":
+        print(f"OK {mark_saved(conn, args.ids)} 건 저장 완료 표시")
+        return 0
+
+    return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

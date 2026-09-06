@@ -386,6 +386,71 @@ def test_todoist_dry_run_posts_nothing():
     ).fetchone()[0] == 0
 
 
+# ---------- Task 9: CLI ----------
+
+import io
+import json as _json
+
+
+def test_load_env_reads_dotenv():
+    fd, path = tempfile.mkstemp()
+    _os.close(fd)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("# 주석\nGOOGLE_MAPS_API_KEY=abc123\nTODOIST_TOKEN=\n")
+    try:
+        env = trip.load_env(path)
+    finally:
+        _os.unlink(path)
+    assert env["GOOGLE_MAPS_API_KEY"] == "abc123", env
+    assert env.get("TODOIST_TOKEN") == "", env
+
+
+def test_cmd_add_reads_stdin_json():
+    conn = trip.connect(":memory:")
+    code = trip.cmd_add(conn, io.StringIO(_json.dumps(BASE)), force=False)
+    assert code == 0, code
+    assert conn.execute("SELECT COUNT(*) FROM place").fetchone()[0] == 1
+
+
+def test_cmd_add_returns_2_on_bad_json():
+    conn = trip.connect(":memory:")
+    assert trip.cmd_add(conn, io.StringIO("{not json"), force=False) == 2
+
+
+def test_cmd_add_returns_2_on_forbidden_field():
+    conn = trip.connect(":memory:")
+    assert trip.cmd_add(conn, io.StringIO(_json.dumps(FORBIDDEN_SAMPLE)),
+                        force=False) == 2
+
+
+def test_cli_stdin_accepts_utf8_korean():
+    """회귀: Windows cp949 stdin 이 '맛집'을 '留쏆쭛'으로 깨뜨렸다.
+
+    io.StringIO 로는 잡히지 않는다. 실제 서브프로세스 파이프여야 재현된다.
+    """
+    import subprocess
+    fd, dbpath = tempfile.mkstemp(suffix=".db")
+    _os.close(fd)
+    _os.unlink(dbpath)
+    payload = _json.dumps({
+        "source": {"kind": "text", "raw_text": "메모"},
+        "places": [{"name": "이치란 라멘", "category": "맛집"}]})
+    try:
+        p = subprocess.run(
+            [sys.executable, "trip.py", "--db", dbpath, "add"],
+            input=payload.encode("utf-8"),
+            cwd=_os.path.dirname(_os.path.abspath(__file__)),
+            capture_output=True)
+        assert p.returncode == 0, p.stderr.decode("utf-8", "replace")
+        conn = sqlite3.connect(dbpath)
+        row = conn.execute("SELECT name, category FROM place").fetchone()
+        conn.close()
+        assert row == ("이치란 라멘", "맛집"), row
+    finally:
+        if _os.path.exists(dbpath):
+            _os.unlink(dbpath)
+
+
 if __name__ == "__main__":
     fails = 0
     for name, fn in sorted(globals().items()):
