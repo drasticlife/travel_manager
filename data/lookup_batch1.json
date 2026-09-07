@@ -1,0 +1,249 @@
+[
+  {
+    "id": 1,
+    "address": "〒812-0012 Fukuoka, Hakata Ward, Hakataekichuogai 1-1, JR 하카타역 구내",
+    "name_verified": "il FORNO del MIGNON 하카타역점",
+    "evidence_urls": [
+      "https://tabelog.com/en/fukuoka/A4001/A400101/40005043/",
+      "https://shadowneo.net/2324",
+      "https://triple.guide/regions/92ba56af-a93e-4877-a46a-3b84cf1af0cf/restaurants/9fca0767-f419-45f3-9464-bd55100c803a"
+    ]
+  },
+  {
+    "id": 2,
+    "address": "〒810-0001 Fukuoka, Chuo Ward, Tenjin 2-11-1, 후쿠오카 파르코 B1F",
+    "name_verified": "키와미야 함바그 후쿠오카 파르코점",
+    "evidence_urls": [
+      "https://triple.guide/restaurants/5cfa5017-102c-4035-b159-2a75ee6fc508",
+      "https://www.kyushurent.com/restaurants/Kiwamiya",
+      "https://kr.trip.com/moments/detail/fukuoka-576-125568060/"
+    ]
+  },
+  {
+    "id": 3,
+    "address": "〒812-0013 Fukuoka, Hakata Ward, Hakataekihigashi 1-12-1, 선라이프호텔 2·3 1F",
+    "name_verified": "黒毛和牛 博多牛まぶし 武蔵",
+    "evidence_urls": [
+      "https://tabelog.com/en/fukuoka/A4001/A400101/40066543/",
+      "https://triple.guide/restaurants/9f2f6a1e-0f50-4dee-844f-b8b14ea2d120",
+      "https://hakata-gyumabushi-musashi.owst.jp/"
+    ]
+  },
+  {
+    "id": 4,
+    "address": "후쿠오카시 하카타구 하카타에키히가시 2-2-10 하카타사카나빌딩 2F",
+    "name_verified": "하카타우나기야 후지우나",
+    "evidence_urls": [
+      "https://kr.savorjapan.com/0006116904/menus"
+    ]
+  },
+  {
+    "id": 5,
+    "address": "〒810-0037 Fukuoka, Chuo Ward, Minamikoen 1-1",
+    "name_verified": "후쿠오카시 동식물원 (Fukuoka Zoo & Botanical Garden)",
+    "evidence_urls": [
+      "https://zoo.city.fukuoka.lg.jp/general/index_en",
+      "https://en.wikipedia.org/wiki/Fukuoka_Municipal_Zoo_and_Botanical_Garden",
+      "https://japantravel.navitime.com/en/area/jp/spot/02301-13500371/"
+    ]
+  },
+  {
+    "id": 6,
+    "address": "〒812-8627 Fukuoka, Hakata Ward, Naka 6-23-1, 라라포트 후쿠오카 몰동 4F",
+    "name_verified": "Moff animal cafe ららぽーと福岡店",
+    "evidence_urls": [
+      "https://mitsui-shopping-park.com/lalaport/fukuoka/shopguide/2098784.html",
+      "https://tabelog.com/en/fukuoka/A4001/A400202/40060379/",
+      "https://iko-yo.net/facilities/175612"
+    ]
+  },
+  {
+    "id": 7,
+    "address": "",
+    "evidence_urls": []
+  },
+  {
+    "id": 8,
+    "address": "",
+    "evidence_urls": []
+  },
+  {
+    "id": 9,
+    "address": "",
+    "evidence_urls": []
+  },
+  {
+    "id": 10,
+    "address": "〒812-0012 Fukuoka, Hakata Ward, Hakataekichuogai 1-1",
+    "name_verified": "하카타 한큐 (阪急百貨店 博多店)",
+    "evidence_urls": [
+      "https://website.hankyu-dept.co.jp/hakata/fl/korean/access.html",
+      "https://triple.guide/attractions/cc6e04af-987a-4373-8604-4c7296bf2a4c",
+      "https://japanshopping.org/ko/search/shops/detail/107"
+    ]
+  },
+  {
+    "id": 11,
+    "address": "〒810-8680 Fukuoka, Chuo Ward, Tenjin 2-5-35",
+    "name_verified": "이와타야 본점 (岩田屋本店)",
+    "evidence_urls": [
+      "https://www.iwataya-mitsukoshi.mistore.jp.k.kq.hp.transer.com/iwataya/access.html",
+      "https://ko.wikipedia.org/wiki/%EC%9D%B4%EC%99%80%ED%83%80%EC%95%BC",
+      "https://japantravel.navitime.com/en/area/jp/spot/02301-1600026/"
+    ]
+  },
+  {
+    "id": 12,
+    "address": "〒812-0013 Fukuoka, Hakata Ward, Hakataekihigashi 1-13-3",
+    "name_verified": "HOTEL FORZA HAKATAEKI CHIKUSHI-GUCHI II",
+    "evidence_urls": [
+      "https://www.hotelforza.jp/hakata2/en/",
+      "https://www.booking.com/hotel/jp/forza-hakataeki-chikushiguchi-ii.en-gb.html",
+      "https://www.agoda.com/hotel-forza-hakataeki-chikushiguchi/hotel/fukuoka-jp.html"
+    ]
+  },
+  {
+    "id": 13,
+    "address": "〒812-0027 Fukuoka, Hakata Ward, Shimokawabatacho 3-1, 하카타 리버레인 몰 5F·6F",
+    "name_verified": "후쿠오카 호빵맨 어린이 박물관 in 쇼핑몰",
+    "evidence_urls": [
+      "https://www.fukuoka-anpanman.jp/kr/",
+      "https://www.crossroadfukuoka.jp/kr/spot/11346",
+      "https://www.gltjp.com/en/directory/item/16603/"
+    ]
+  },
+  {
+    "id": 14,
+    "address": "〒811-0321 Fukuoka, Higashi-ku, Saitozaki 18-28",
+    "name_verified": "Marine World Uminonakamichi (마린월드 우미노나카미치)",
+    "evidence_urls": [
+      "https://japantravel.navitime.com/en/area/jp/spot/02301-1301594/",
+      "https://en.wikipedia.org/wiki/Marine_World_Uminonakamichi",
+      "https://gofukuoka.jp/spots/detail/26800/"
+    ]
+  },
+  {
+    "id": 15,
+    "address": "〒811-0321 Fukuoka, Higashi-ku, Saitozaki 18-25, 우미노나카미치 해변공원 내 동물의숲",
+    "name_verified": "海の中道海浜公園 動物の森",
+    "evidence_urls": [
+      "https://japantravel.navitime.com/ko/area/jp/spot/02301-1301579/",
+      "https://uminaka-park.jp/mt-static/support/theme_static/original/pdf/Korean_guide_240311.pdf",
+      "https://www.crossroadfukuoka.jp/kr/spot/12408"
+    ]
+  },
+  {
+    "id": 16,
+    "address": "후쿠오카현 후쿠오카시 하카타구 하카타에키추오가이 2-1, 하카타버스터미널 B1F",
+    "name_verified": "마키노우동 하카타버스터미널점 (牧のうどん)",
+    "evidence_urls": [
+      "https://ko.h-bt.jp/floor/shop62.html",
+      "https://www.tripstore.kr/blog/%ED%95%98%EC%B9%B4%ED%83%80-%EC%9A%B0%EB%8F%99-%EB%A7%9B%EC%A7%91-%ED%98%BC%ED%96%89-%EC%8B%AC%EC%95%BC-%EC%95%84%EC%B9%A8-%EC%83%81%ED%99%A9%EB%B3%84-%EA%B3%B5%EB%9E%B5"
+    ]
+  },
+  {
+    "id": 17,
+    "address": "〒810-0801 Fukuoka, Hakata Ward, Nakasu 2-8-27",
+    "name_verified": "博多名代 吉塚うなぎ屋 (요시즈카 우나기야)",
+    "evidence_urls": [
+      "https://triple.guide/restaurants/1239f853-d0b3-40e3-9c96-1ae7bb0c24ef",
+      "https://www.siksinhot.com/P/342641",
+      "https://boborifood.com/14",
+      "https://fuk-info.com/fukuoka_food_yoshizukaunagiya/"
+    ]
+  },
+  {
+    "id": 18,
+    "address": "〒810-0041 Fukuoka, Chuo Ward, Daimyo 2-2-17",
+    "name_verified": "稚加榮 (치카에)",
+    "evidence_urls": [
+      "https://www.tablecheck.com/en/chikae",
+      "https://www.siksinhot.com/P/342648",
+      "https://autoreserve.com/ko/restaurants/PLmMXUnTcarAwKBG5fFx",
+      "https://triple.guide/restaurants/b338d5d8-4565-4c86-94ce-e95152a6ecd7"
+    ]
+  },
+  {
+    "id": 19,
+    "address": "",
+    "evidence_urls": []
+  },
+  {
+    "id": 20,
+    "address": "〒812-0012 Fukuoka, Hakata Ward, Hakataekichuogai 6-12",
+    "name_verified": "ロピア ヨドバシ博多店 (로피아 하카타 요도바시점)",
+    "evidence_urls": [
+      "https://triple.guide/attractions/0e47a43e-fba8-49ae-8cee-020211d091c9",
+      "https://map.yahoo.co.jp/v3/place/R3OMPnOE-Gc",
+      "https://lopia.jp/shops/hakatayodobashi"
+    ]
+  },
+  {
+    "id": 21,
+    "address": "〒810-0001 Fukuoka, Chuo Ward, Tenjin 2-4-5",
+    "name_verified": "ビックカメラ 天神2号館 (빅카메라 텐진2호점)",
+    "evidence_urls": [
+      "https://kr.trip.com/moments/detail/fukuoka-576-124841257/"
+    ]
+  },
+  {
+    "id": 22,
+    "address": "후쿠오카시 주오구 다이묘 1-9-14 시티맨션 다이묘 별관",
+    "name_verified": "鉄板焼きもんじゃ ココきよ 大名店",
+    "evidence_urls": [
+      "https://tabelog.com/fukuoka/A4001/A400104/40064737/",
+      "https://www.hotpepper.jp/strJ004169173/",
+      "https://r.gnavi.co.jp/1uppfkde0000/"
+    ]
+  },
+  {
+    "id": 23,
+    "address": "후쿠오카현 후쿠오카시 주오구 니시나카스 13-1 SHIP'S GARDEN 2F",
+    "name_verified": "水炊き もつ鍋 博多流 西中洲 (Mizutaki Motsunabe Hakataro Nishinakasu)",
+    "evidence_urls": [
+      "https://www.tablecheck.com/en/hakatarou-nishinakasu",
+      "https://tabelog.com/en/fukuoka/A4001/A400103/40066852/",
+      "https://arne.media/en/gourmet/511418/"
+    ]
+  },
+  {
+    "id": 24,
+    "address": "〒810-0001 후쿠오카시 주오구 텐진 2-11-1 후쿠오카 PARCO 본관",
+    "name_verified": "MIZUNO SPORTSTYLE FUKUOKA PARCO POP-UP",
+    "evidence_urls": [
+      "https://jpn.mizuno.com/shop/mizunosportstyle_fukuokaparco",
+      "https://en.fukuoka.parco.jp/shop/detail/?cd=030872",
+      "https://tenjin.keizai.biz/headline/8335/"
+    ]
+  },
+  {
+    "id": 25,
+    "address": "후쿠오카현 후쿠오카시 하카타구 스미요시 1-1-9 RJR하카타빌딩 2F",
+    "name_verified": "やきにくのバクロ 博多店",
+    "evidence_urls": [
+      "https://tabelog.com/en/fukuoka/A4001/A400101/40045144/",
+      "https://map.yahoo.co.jp/v3/place/DuPsUxeEU_E",
+      "https://www.bakuro09.com/shop/hakata/",
+      "https://hitosara.com/0031454747/"
+    ]
+  },
+  {
+    "id": 26,
+    "address": "〒810-0042 후쿠오카시 주오구 아카사카 1-15-1 아카사카코가빌딩 1F",
+    "name_verified": "大濠うなぎ (오호리 우나기)",
+    "evidence_urls": [
+      "https://ohoriunagi.com/",
+      "https://www.tablecheck.com/en/ohoriunagi"
+    ]
+  },
+  {
+    "id": 27,
+    "address": "〒812-0018 후쿠오카시 하카타구 스미요시 1-2, 캐널시티 하카타 사우스빌딩",
+    "name_verified": "Alpen FUKUOKA (스포츠데포 플래그십스토어 캐널시티 하카타점)",
+    "evidence_urls": [
+      "https://store.alpen-group.jp/Form/RealShop/ShopDetail.aspx?rsid=5402",
+      "https://map.yahoo.co.jp/v3/place/sxyUK0ZxDDY",
+      "https://triple.guide/attractions/e65bba26-9e72-4b92-8cc3-7fda17b9ca12"
+    ]
+  }
+]
