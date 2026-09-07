@@ -246,6 +246,78 @@ def verify_places(conn, api_key, limit=50, search=None):
     return stats
 
 
+# --------------------------------------------------------------------------
+# Claude 검색 경로 — Places API 키 없이 주소만 확보한다
+#
+# 검증 결과: 웹 검색으로 주소는 나오지만 place_id·좌표는 안 나온다.
+# 그래서 Claude 는 주소와 근거 URL 만 가져오고, 판정은 코드가 한다.
+# --------------------------------------------------------------------------
+
+# Claude 가 lookup 결과에 쓸 수 있는 키. 이 밖은 전부 거부한다.
+LOOKUP_ALLOWED = {"id", "address", "name_verified", "evidence_urls"}
+
+
+def pending_places(conn):
+    """아직 조사 안 된 장소 목록. Claude 가 읽을 수 있게 dict 리스트로 준다."""
+    rows = conn.execute(
+        "SELECT id, name, category, note FROM place "
+        "WHERE verify_status = 'pending' ORDER BY id").fetchall()
+    return [{"id": r[0], "name": r[1], "category": r[2], "note": r[3]} for r in rows]
+
+
+def validate_lookup(items):
+    if not isinstance(items, list):
+        raise ValidationError("E2", "lookup 결과는 배열이어야 합니다.")
+    for i, it in enumerate(items):
+        if not isinstance(it, dict):
+            raise ValidationError("E2", f"lookup[{i}] 는 객체여야 합니다.")
+        extra = set(it) - LOOKUP_ALLOWED
+        if extra:
+            raise ValidationError("E3",
+                f"lookup[{i}] 에 금지 필드 {sorted(extra)} 가 있습니다. "
+                "검색으로는 place_id·lat·lng 가 나오지 않습니다. "
+                f"허용 필드: {sorted(LOOKUP_ALLOWED)}")
+        if not isinstance(it.get("id"), int):
+            raise ValidationError("E2", f"lookup[{i}].id 는 정수여야 합니다.")
+        addr = (it.get("address") or "").strip()
+        urls = it.get("evidence_urls") or []
+        if addr and not urls:
+            raise ValidationError("E2",
+                f"lookup[{i}] 에 주소가 있는데 evidence_urls 가 비어 있습니다. "
+                "근거 없는 주소는 환각과 구분되지 않습니다. "
+                "검색 결과에 없으면 address 를 비워서 보내세요.")
+    return items
+
+
+def apply_lookup(conn, items):
+    """Claude 의 조사 결과를 저장한다. verify_status 는 Claude 가 아니라 코드가 정한다."""
+    validate_lookup(items)
+    stats = {"matched": 0, "ambiguous": 0, "not_found": 0}
+    try:
+        conn.execute("BEGIN")
+        for it in items:
+            pid = it["id"]
+            if not conn.execute(
+                    "SELECT 1 FROM place WHERE id = ?", (pid,)).fetchone():
+                raise ValidationError("E4", f"place id={pid} 가 DB 에 없습니다.")
+            addr = (it.get("address") or "").strip() or None
+            urls = [u for u in (it.get("evidence_urls") or []) if u]
+            status = places_mod.judge_by_evidence(addr, urls)
+            url = places_mod.maps_url_from_address(
+                addr, it.get("name_verified")) if addr else None
+            conn.execute(
+                "UPDATE place SET verify_status=?, verify_method='claude_search', "
+                "address=?, name_verified=?, maps_url=?, evidence_urls=? WHERE id=?",
+                (status, addr, it.get("name_verified"), url,
+                 "\n".join(urls) or None, pid))
+            stats[status] += 1
+        conn.execute("COMMIT")
+    except Exception:
+        conn.execute("ROLLBACK")
+        raise
+    return stats
+
+
 def mark_saved(conn, ids):
     cur = conn.executemany(
         "UPDATE place SET saved_to_mymaps = 1 WHERE id = ?", [(i,) for i in ids])
@@ -340,8 +412,13 @@ def main(argv=None):
     p_imp = sub.add_parser("import-takeout", help="Google Takeout CSV 임포트")
     p_imp.add_argument("csv_path")
 
-    p_ver = sub.add_parser("verify", help="pending 장소를 Places API 로 검증")
+    p_ver = sub.add_parser("verify", help="pending 장소를 Places API 로 검증 (키 필요)")
     p_ver.add_argument("--limit", type=int, default=50)
+
+    p_pend = sub.add_parser("pending", help="조사할 장소 목록을 JSON 으로 출력")
+    p_pend.add_argument("--limit", type=int, default=20)
+
+    sub.add_parser("apply-lookup", help="Claude 의 조사 결과 JSON 을 stdin 으로 받아 저장")
 
     p_list = sub.add_parser("list", help="장소 조회")
     p_list.add_argument("--category")
@@ -376,6 +453,28 @@ def main(argv=None):
             return 1
         print(f"OK matched {r['matched']} / ambiguous {r['ambiguous']} / "
               f"not_found {r['not_found']} / failed {r['failed']}")
+        return 0
+
+    if args.cmd == "pending":
+        print(json.dumps(pending_places(conn)[:args.limit],
+                         ensure_ascii=False, indent=2))
+        return 0
+
+    if args.cmd == "apply-lookup":
+        raw = sys.stdin.read()
+        try:
+            items = json.loads(raw)
+        except json.JSONDecodeError as e:
+            print(f"ERROR E1: JSON 파싱 실패 — {e}\n  받은 내용 앞부분: {raw[:200]!r}",
+                  file=sys.stderr)
+            return 2
+        try:
+            r = apply_lookup(conn, items)
+        except ValidationError as e:
+            print(f"ERROR {e}", file=sys.stderr)
+            return 2
+        print(f"OK matched {r['matched']} / ambiguous {r['ambiguous']} / "
+              f"not_found {r['not_found']}")
         return 0
 
     if args.cmd == "list":

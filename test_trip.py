@@ -451,6 +451,144 @@ def test_cli_stdin_accepts_utf8_korean():
             _os.unlink(dbpath)
 
 
+# ---------- Claude 검색 경로 (lookup) ----------
+
+def test_maps_url_from_address_encodes():
+    u = places.maps_url_from_address("5-3-2 Nakasu, Hakata-ku, Fukuoka")
+    assert u.startswith("https://www.google.com/maps/search/?api=1&query="), u
+    assert " " not in u, u
+    assert "Nakasu" in u
+
+
+def test_judge_by_evidence_two_domains_matched():
+    assert places.judge_by_evidence(
+        "5-3-2 Nakasu", ["https://triple.guide/a", "https://kyushurent.com/b"]
+    ) == "matched"
+
+
+def test_judge_by_evidence_same_domain_is_ambiguous():
+    # 같은 블로그의 페이지 2개는 교차확인이 아니다.
+    assert places.judge_by_evidence(
+        "5-3-2 Nakasu", ["https://blog.com/a", "https://www.blog.com/b"]
+    ) == "ambiguous"
+
+
+def test_judge_by_evidence_single_is_ambiguous():
+    assert places.judge_by_evidence("5-3-2 Nakasu", ["https://a.com/x"]) == "ambiguous"
+
+
+def test_judge_by_evidence_no_address_is_not_found():
+    assert places.judge_by_evidence("", ["https://a.com", "https://b.com"]) == "not_found"
+
+
+def test_apply_lookup_rejects_coordinates():
+    """가장 중요: 검색으로 안 나오는 좌표를 Claude 가 지어내면 거부한다."""
+    conn = trip.connect(":memory:")
+    _seed_places(conn, ["이치란"])
+    pid = conn.execute("SELECT id FROM place").fetchone()[0]
+    try:
+        trip.apply_lookup(conn, [{"id": pid, "address": "어딘가", "lat": 33.5,
+                                  "evidence_urls": ["https://a.com", "https://b.com"]}])
+        assert False, "환각 좌표가 통과했다"
+    except trip.ValidationError as e:
+        assert e.code == "E3", e.code
+        assert "lat" in str(e)
+
+
+def test_apply_lookup_rejects_place_id():
+    conn = trip.connect(":memory:")
+    _seed_places(conn, ["이치란"])
+    pid = conn.execute("SELECT id FROM place").fetchone()[0]
+    try:
+        trip.apply_lookup(conn, [{"id": pid, "address": "어딘가",
+                                  "place_id": "ChIJfake",
+                                  "evidence_urls": ["https://a.com", "https://b.com"]}])
+        assert False, "지어낸 place_id 가 통과했다"
+    except trip.ValidationError as e:
+        assert e.code == "E3", e.code
+
+
+def test_apply_lookup_rejects_empty_evidence():
+    """근거 URL 없는 주소는 환각과 구분이 안 된다."""
+    conn = trip.connect(":memory:")
+    _seed_places(conn, ["이치란"])
+    pid = conn.execute("SELECT id FROM place").fetchone()[0]
+    try:
+        trip.apply_lookup(conn, [{"id": pid, "address": "어딘가", "evidence_urls": []}])
+        assert False, "근거 없는 주소가 통과했다"
+    except trip.ValidationError as e:
+        assert e.code == "E2", e.code
+        assert "evidence_urls" in str(e)
+
+
+def test_apply_lookup_rejects_unknown_id():
+    conn = trip.connect(":memory:")
+    try:
+        trip.apply_lookup(conn, [{"id": 999, "address": "어딘가",
+                                  "evidence_urls": ["https://a.com", "https://b.com"]}])
+        assert False, "없는 id 가 통과했다"
+    except trip.ValidationError as e:
+        assert e.code == "E4", e.code
+
+
+def test_apply_lookup_writes_and_code_judges():
+    """Claude 는 status 를 쓰지 않는다. 코드가 도메인 수를 세서 판정한다."""
+    conn = trip.connect(":memory:")
+    _seed_places(conn, ["이치란", "애매한집", "못찾은집"])
+    ids = {n: i for i, n in conn.execute("SELECT id, name FROM place").fetchall()}
+    r = trip.apply_lookup(conn, [
+        {"id": ids["이치란"], "address": "5-3-2 Nakasu, Hakata-ku, Fukuoka",
+         "name_verified": "이치란 본사 총본점",
+         "evidence_urls": ["https://triple.guide/a", "https://kyushurent.com/b"]},
+        {"id": ids["애매한집"], "address": "어딘가 1-2-3",
+         "evidence_urls": ["https://oneblog.com/a"]},
+        {"id": ids["못찾은집"], "address": "", "evidence_urls": []},
+    ])
+    assert r == {"matched": 1, "ambiguous": 1, "not_found": 1}, r
+    row = conn.execute(
+        "SELECT verify_status, verify_method, address, name_verified, maps_url, "
+        "evidence_urls, lat FROM place WHERE id=?", (ids["이치란"],)).fetchone()
+    assert row[0] == "matched", row[0]
+    assert row[1] == "claude_search", row[1]
+    assert row[2] == "5-3-2 Nakasu, Hakata-ku, Fukuoka"
+    assert row[3] == "이치란 본사 총본점"
+    assert row[4].startswith("https://www.google.com/maps/search/?api=1&query=")
+    assert "triple.guide" in row[5] and "kyushurent.com" in row[5], row[5]
+    assert row[6] is None, "좌표는 절대 채워지면 안 된다"
+    # ambiguous 여도 링크는 만든다 — 사용자가 열어보는 게 판정 절차의 일부다.
+    assert conn.execute("SELECT maps_url FROM place WHERE id=?",
+                        (ids["애매한집"],)).fetchone()[0]
+
+
+def test_pending_outputs_json():
+    conn = trip.connect(":memory:")
+    _seed_places(conn, ["가게1", "가게2"])
+    out = trip.pending_places(conn)
+    assert len(out) == 2, out
+    assert set(out[0]) == {"id", "name", "category", "note"}, out[0]
+    _json.dumps(out)  # 직렬화 가능해야 Claude 가 읽는다
+
+
+def test_pending_excludes_resolved():
+    conn = trip.connect(":memory:")
+    _seed_places(conn, ["미확인", "확인됨"])
+    ids = {n: i for i, n in conn.execute("SELECT id, name FROM place").fetchall()}
+    trip.apply_lookup(conn, [{"id": ids["확인됨"], "address": "a 1-2",
+                              "evidence_urls": ["https://a.com", "https://b.com"]}])
+    assert [p["name"] for p in trip.pending_places(conn)] == ["미확인"]
+
+
+def test_todoist_projects_parses():
+    """project_id 는 URL 슬러그가 아니라 숫자다. API 로만 얻을 수 있다."""
+    def fake_get(url, token):
+        assert url.endswith("/projects"), url
+        return [{"id": 2203306141, "name": "2026 후쿠오카"},
+                {"id": 2203306999, "name": "인박스"}]
+    out = export.todoist_projects("TOK", get=fake_get)
+    assert out == [{"id": "2203306141", "name": "2026 후쿠오카"},
+                   {"id": "2203306999", "name": "인박스"}], out
+
+
 if __name__ == "__main__":
     fails = 0
     for name, fn in sorted(globals().items()):

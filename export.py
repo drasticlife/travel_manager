@@ -11,6 +11,7 @@ import urllib.request
 import trip
 
 TODOIST_URL = "https://api.todoist.com/rest/v2/tasks"
+TODOIST_PROJECTS_URL = "https://api.todoist.com/rest/v2/projects"
 TIMEOUT_SEC = 10
 
 
@@ -53,6 +54,24 @@ def _real_post(token, project_id, task):
         return json.loads(resp.read().decode("utf-8"))
 
 
+def _real_get(url, token):
+    req = urllib.request.Request(
+        url, headers={"Authorization": f"Bearer {token}"}, method="GET")
+    with urllib.request.urlopen(req, timeout=TIMEOUT_SEC) as resp:
+        return json.loads(resp.read().decode("utf-8"))
+
+
+def todoist_projects(token, get=None):
+    """프로젝트 목록 + 숫자 ID.
+
+    REST v2 의 project_id 는 숫자다. 브라우저 URL 의 슬러그
+    (예: 2026-6hR986mmJqCrxHc4)는 API 가 받지 않는다.
+    """
+    get = get or _real_get
+    data = get(TODOIST_PROJECTS_URL, token) or []
+    return [{"id": str(p.get("id")), "name": p.get("name")} for p in data]
+
+
 def push_todoist(conn, token, project_id, dry_run=True, post=None):
     """멱등: todoist_task_id 가 있는 행은 건너뛴다."""
     post = post or _real_post
@@ -85,9 +104,23 @@ def main(argv=None):
     ap.add_argument("--db", default=trip.DEFAULT_DB)
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("maps-links", help="내 지도에 저장할 링크 목록")
+    sub.add_parser("todoist-projects", help="프로젝트 목록 + 숫자 ID 조회")
     p_td = sub.add_parser("todoist", help="준비물·일정 체크리스트 푸시")
     p_td.add_argument("--dry-run", action="store_true", default=False)
     args = ap.parse_args(argv)
+
+    if args.cmd == "todoist-projects":
+        token = trip.load_env().get("TODOIST_TOKEN")
+        if not token:
+            print("ERROR E6: TODOIST_TOKEN 이 .env 에 없습니다. "
+                  "Todoist 설정 > 연동 > 개발자에서 API 토큰을 복사하세요.",
+                  file=sys.stderr)
+            return 1
+        for p in todoist_projects(token):
+            print(f"  {p['id']:<24} {p['name']}")
+        print("\n위 숫자 ID 를 .env 의 TODOIST_PROJECT_ID 에 넣으세요.")
+        return 0
+
     conn = trip.connect(args.db)
 
     if args.cmd == "maps-links":

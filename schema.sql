@@ -24,6 +24,9 @@ CREATE TABLE IF NOT EXISTS place (
   maps_url        TEXT,
   verify_status   TEXT NOT NULL DEFAULT 'pending'
                     CHECK (verify_status IN ('pending','matched','ambiguous','not_found')),
+  verify_method   TEXT CHECK (verify_method IN ('claude_search','places_api','manual')),
+  -- 주소 근거 URL(줄바꿈 구분). 환각 여부를 사후 추적하는 유일한 수단이다.
+  evidence_urls   TEXT,
   saved_to_mymaps INTEGER NOT NULL DEFAULT 0 CHECK (saved_to_mymaps IN (0,1)),
   note            TEXT,
   source_id       INTEGER REFERENCES source(id),

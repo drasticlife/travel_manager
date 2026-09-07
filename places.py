@@ -5,6 +5,7 @@
 """
 import json
 import re
+import urllib.parse
 import urllib.request
 
 ENDPOINT = "https://places.googleapis.com/v1/places:searchText"
@@ -27,6 +28,37 @@ def normalize(name):
 
 def maps_url(place_id):
     return f"https://www.google.com/maps/place/?q=place_id:{place_id}"
+
+
+def maps_url_from_address(address, name=None):
+    """주소 기반 검색 링크.
+
+    이름으로 검색하면 '이치란 나카스점'을 찾다가 '이치란 텐진점'이 나오지만,
+    정확한 일본 주소는 그 자체가 식별자라 한 곳으로 떨어진다.
+    """
+    q = f"{address} {name}".strip() if name else (address or "").strip()
+    return ("https://www.google.com/maps/search/?api=1&query="
+            + urllib.parse.quote(q))
+
+
+def _domain(url):
+    try:
+        host = urllib.parse.urlparse(url).netloc.lower()
+    except Exception:
+        return ""
+    return host[4:] if host.startswith("www.") else host
+
+
+def judge_by_evidence(address, evidence_urls):
+    """근거 URL 의 고유 도메인 수로 판정한다.
+
+    판정을 LLM 에게 맡기면 자기 결과에 후한 점수를 준다. 그래서 코드가 센다.
+    같은 블로그의 페이지 2개는 교차확인이 아니므로 1개로 센다.
+    """
+    if not address or not str(address).strip():
+        return "not_found"
+    domains = {d for d in (_domain(u) for u in (evidence_urls or [])) if d}
+    return "matched" if len(domains) >= 2 else "ambiguous"
 
 
 def judge(query, candidates):
