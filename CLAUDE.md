@@ -4,11 +4,15 @@
 
 ## 절대 규칙
 
-1. **LLM은 추출·분류만 한다.** 좌표·`place_id`·주소는 Places API만 채운다.
-   추측한 좌표를 넣으면 동선 최적화가 통째로 망가진다. `trip.py`가 거부한다.
+1. **LLM은 검색으로 retrieve 한 것만 쓴다.** 기억으로 지어낸 값은 쓰지 않는다.
+   주소는 `/trip lookup`으로 웹 검색해서 **근거 URL과 함께** 저장한다.
+   좌표·`place_id`는 검색으로 안 나오므로 **절대 쓰지 않는다** — 지어내면
+   동선 최적화가 통째로 망가진다. `trip.py`가 거부한다.
+   판정(`verify_status`)도 LLM이 하지 않는다. 코드가 도메인 수를 센다.
 2. **원문을 요약해서 저장하지 않는다.** `source.raw_text`는 자막/본문 전문이다.
    추출이 틀렸을 때 재처리할 유일한 근거다.
 3. **`verify`는 과금 단계다.** 자동 실행 금지. 사용자가 결정한다.
+   기본 경로는 키가 필요 없는 `/trip lookup`이다.
 4. **외부 패키지를 추가하지 않는다.** `youtube-transcript-api` 하나뿐이고
    나머지는 전부 stdlib다. `requests`·ORM·pydantic·pytest 금지.
 5. **`git add .` 금지.** 자기가 고친 파일 경로만 명시해서 커밋한다.
@@ -20,11 +24,14 @@
 python test_trip.py                          # 테스트 (이게 전부)
 python trip.py add                           # stdin JSON 저장
 python trip.py import-takeout <csv>          # Takeout CSV 임포트
-python trip.py verify --limit 50             # Places API 검증 (과금)
+python trip.py pending --limit 20            # 주소 없는 장소 목록 (JSON)
+python trip.py apply-lookup                  # 검색 결과 저장 (stdin JSON)
+python trip.py verify --limit 50             # Places API 검증 (키 필요, 과금)
 python trip.py list --status ambiguous       # 조회
 python trip.py plan --day 3
 python trip.py mark-saved 12 15              # 내 지도 저장 완료 표시
 python export.py maps-links                  # 확인할 링크 목록
+python export.py todoist-projects            # Todoist 숫자 project_id 조회
 python export.py todoist --dry-run           # 푸시 미리보기
 ```
 
@@ -50,6 +57,12 @@ python export.py todoist --dry-run           # 푸시 미리보기
   가장 높은 등급으로 요청 전체를 과금한다. Pro(월 5,000 무료)가 Enterprise가 된다.
 - **결과가 2건 이상이면 무조건 `ambiguous`.** 1순위를 자동 채택하면
   "이치란 나카스점"을 찾다가 "이치란 텐진점"이 확정된다.
+- **웹 검색으로 `place_id`와 좌표는 안 나온다. 주소만 나온다.** 실측으로 확인했다.
+  그래서 Claude 경로는 주소 기반 검색 링크를 쓴다 — 정확한 일본 주소는
+  그 자체가 식별자라 한 곳으로 떨어진다.
+- **Todoist `project_id`는 URL 슬러그가 아니라 숫자다.** `2026-6hR986mmJqCrxHc4`(URL)가
+  아니라 `2203306141` 형태. `export.py todoist-projects`로 조회한다.
+- **Places API는 무료 한도만 써도 결제 수단 등록이 필수다.** 그래서 선택 경로다.
 - **구글지도 저장 목록에 쓰는 API는 없다.** 링크를 만들어주고 사람이 클릭해서 저장한다.
 
 ## 문서

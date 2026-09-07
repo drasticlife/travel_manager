@@ -154,6 +154,8 @@ CREATE TABLE IF NOT EXISTS place (
   maps_url        TEXT,
   verify_status   TEXT NOT NULL DEFAULT 'pending'
                     CHECK (verify_status IN ('pending','matched','ambiguous','not_found')),
+  verify_method   TEXT CHECK (verify_method IN ('claude_search','places_api','manual')),
+  evidence_urls   TEXT,   -- 주소 근거 URL(줄바꿈 구분). 환각 사후 추적 수단
   saved_to_mymaps INTEGER NOT NULL DEFAULT 0 CHECK (saved_to_mymaps IN (0,1)),
   note            TEXT,
   source_id       INTEGER REFERENCES source(id),
@@ -250,7 +252,80 @@ Takeout URL에서 좌표를 파싱할 수도 있으나 하지 않는다 — Plac
 
 **Takeout은 수동 1회 작업이므로 자동화하지 않는다.** 여행 준비 기간에 한두 번 실행하면 끝이라 자동화 코드가 회수되지 않는다.
 
-### 3.3 Places API 비용 통제
+### 3.3 검증 경로 — 2026-09-07 변경
+
+> **변경 이유**: Places API는 무료 한도(월 5,000콜)만 쓰더라도 구글 클라우드에
+> **결제 수단 등록이 필수**다. 2025년 3월에 $200 공용 크레딧이 SKU별 무료 한도로
+> 바뀌면서 카드 없이는 키 발급 자체가 안 된다. 사용자가 카드 등록 대신
+> Claude CLI 웹 검색으로 채우는 방식을 선택했다.
+
+**실측 결과** — "이치란 라멘 나카스점"을 한국어·영어로 각각 검색:
+
+| 항목 | 웹 검색으로 | 비고 |
+| :--- | :--- | :--- |
+| **주소** | ✅ 확보 | 두 독립 검색이 동일: `5-3-2 Nakasu, Hakata-ku, Fukuoka 810-0801` |
+| `place_id` | ❌ 없음 | 검색 결과에 명시적으로 부재 |
+| 좌표 | ❌ 없음 | 동일 |
+
+**주소는 되고 place_id·좌표는 안 된다.** 원래 `place_id` 링크를 고집한 이유는
+"이치란 나카스점"을 찾다가 "이치란 텐진점"이 확정되는 걸 막기 위해서였는데,
+그 문제는 *이름으로* 검색해서 생긴 것이다. **정확한 일본 주소는 그 자체가 식별자**라
+주소 기반 검색 링크는 한 곳으로 떨어진다.
+
+원래 요구사항("내가 DB 확인 후 링크 타고 들어가서 다시 확인하고 내 지도에 저장")에서
+**사람의 육안 확인이 최종 게이트**라는 점은 그대로다. API는 신뢰도를 올리는 장치였지
+게이트가 아니었다.
+
+#### 3.3.1 두 경로
+
+| | Claude 검색 (기본) | Places API (선택) |
+| :--- | :--- | :--- |
+| 커맨드 | `trip.py pending` → `trip.py apply-lookup` | `trip.py verify` |
+| 결제 등록 | 불필요 | **필수** |
+| 주소 | ✅ | ✅ |
+| 좌표·`place_id` | ❌ NULL 유지 | ✅ |
+| 링크 | `maps_url_from_address()` | `maps_url(place_id)` |
+| `verify_method` | `claude_search` | `places_api` |
+
+두 경로는 배타적이지 않다. `verify`로 처리하고 남은 것을 `apply-lookup`으로 메울 수 있다.
+
+#### 3.3.2 환각 차단선 — 기준은 바뀌었으나 원칙은 유지
+
+> **Claude는 검색으로 retrieve 한 것만 쓴다. 기억으로 지어낸 것은 쓰지 않는다.**
+
+`apply-lookup`의 검증 규칙:
+
+| 규칙 | 코드 | 이유 |
+| :--- | :--- | :--- |
+| `lat`·`lng`·`place_id` 포함 시 거부 | E3 | 검색으로 안 나오는 값. 있으면 지어낸 것 |
+| `evidence_urls` 없는 주소 거부 | E2 | 근거 없는 주소는 환각과 구분 불가 |
+| 없는 `id` 거부 | E4 | — |
+| **`verify_status`는 Claude가 쓰지 않음** | — | 판정을 LLM에 맡기면 자기 결과에 후한 점수를 준다 |
+
+허용 필드는 `id` `address` `name_verified` `evidence_urls` **넷뿐**이다(화이트리스트).
+
+좌표는 이 경로에서 **영구히 NULL**이다. 다음 사이클(동선 최적화) 시작 전에
+Places API를 붙이거나 수동 입력이 필요하다. 지금은 무해하다.
+
+#### 3.3.3 판정 규칙 — §3.4.1 대체
+
+`places.judge_by_evidence(address, evidence_urls)`가 **고유 도메인 수**로 판정한다.
+
+| 조건 | `verify_status` |
+| :--- | :--- |
+| 서로 다른 도메인 **2개 이상** | `matched` |
+| 도메인 1개 (같은 사이트의 페이지 여러 개 포함) | `ambiguous` |
+| 주소 없음 | `not_found` |
+
+`www.` 접두사는 제거하고 비교하므로 `blog.com`과 `www.blog.com`은 같은 도메인이다.
+
+`ambiguous`여도 `maps_url`은 만든다 — 사용자가 링크를 여는 것이 판정 절차의 일부다.
+
+**Places API 경로의 판정은 §3.4.1이 그대로 유효하다.**
+
+---
+
+### 3.4 Places API 비용 통제 (선택 경로)
 
 | 항목 | 값 |
 | :--- | :--- |
@@ -262,7 +337,7 @@ Takeout URL에서 좌표를 파싱할 수도 있으나 하지 않는다 — Plac
 
 > 구글은 field mask에 포함된 **가장 높은 등급**으로 요청 전체를 과금한다. 필드 하나가 비용 등급을 올린다.
 
-### 3.4 검증 상태와 사용자 행동
+### 3.5 검증 상태와 사용자 행동
 
 | `verify_status` | 의미 | 사용자 행동 |
 | :--- | :--- | :--- |
@@ -273,7 +348,9 @@ Takeout URL에서 좌표를 파싱할 수도 있으나 하지 않는다 — Plac
 
 `saved_to_mymaps`로 이미 저장한 곳을 다시 확인하지 않도록 추적한다.
 
-#### 3.4.1 `matched` 판정 규칙 (명시)
+#### 3.5.1 `matched` 판정 규칙 — Places API 경로 전용
+
+> Claude 검색 경로의 판정은 **§3.3.3**을 따른다. 아래는 `trip.py verify`(Places API)에만 적용된다.
 
 일본 장소는 한국어 표기·일본어 원표기·로마자가 섞이므로 **완전 일치를 요구하지 않는다.** 다음 순서로 판정한다.
 
@@ -367,11 +444,14 @@ LLM이 채우는 것은 **이름·분류·메모·원문**뿐이다. 사실(fact
 | :--- | :--- | :--- | :--- |
 | `trip.py add` | stdin JSON | 검증 → 트랜잭션 INSERT | ❌ |
 | `trip.py import-takeout <csv>` | CSV 경로 | Takeout 목록 → place 시드 | ❌ |
+| `trip.py pending [--limit N]` | — | 주소 없는 장소 목록을 JSON 출력. 기본값 20 | ❌ |
+| `trip.py apply-lookup` | stdin JSON | Claude 조사 결과 저장 (§3.3.2 검증) | ❌ |
 | `trip.py verify [--limit N]` | — | pending 장소 Places API 조회. **`--limit` 기본값 50** | ✅ 과금 |
 | `trip.py list [--category] [--status]` | — | 장소 조회 | ❌ |
 | `trip.py plan [--day N]` | — | 일정 슬롯 조회 | ❌ |
 | `trip.py mark-saved <id...>` | id 목록 | 내 지도 저장 완료 표시 | ❌ |
 | `export.py maps-links` | — | 확인 대기 목록 출력 | ❌ |
+| `export.py todoist-projects` | — | 숫자 `project_id` 조회 (URL 슬러그로는 불가) | ✅ |
 | `export.py todoist [--dry-run]` | — | 준비물·일정 체크리스트 푸시 | ✅ |
 
 ### 4.5 이름 충돌 처리
@@ -522,11 +602,13 @@ CI 파이프라인, 커버리지 리포트, 픽스처 계층, 통합 테스트. 
 
 1. `python test_trip.py`가 전부 통과한다.
 2. `'26 후쿠오카` Takeout CSV를 임포트해 `place` 행이 생성된다.
-3. `trip.py verify` 실행 후 `verify_status`가 `pending` 아닌 값으로 갱신된다.
+3. `trip.py apply-lookup`(또는 키가 있으면 `verify`) 실행 후 `verify_status`가
+   `pending` 아닌 값으로 갱신되고, `evidence_urls`에 근거가 남는다.
 4. `export.py maps-links`가 출력한 링크를 클릭하면 **의도한 장소가 열린다**.
 5. 유튜브 URL 1건을 `/trip add`로 넣으면 `source.raw_text`에 자막이, `place`에 장소가 들어간다.
 6. `export.py todoist --dry-run`이 실제 푸시 없이 생성될 태스크 목록을 출력한다.
-7. LLM이 `lat`을 넣은 JSON은 거부된다 (E3 실증).
+7. LLM이 `lat`을 넣은 JSON은 거부된다 — `add`(§4.3)와 `apply-lookup`(§3.3.2) 양쪽에서.
+8. 근거 URL 없는 주소는 `apply-lookup`이 거부한다 (E2 실증).
 
 ---
 

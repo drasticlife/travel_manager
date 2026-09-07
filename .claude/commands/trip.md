@@ -117,9 +117,103 @@ exit 0이면 성공이다. `WARN 이미 존재:` 는 실패가 아니라 중복 
 몇 건이 들어갔는지 한 줄로 보고하고, 다음 단계를 알려준다.
 
 ```
-장소 4건 저장. 좌표·링크는 아직 없습니다.
-  python trip.py verify        ← Places API로 검증 (과금 단계)
+장소 4건 저장. 주소·링크는 아직 없습니다.
+  /trip lookup                 ← 내가 검색해서 주소를 채웁니다
   python export.py maps-links  ← 내 지도에 저장할 링크 확인
+```
+
+---
+
+# /trip lookup
+
+주소가 아직 없는 장소를 **웹 검색으로 찾아** 채운다.
+
+## 절대 규칙
+
+> **아는 것 같아도 검색 없이 주소를 쓰지 마라.**
+> 근거 URL 없는 주소는 `trip.py`가 거부한다. 그게 환각과 검색 결과를 구분하는 유일한 선이다.
+
+검색해도 안 나오면 **`address`를 빈 문자열로 보낸다.** 지어내지 않는다.
+`not_found`로 기록되고 사용자가 직접 찾으면 된다. 그게 정상 동작이다.
+
+**`lat`·`lng`·`place_id`는 절대 쓰지 마라.** 웹 검색으로는 나오지 않는 값이다.
+JSON에 넣으면 E3으로 거부된다.
+
+## 절차
+
+### 1. 조사할 목록 받기
+
+```bash
+python trip.py pending --limit 20
+```
+
+```json
+[ { "id": 1, "name": "이치란 라멘 나카스점", "category": "기타", "note": "줄 서더라도" } ]
+```
+
+한 번에 20건씩 처리한다. 더 있으면 저장 후 다시 실행한다.
+
+### 2. 장소마다 검색 2회
+
+**한국어 1회 + 영어 1회**를 각각 돌린다. 언어를 바꾸면 다른 도메인이 걸려서
+교차확인이 된다.
+
+```
+WebSearch: "이치란 라멘 나카스점 후쿠오카 주소"
+WebSearch: "Ichiran Nakasu Fukuoka address"
+```
+
+주소가 나온 결과의 **URL을 그대로 수집**한다. 이게 `evidence_urls`가 된다.
+
+### 3. 판정은 하지 마라
+
+`verify_status`를 JSON에 쓰지 않는다. 코드가 `evidence_urls`의
+**고유 도메인 수**를 세서 정한다.
+
+| 코드가 세는 것 | 결과 |
+| --- | --- |
+| 서로 다른 도메인 2개 이상이 같은 주소 | `matched` |
+| 1개 도메인만 / 같은 사이트의 페이지 여러 개 | `ambiguous` |
+| 주소 없음 | `not_found` |
+
+`ambiguous`는 실패가 아니다. 사용자가 링크를 열어 확인하면 된다.
+**억지로 `matched`를 만들려고 관련 없는 URL을 끼워넣지 마라.**
+
+### 4. 저장
+
+```bash
+python trip.py apply-lookup
+```
+
+stdin으로 배열을 넘긴다.
+
+```json
+[
+  {
+    "id": 1,
+    "address": "5-3-2 Nakasu, Hakata-ku, Fukuoka 810-0801, Japan",
+    "name_verified": "이치란 본사 총본점",
+    "evidence_urls": [
+      "https://triple.guide/restaurants/3814dfe4-...",
+      "https://www.kyushurent.com/restaurants/Ichiran-ramen"
+    ]
+  },
+  { "id": 2, "address": "", "evidence_urls": [] }
+]
+```
+
+허용 필드는 `id` `address` `name_verified` `evidence_urls` **넷뿐이다.**
+다른 키가 있으면 전부 거부된다.
+
+`name_verified`에는 검색에서 확인된 **현지/공식 표기**를 넣는다
+(예: 사용자는 "이치란 라멘 나카스점"이라 불렀지만 실제 상호는 "이치란 본사 총본점").
+
+### 5. 보고
+
+```
+20건 조사 — matched 14 / ambiguous 5 / not_found 1
+  python trip.py list --status ambiguous   ← 확인 필요한 5건
+  python export.py maps-links              ← 링크 열어서 확인
 ```
 
 ## 하지 말 것
