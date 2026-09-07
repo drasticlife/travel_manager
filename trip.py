@@ -339,6 +339,13 @@ def list_places(conn, category=None, status=None):
     return conn.execute(sql + " ORDER BY category, name", args).fetchall()
 
 
+# 하루 안에서 슬롯이 흐르는 순서. seq 만으로 정렬하면 밤이 오전보다 먼저 나온다.
+SLOT_ORDER = ["오전", "점심", "오후", "저녁", "밤"]
+_SLOT_CASE = ("CASE i.slot " +
+              " ".join(f"WHEN '{s}' THEN {i}" for i, s in enumerate(SLOT_ORDER)) +
+              " ELSE 99 END")
+
+
 def list_plan(conn, day=None):
     conn.row_factory = sqlite3.Row
     sql = ("SELECT i.day_no, i.slot, i.seq, i.memo, p.name AS place_name, p.maps_url "
@@ -347,7 +354,8 @@ def list_plan(conn, day=None):
     if day:
         sql += " AND i.day_no = ?"
         args.append(day)
-    return conn.execute(sql + " ORDER BY i.day_no, i.seq", args).fetchall()
+    return conn.execute(
+        f"{sql} ORDER BY i.day_no, {_SLOT_CASE}, i.seq", args).fetchall()
 
 
 # --------------------------------------------------------------------------

@@ -578,6 +578,23 @@ def test_pending_excludes_resolved():
     assert [p["name"] for p in trip.pending_places(conn)] == ["미확인"]
 
 
+def test_plan_orders_slots_chronologically():
+    """회귀: seq 만으로 정렬하면 '밤 seq=0' 이 '오전 seq=0' 보다 먼저 나왔다."""
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "x"},
+        "places": [{"name": "아침집", "category": "맛집"},
+                   {"name": "밤집", "category": "맛집"},
+                   {"name": "낮집", "category": "맛집"}],
+        "itinerary": [
+            {"day_no": 1, "slot": "밤", "seq": 0, "place_name": "밤집"},
+            {"day_no": 1, "slot": "오전", "seq": 0, "place_name": "아침집"},
+            {"day_no": 1, "slot": "오후", "seq": 0, "place_name": "낮집"},
+        ]})
+    slots = [r["slot"] for r in trip.list_plan(conn)]
+    assert slots == ["오전", "오후", "밤"], slots
+
+
 def test_todoist_uses_v1_endpoints():
     """REST v2 는 2026 초에 폐기되어 410 Gone 을 낸다."""
     assert "/api/v1/" in export.TODOIST_URL, export.TODOIST_URL
