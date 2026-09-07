@@ -578,15 +578,45 @@ def test_pending_excludes_resolved():
     assert [p["name"] for p in trip.pending_places(conn)] == ["미확인"]
 
 
-def test_todoist_projects_parses():
-    """project_id 는 URL 슬러그가 아니라 숫자다. API 로만 얻을 수 있다."""
+def test_todoist_uses_v1_endpoints():
+    """REST v2 는 2026 초에 폐기되어 410 Gone 을 낸다."""
+    assert "/api/v1/" in export.TODOIST_URL, export.TODOIST_URL
+    assert "/api/v1/" in export.TODOIST_PROJECTS_URL, export.TODOIST_PROJECTS_URL
+    assert "rest/v2" not in export.TODOIST_URL
+
+
+def test_unwrap_handles_v1_and_bare():
+    assert export.unwrap({"results": [1, 2], "next_cursor": None}) == [1, 2]
+    assert export.unwrap([1, 2]) == [1, 2]
+    assert export.unwrap({"results": None, "next_cursor": None}) == []
+    assert export.unwrap(None) == []
+
+
+def test_todoist_projects_parses_v1_wrapper():
+    """v1 은 목록을 {results, next_cursor} 로 감싼다."""
     def fake_get(url, token):
         assert url.endswith("/projects"), url
-        return [{"id": 2203306141, "name": "2026 후쿠오카"},
-                {"id": 2203306999, "name": "인박스"}]
+        return {"results": [{"id": "6hR986mmJqCrxHc4", "name": "2026 후쿠오카"},
+                            {"id": "6WJ8wCQ2pgPfW96V", "name": "Inbox"}],
+                "next_cursor": None}
     out = export.todoist_projects("TOK", get=fake_get)
-    assert out == [{"id": "2203306141", "name": "2026 후쿠오카"},
-                   {"id": "2203306999", "name": "인박스"}], out
+    assert out == [{"id": "6hR986mmJqCrxHc4", "name": "2026 후쿠오카"},
+                   {"id": "6WJ8wCQ2pgPfW96V", "name": "Inbox"}], out
+
+
+def test_push_skips_tasks_already_on_remote():
+    """공유 프로젝트다. 아내가 손으로 적어둔 것을 또 만들면 안 된다."""
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, BASE)
+    posted = []
+
+    def fake_post(token, project_id, task):
+        posted.append(task["content"])
+        return {"id": f"t{len(posted)}"}
+    r = export.push_todoist(conn, "TOK", "P1", dry_run=False, post=fake_post,
+                            existing={"우산 x1"})
+    assert r["created"] == 1 and r["already_remote"] == 1, r
+    assert posted == ["3일차 [점심] 이치란 라멘 나카스점"], posted
 
 
 if __name__ == "__main__":

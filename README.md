@@ -17,16 +17,20 @@ cp .env.example .env
 | 키 | 발급처 | 필요 시점 |
 | --- | --- | --- |
 | `TODOIST_TOKEN` | Todoist → 설정 → 연동 → 개발자 → API 토큰 | `export.py todoist` |
-| `TODOIST_PROJECT_ID` | **`python export.py todoist-projects` 로 조회** | 위와 동일 |
+| `TODOIST_PROJECT_ID` | 프로젝트 URL의 **대시 뒤** 부분, 또는 아래 명령 | 위와 동일 |
 | `GOOGLE_MAPS_API_KEY` | 선택 — 아래 참조 | `trip.py verify` (안 써도 됨) |
 
-**`TODOIST_PROJECT_ID`는 브라우저 URL에서 못 가져온다.** REST v2가 쓰는 ID는
-`2203306141` 같은 숫자인데, URL의 `2026-6hR986mmJqCrxHc4`는 슬러그라 API가 받지 않는다.
-토큰만 넣고 아래를 실행하면 숫자 ID가 나온다.
+`app.todoist.com/app/project/2026-6hR986mmJqCrxHc4` → ID는 `6hR986mmJqCrxHc4`.
+확실하게 하려면 토큰만 넣고 조회한다.
 
 ```bash
 python export.py todoist-projects
 ```
+
+> **API 버전 주의**: Todoist REST v2(`/rest/v2/...`)는 2026년 초에 폐기되어 **410 Gone**을
+> 낸다. 이 도구는 통합 API v1(`/api/v1/...`)을 쓴다. v1은 목록을
+> `{results, next_cursor}`로 감싸고, ID는 숫자가 아니라 `6hR986mmJqCrxHc4` 형태의
+> 문자열이다.
 
 ### Google Places API는 선택이다
 
@@ -108,12 +112,21 @@ python -c "import sqlite3,sys; sys.stdout.reconfigure(encoding='utf-8'); [print(
 ## Todoist 푸시
 
 ```bash
-python export.py todoist --dry-run   # 먼저 이걸로 확인
-python export.py todoist             # 실제 푸시
+python export.py todoist          # 미리보기 (기본)
+python export.py todoist --push   # 실제 푸시
 ```
 
-아내와 공유 중인 프로젝트에 들어가므로 `--dry-run`을 먼저 보는 습관을 들인다.
-이미 푸시된 항목은 `todoist_task_id`로 걸러져 **중복 생성되지 않는다.**
+**기본이 미리보기다.** 아내와 공유 중인 프로젝트이고 이미 수십 건이 들어 있어서,
+플래그 없이 실행하면 아무것도 쓰지 않는다.
+
+중복 방지는 2중이다.
+
+| 층 | 막는 것 |
+| --- | --- |
+| `todoist_task_id` (로컬 DB) | 이 PC에서 이미 푸시한 것 |
+| 원격 제목 대조 | **아내가 손으로 적어둔 것**, 다른 기기에서 만든 것 |
+
+미리보기 출력에서 `+`는 새로 만들 것, `-`는 원격에 이미 있어 건너뛸 것이다.
 
 ## 테스트
 

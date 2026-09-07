@@ -31,8 +31,9 @@ python trip.py list --status ambiguous       # 조회
 python trip.py plan --day 3
 python trip.py mark-saved 12 15              # 내 지도 저장 완료 표시
 python export.py maps-links                  # 확인할 링크 목록
-python export.py todoist-projects            # Todoist 숫자 project_id 조회
-python export.py todoist --dry-run           # 푸시 미리보기
+python export.py todoist-projects            # Todoist project_id 조회
+python export.py todoist                     # 푸시 미리보기 (기본)
+python export.py todoist --push              # 실제 푸시
 ```
 
 ## 구조
@@ -60,8 +61,12 @@ python export.py todoist --dry-run           # 푸시 미리보기
 - **웹 검색으로 `place_id`와 좌표는 안 나온다. 주소만 나온다.** 실측으로 확인했다.
   그래서 Claude 경로는 주소 기반 검색 링크를 쓴다 — 정확한 일본 주소는
   그 자체가 식별자라 한 곳으로 떨어진다.
-- **Todoist `project_id`는 URL 슬러그가 아니라 숫자다.** `2026-6hR986mmJqCrxHc4`(URL)가
-  아니라 `2203306141` 형태. `export.py todoist-projects`로 조회한다.
+- **Todoist REST v2(`/rest/v2/...`)는 폐기됐다. 410 Gone 을 낸다.** `/api/v1/...` 를 쓴다.
+  v1 은 목록을 `{results, next_cursor}` 로 감싸므로 `unwrap()` 을 거쳐야 한다.
+  `project_id` 는 `6hR986mmJqCrxHc4` 형태 문자열이고 브라우저 URL 의 대시 뒤와 같다.
+- **Todoist 프로젝트는 아내와 공유 중이고 이미 수십 건이 있다.** `export.py todoist` 는
+  기본이 미리보기이고 실제 쓰기는 `--push` 를 요구한다. 이 기본값을 뒤집지 마라.
+  중복 방지도 로컬 `todoist_task_id` 만으로는 부족해 원격 제목까지 대조한다.
 - **Places API는 무료 한도만 써도 결제 수단 등록이 필수다.** 그래서 선택 경로다.
 - **구글지도 저장 목록에 쓰는 API는 없다.** 링크를 만들어주고 사람이 클릭해서 저장한다.
 

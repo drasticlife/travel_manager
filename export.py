@@ -6,13 +6,23 @@
 import json
 import sqlite3
 import sys
+import urllib.parse
 import urllib.request
 
 import trip
 
-TODOIST_URL = "https://api.todoist.com/rest/v2/tasks"
-TODOIST_PROJECTS_URL = "https://api.todoist.com/rest/v2/projects"
+# REST v2 는 2026 초에 폐기되어 410 Gone 을 낸다. 통합 API v1 을 쓴다.
+TODOIST_API = "https://api.todoist.com/api/v1"
+TODOIST_URL = f"{TODOIST_API}/tasks"
+TODOIST_PROJECTS_URL = f"{TODOIST_API}/projects"
 TIMEOUT_SEC = 10
+
+
+def unwrap(data):
+    """v1 은 목록을 {results, next_cursor} 로 감싼다. v2 는 맨 배열이었다."""
+    if isinstance(data, dict) and "results" in data:
+        return data["results"] or []
+    return data or []
 
 
 def maps_links(conn):
@@ -62,36 +72,62 @@ def _real_get(url, token):
 
 
 def todoist_projects(token, get=None):
-    """프로젝트 목록 + 숫자 ID.
+    """프로젝트 목록 + ID.
 
-    REST v2 의 project_id 는 숫자다. 브라우저 URL 의 슬러그
-    (예: 2026-6hR986mmJqCrxHc4)는 API 가 받지 않는다.
+    v1 의 project_id 는 `6hR986mmJqCrxHc4` 같은 문자열이고, 브라우저 URL
+    (.../project/2026-6hR986mmJqCrxHc4)의 대시 뒤 부분과 같다.
     """
     get = get or _real_get
-    data = get(TODOIST_PROJECTS_URL, token) or []
-    return [{"id": str(p.get("id")), "name": p.get("name")} for p in data]
+    return [{"id": str(p.get("id")), "name": p.get("name")}
+            for p in unwrap(get(TODOIST_PROJECTS_URL, token))]
 
 
-def push_todoist(conn, token, project_id, dry_run=True, post=None):
-    """멱등: todoist_task_id 가 있는 행은 건너뛴다."""
+def todoist_existing_contents(token, project_id, get=None):
+    """프로젝트에 이미 있는 태스크 제목 집합.
+
+    이 프로젝트는 아내와 공유 중이고 이미 수십 건이 들어 있다.
+    같은 제목을 또 만들지 않기 위해 푸시 전에 대조한다.
+    """
+    get = get or _real_get
+    url = f"{TODOIST_URL}?project_id={urllib.parse.quote(str(project_id))}"
+    return {(t.get("content") or "").strip() for t in unwrap(get(url, token))}
+
+
+def push_todoist(conn, token, project_id, dry_run=True, post=None, existing=None):
+    """멱등 2중: 로컬 todoist_task_id + 원격 제목 대조.
+
+    로컬 DB 만 보면 다른 기기에서 이미 만든 것, 아내가 손으로 적은 것을 또 만든다.
+    """
     post = post or _real_post
     tasks = build_todoist_tasks(conn)
     total = conn.execute(
         "SELECT (SELECT COUNT(*) FROM packing) + (SELECT COUNT(*) FROM itinerary)"
     ).fetchone()[0]
+
+    # 여기서 네트워크를 타지 않는다. 원격 제목은 호출자가 넘긴다(main 이 조회).
+    existing = existing or set()
+
+    fresh = [t for t in tasks if t["content"].strip() not in existing]
+    dupes = [t for t in tasks if t["content"].strip() in existing]
+
     if dry_run:
-        for t in tasks:
-            print(f"  [dry-run] {t['content']}  @{','.join(t['labels'])}")
-        return {"would_create": len(tasks), "skipped": total - len(tasks)}
+        for t in fresh:
+            print(f"  [dry-run] + {t['content']}  @{','.join(t['labels'])}")
+        for t in dupes:
+            print(f"  [dry-run] - {t['content']}  (원격에 이미 있음)")
+        return {"would_create": len(fresh), "already_remote": len(dupes),
+                "skipped": total - len(tasks)}
+
     created = 0
-    for t in tasks:
+    for t in fresh:
         resp = post(token, project_id, t)
         # t['table'] 은 이 파일 안에서 리터럴로만 만들어진다. 외부 입력이 닿지 않는다.
         conn.execute(f"UPDATE {t['table']} SET todoist_task_id = ? WHERE id = ?",
                      (str(resp["id"]), t["row_id"]))
         conn.commit()
         created += 1
-    return {"created": created, "skipped": total - created}
+    return {"created": created, "already_remote": len(dupes),
+            "skipped": total - len(tasks)}
 
 
 def main(argv=None):
@@ -105,8 +141,11 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("maps-links", help="내 지도에 저장할 링크 목록")
     sub.add_parser("todoist-projects", help="프로젝트 목록 + 숫자 ID 조회")
-    p_td = sub.add_parser("todoist", help="준비물·일정 체크리스트 푸시")
-    p_td.add_argument("--dry-run", action="store_true", default=False)
+    p_td = sub.add_parser(
+        "todoist", help="준비물·일정 체크리스트 푸시 (기본 미리보기)")
+    # 공유 프로젝트라 기본을 미리보기로 둔다. 실제 쓰기는 명시적으로 요구한다.
+    p_td.add_argument("--push", action="store_true", default=False,
+                      help="실제로 푸시한다. 없으면 미리보기만.")
     args = ap.parse_args(argv)
 
     if args.cmd == "todoist-projects":
@@ -118,7 +157,7 @@ def main(argv=None):
             return 1
         for p in todoist_projects(token):
             print(f"  {p['id']:<24} {p['name']}")
-        print("\n위 숫자 ID 를 .env 의 TODOIST_PROJECT_ID 에 넣으세요.")
+        print("\n위 ID 를 .env 의 TODOIST_PROJECT_ID 에 넣으세요.")
         return 0
 
     conn = trip.connect(args.db)
@@ -135,12 +174,23 @@ def main(argv=None):
 
     env = trip.load_env()
     token, project = env.get("TODOIST_TOKEN"), env.get("TODOIST_PROJECT_ID")
-    if not args.dry_run and not (token and project):
-        print("ERROR E6: TODOIST_TOKEN / TODOIST_PROJECT_ID 가 .env 에 없습니다.",
-              file=sys.stderr)
+    if not (token and project):
+        print("ERROR E6: TODOIST_TOKEN / TODOIST_PROJECT_ID 가 .env 에 없습니다. "
+              "`export.py todoist-projects` 로 ID 를 확인하세요.", file=sys.stderr)
         return 1
-    r = push_todoist(conn, token, project, dry_run=args.dry_run)
+
+    # 미리보기에서도 원격 제목을 읽어와야 중복 예상을 정확히 보여줄 수 있다.
+    try:
+        existing = todoist_existing_contents(token, project)
+    except Exception as e:
+        print(f"ERROR E10: Todoist 조회 실패 — {e}", file=sys.stderr)
+        return 1
+
+    r = push_todoist(conn, token, project, dry_run=not args.push,
+                     existing=existing)
     print(f"OK {r}")
+    if not args.push:
+        print("\n미리보기입니다. 실제로 푸시하려면 --push 를 붙이세요.")
     return 0
 
 

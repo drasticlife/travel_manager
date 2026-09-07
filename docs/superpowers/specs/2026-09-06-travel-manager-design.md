@@ -451,8 +451,8 @@ LLM이 채우는 것은 **이름·분류·메모·원문**뿐이다. 사실(fact
 | `trip.py plan [--day N]` | — | 일정 슬롯 조회 | ❌ |
 | `trip.py mark-saved <id...>` | id 목록 | 내 지도 저장 완료 표시 | ❌ |
 | `export.py maps-links` | — | 확인 대기 목록 출력 | ❌ |
-| `export.py todoist-projects` | — | 숫자 `project_id` 조회 (URL 슬러그로는 불가) | ✅ |
-| `export.py todoist [--dry-run]` | — | 준비물·일정 체크리스트 푸시 | ✅ |
+| `export.py todoist-projects` | — | `project_id` 조회 | ✅ |
+| `export.py todoist [--push]` | — | 체크리스트 푸시. **기본은 미리보기** | ✅ |
 
 ### 4.5 이름 충돌 처리
 
@@ -485,7 +485,33 @@ with conn:                 # sqlite3 컨텍스트매니저 = 자동 커밋/롤�
 | `itinerary` 행 | 섹션 "N일차" 아래 태스크. 제목은 `[슬롯] 장소명` |
 | `todoist_task_id` | 푸시 후 응답 id 저장 → 재푸시 시 중복 생성 방지 |
 
-`--dry-run`을 기본 습관으로 한다. 아내와 공유 중인 프로젝트에 잘못 밀어넣으면 되돌리기 번거롭다.
+#### 4.7.1 API 버전 — 2026-09-07 정정
+
+**Todoist REST v2(`/rest/v2/...`)는 2026년 초에 폐기되어 `410 Gone`을 낸다.**
+통합 API v1(`https://api.todoist.com/api/v1/...`)을 쓴다. 차이 두 가지:
+
+- 목록 응답이 `{results, next_cursor}`로 감싸여 온다 (v2는 맨 배열이었다) → `unwrap()`
+- `project_id`가 숫자가 아니라 `6hR986mmJqCrxHc4` 형태 문자열이고,
+  **브라우저 URL(`.../project/2026-6hR986mmJqCrxHc4`)의 대시 뒤와 같다**
+
+> 설계 당시 "project_id는 숫자이므로 URL에서 못 가져온다"고 적었으나 이는 v2 기준이었고,
+> v1에서는 URL에서 가져올 수 있다.
+
+#### 4.7.2 중복 방지 2중화 — 2026-09-07 추가
+
+라이브 확인 결과 대상 프로젝트에 **이미 태스크 50건**이 있었다(사용자와 배우자가 사용 중).
+로컬 `todoist_task_id`만으로는 아래를 못 막는다.
+
+- 배우자가 손으로 적어둔 항목 (예: "여권", "여행 보험")
+- 다른 기기에서 만든 항목
+- 로컬 DB를 재구축한 뒤의 재푸시
+
+따라서 푸시 전에 **원격 태스크 제목 집합을 조회해 대조**한다(`todoist_existing_contents`).
+`push_todoist`는 네트워크를 직접 타지 않고 호출자가 넘긴 `existing`을 받는다 — 테스트가
+네트워크를 타지 않게 하기 위해서다.
+
+**CLI 기본값을 미리보기로 뒤집었다.** `export.py todoist`는 아무것도 쓰지 않고,
+실제 쓰기는 `--push`를 명시해야 한다. 공유 자원에 대한 쓰기는 기본값이 되어선 안 된다.
 
 ---
 
@@ -606,7 +632,8 @@ CI 파이프라인, 커버리지 리포트, 픽스처 계층, 통합 테스트. 
    `pending` 아닌 값으로 갱신되고, `evidence_urls`에 근거가 남는다.
 4. `export.py maps-links`가 출력한 링크를 클릭하면 **의도한 장소가 열린다**.
 5. 유튜브 URL 1건을 `/trip add`로 넣으면 `source.raw_text`에 자막이, `place`에 장소가 들어간다.
-6. `export.py todoist --dry-run`이 실제 푸시 없이 생성될 태스크 목록을 출력한다.
+6. `export.py todoist`(플래그 없이)가 실제 푸시 없이 생성될 태스크 목록을 출력하고,
+   원격에 이미 있는 항목은 `-`로 구분해 보여준다.
 7. LLM이 `lat`을 넣은 JSON은 거부된다 — `add`(§4.3)와 `apply-lookup`(§3.3.2) 양쪽에서.
 8. 근거 URL 없는 주소는 `apply-lookup`이 거부한다 (E2 실증).
 
