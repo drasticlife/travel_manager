@@ -972,6 +972,38 @@ def test_list_tips_filters_by_day():
     assert len(trip.list_tips(conn)) == 2
 
 
+def test_project_keeps_relative_positions():
+    """북쪽이 위, 동쪽이 오른쪽이어야 한다. SVG 의 y 는 아래로 증가한다."""
+    pts = maps_page.project([
+        {"lat": 33.59, "lng": 130.42, "id": "hakata"},   # 남동
+        {"lat": 33.66, "lng": 130.36, "id": "uminaka"},  # 북서
+    ])
+    by = {p["id"]: p for p in pts}
+    assert by["uminaka"]["y"] < by["hakata"]["y"], by   # 북쪽이 위
+    assert by["uminaka"]["x"] < by["hakata"]["x"], by   # 서쪽이 왼쪽
+
+
+def test_project_fits_inside_canvas():
+    pts = maps_page.project([
+        {"lat": 33.59, "lng": 130.42},
+        {"lat": 33.66, "lng": 130.36},
+        {"lat": 33.60, "lng": 130.39},
+    ], width=720, height=460, pad=40)
+    for p in pts:
+        assert 40 <= p["x"] <= 680, p
+        assert 40 <= p["y"] <= 420, p
+
+
+def test_project_single_point_centers():
+    pts = maps_page.project([{"lat": 33.59, "lng": 130.42}],
+                            width=720, height=460)
+    assert pts[0]["x"] == 360 and pts[0]["y"] == 230, pts
+
+
+def test_project_empty_returns_empty():
+    assert maps_page.project([]) == []
+
+
 # 러너는 반드시 파일 맨 끝에 있어야 한다. 중간에 두면 그 아래 정의된
 # test_ 함수가 globals() 에 없는 채로 수집되어 조용히 건너뛴다.
 # 실제로 그래서 4개(체인점 오염·커서 페이징 회귀 테스트 포함)가 안 돌았다.

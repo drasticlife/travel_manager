@@ -18,6 +18,7 @@
 """
 import html
 import json
+import math
 import re
 import sqlite3
 
@@ -199,6 +200,39 @@ def collect_days(conn):
             })
         days.append({"day_no": day_no, "items": items, **meta})
     return days
+
+
+def project(points, width=720, height=460, pad=40):
+    """위경도를 SVG 좌표로 옮긴다.
+
+    후쿠오카 시내 범위(위도 0.1도 미만)라 Mercator 가 필요 없다. 위도에 따라
+    경도 1도의 실제 길이가 짧아지는 것만 cos(lat) 로 보정하면 모양이 안 찌그러진다.
+    """
+    if not points:
+        return []
+    lats = [p["lat"] for p in points]
+    lngs = [p["lng"] for p in points]
+    mid_lat = (min(lats) + max(lats)) / 2
+    kx = math.cos(math.radians(mid_lat))          # 경도 축소 보정
+    xs = [p["lng"] * kx for p in points]
+    x0, x1 = min(xs), max(xs)
+    y0, y1 = min(lats), max(lats)
+    span_x, span_y = x1 - x0, y1 - y0
+    inner_w, inner_h = width - pad * 2, height - pad * 2
+    # 가로세로 같은 배율을 써야 실제 모양이 유지된다.
+    scale = min(inner_w / span_x if span_x else float("inf"),
+                inner_h / span_y if span_y else float("inf"))
+    if scale == float("inf"):
+        scale = 0                                  # 점이 하나뿐이면 중앙에 둔다
+    off_x = pad + (inner_w - span_x * scale) / 2
+    off_y = pad + (inner_h - span_y * scale) / 2
+    out = []
+    for p, x in zip(points, xs):
+        out.append({**p,
+                    "x": round(off_x + (x - x0) * scale, 1),
+                    # SVG 의 y 는 아래로 증가한다. 북쪽이 위로 가도록 뒤집는다.
+                    "y": round(off_y + (y1 - p["lat"]) * scale, 1)})
+    return out
 
 
 TEMPLATE = """<!doctype html>
