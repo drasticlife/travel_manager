@@ -5,21 +5,20 @@
 
 ## 지금 상태 한 줄
 
-수집→DB 코어는 **동작한다.** 장소 52건·일정 12건이 들어 있고 테스트 56건이 통과한다.
-Todoist 는 99건, 삭제 0.
-**확정안은 초록판이다** — DAY2 해변공원+호텔휴식+라라포트(Moff) / DAY3 마린월드+텐진+텐진저녁.
-`maps.html` 은 이제 그 가이드를 그대로 옮긴 인포그래픽 페이지다. 남은 건 서브프로젝트 4개다.
+수집→DB 코어는 **동작한다.** 장소 52건(좌표 22)·일정 12건·아이템 17건·팁 13건이 들어 있고 테스트 90건이 통과한다.
+Todoist 는 99건, 삭제 0. 테이블 7개 (source·place·itinerary·packing·item·item_place·tip).
+`maps.html` 은 이제 일차별 **동선 지도** + 영업시간·이동경로 팝업 + **아이템 탭**이 있는 인포그래픽이다. 남은 건 서브프로젝트 4개다.
 
 ## 여행 정보 (마감이 여기서 나온다)
 
 | | |
 | --- | --- |
 | 일정 | **2026-09-21(월) ~ 09-24(목)**, 3박 4일 |
-| 남은 시간 | 2026-09-07 기준 **약 2주** |
+| 남은 시간 | 2026-09-09 기준 **12일** |
 | 숙소 | 호텔 포르자 하카타역 치쿠시구치Ⅱ (1-13-3 Hakataekihigashi) |
 | 주의 | 실버위크 5연휴(9/19~23) 한복판. 관광지 혼잡, 일부 시설 운영시간 연장 |
 
-**2주밖에 없다.** 새 기능보다 "지금 여행에 실제로 쓰이는 것"을 먼저 끝낸다.
+**12일 남았다.** 새 기능보다 "지금 여행에 실제로 쓰이는 것"을 먼저 끝낸다.
 
 ## 바로 다음에 할 일 (우선순위 순)
 
@@ -29,17 +28,21 @@ Todoist 는 99건, 삭제 0.
    # 장소마다 WebSearch 한국어 1회 + 영어 1회 → 근거 URL 수집
    python trip.py apply-lookup          # stdin JSON
    ```
-   **pending 은 0 이 됐다(2026-09-07, Places API 로 처리).**
-   현재 `matched 29 / ambiguous 18 / not_found 4 / pending 0`
+   **거의 완료(2026-09-07, Places API 로 처리).**
+   현재 `matched 29 / ambiguous 18 / not_found 4 / pending 1` (라라포트 후쿠오카).
    남은 일은 조사가 아니라 **ambiguous 18건 사람 확인**이다 — `maps.html` 에서 본다.
+   좌표 22건 있음, 30건 미확보. 일정 페이지의 동선 지도는 좌표 있는 곳만 그린다.
 
-2. ~~**지도 링크 확인용 HTML**~~ — **끝났다(2026-09-07). 2026-09-09 에 가이드 페이지로 바뀌었다.**
+2. ~~**지도 링크 확인용 HTML**~~ — **끝났다(2026-09-07). 2026-09-09 에 동선지도 + 아이템 탭으로 바뀌었다.**
    ```bash
-   python export.py maps-page      # maps.html 생성 (기본 --out maps.html)
+   python export.py maps-page --out index.html      # maps.html 생성
+   python export.py maps-page --fragment --out <path>   # Artifact 게시용 조각
    ```
    이제 사용자가 만든 가이드 인포그래픽(초록판) 모양이다: 일차별 색 카드,
    [주요 일정 | 영업시간 | 이동 동선] 3열. **아이콘을 누르면 팝업**이 열려
    주소·노트·근거 URL·구글지도 링크를 보여준다.
+   신규 **동선 지도** 탭: 일차별 선택 필터, 좌표 있는 장소만 그림 (SVG, 외부 라이브러리 없음).
+   신규 **아이템 탭**: 살거·먹을거·놀거로 분류된 17건 (링크 미구현).
    내 지도 확인 흐름은 그대로 살아 있다 — 팝업 안 '내 지도에 저장함' 을 체크하면
    하단 바가 `python trip.py mark-saved <id...>` 를 만들어 준다.
    페이지는 DB 에 쓰지 않는다. 체크 상태는 브라우저 localStorage 에만 있다.
@@ -61,6 +64,28 @@ Todoist 는 99건, 삭제 0.
    - Klook/Live Japan 러닝화 5% 쿠폰 바코드 캡처
    - DAY2 아침 마린월드 X(@marine_uminaka) 임시휴관 확인
    - 마린월드·해변공원 사전 예매 여부 결정
+
+## 명령어
+
+```bash
+python test_trip.py                          # 테스트 (90건 통과)
+python trip.py add                           # stdin JSON 저장
+python trip.py pending --limit 20            # 주소 없는 장소 목록 (JSON)
+python trip.py apply-lookup                  # 검색 결과 저장 (stdin JSON)
+python trip.py verify --limit 50             # Places API 검증 (키 필요, 과금)
+python trip.py verify --ids 6 10 12 14 15 52 # 특정 id 재검증, 주소 있으면 주소 검색 (과금)
+python trip.py list --status ambiguous       # 조회
+python trip.py items --category 살거         # 아이템 조회
+python trip.py tips --day 2                  # 팁 조회
+python trip.py plan --day 3                  # 일차별 일정 보기
+python trip.py mark-saved 12 15              # 내 지도 저장 완료 표시
+python export.py maps-links                  # 확인할 링크 목록
+python export.py maps-page --out index.html  # Pages 배포물 생성
+python export.py maps-page --fragment --out <path>   # Artifact 게시용 조각
+python export.py todoist-projects            # Todoist project_id 조회
+python export.py todoist                     # 푸시 미리보기 (기본)
+python export.py todoist --push              # 실제 푸시
+```
 
 ## 완료: 확정안을 초록판으로 교체 (2026-09-09, 2차)
 
@@ -153,6 +178,20 @@ Todoist 는 99건, 삭제 0.
 7. **Todoist 목록 API 는 한 페이지 50건에서 자른다.** `next_cursor` 를 안 따라가면
    중복 검사가 앞의 50건만 보고 공유 프로젝트에 같은 태스크를 또 만든다.
    실제로 115건짜리 프로젝트를 50건으로 읽었다. `export.get_all()` 을 쓸 것.
+8. **테스트 러너는 `test_trip.py` 맨 끝에 있어야 한다.** 중간에 두면 그 아래의
+   `def test_*` 함수가 조용히 수집되지 않는다 — "OK" 를 출력해도 실제로는
+   안 돈다. 4개 테스트(후쿠오카 검색영역, Todoist 커서 페이징 회귀 가드)가
+   실제로 스킵됐던 실제 사건이다.
+9. **`maps_page.py` 의 SVG 지도는 외부 호스트 요청이 없다.** CSP 가 CDN 을 차단한다.
+   동선 지도는 좌표 없는 장소를 그리지 않는다 — `|| "표시할 좌표가 없다"` 폴백은
+   좌표 있는 날도 grid 를 그려서 도달하지 않는다.
+10. **아이템 타일은 보기에는 클릭 가능해 보이지만 동작하지 않는다.** 섹션 문구에서
+    "누르면 그 장소의 상세가 열린다" 고 했지만 타일에 `data-place` 속성이 없어서
+    `openPlace(NaN)` 으로 떨어진다. 문구를 지우거나 속성을 추가해야 한다.
+11. **아마오우 딸기 디저트는 시즌이 12~5월인데 여행이 9월 말이다.** 목록에는 들어 있지만
+    그 시점에는 판매하지 않는다.
+12. **동선 지도의 마진 도트 레이블이 잘린다.** 마잉구 같은 캔버스 가장자리의 점은
+    레이블이 클리핑된다.
 
 ## 데이터 출처
 
