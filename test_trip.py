@@ -823,6 +823,65 @@ def test_reject_forbidden_fields_in_tip():
         assert e.code == "E3", e.code
 
 
+def test_insert_items_and_links_to_places():
+    conn = trip.connect(":memory:")
+    r = trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "원문"},
+        "places": [{"name": "야마야 다이묘점", "category": "쇼핑"},
+                   {"name": "로피아", "category": "쇼핑"}],
+        "items": [{"name": "명란", "category": "살거",
+                   "place_names": ["야마야 다이묘점", "로피아"]}],
+    })
+    assert r["items"] == 1, r
+    assert r["item_places"] == 2, r
+    linked = [x[0] for x in conn.execute(
+        "SELECT p.name FROM item_place ip JOIN place p ON p.id = ip.place_id "
+        "ORDER BY p.name")]
+    assert linked == ["로피아", "야마야 다이묘점"], linked
+
+
+def test_insert_tip_resolves_place_name():
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "원문"},
+        "places": [{"name": "마린월드", "category": "관광"}],
+        "tips": [{"scope": "place", "category": "요금", "text": "3세 무료",
+                  "place_name": "마린월드", "evidence_urls": "http://a"}],
+    })
+    row = conn.execute("SELECT scope, place_id, text FROM tip").fetchone()
+    assert row[0] == "place" and row[1] == 1, row
+    assert row[2] == "3세 무료", row
+
+
+def test_insert_tip_unknown_place_raises_e4():
+    conn = trip.connect(":memory:")
+    try:
+        trip.insert_payload(conn, {
+            "source": {"kind": "text", "raw_text": "원문"},
+            "tips": [{"scope": "place", "category": "요금", "text": "x",
+                      "place_name": "없는곳", "evidence_urls": "http://a"}],
+        })
+        assert False, "없는 장소를 가리키는 팁이 통과했다"
+    except trip.ValidationError as e:
+        assert e.code == "E4", e.code
+
+
+def test_item_link_rollback_on_failure():
+    """어디서든 실패하면 전부 롤백된다. 아이템만 남으면 안 된다."""
+    conn = trip.connect(":memory:")
+    try:
+        trip.insert_payload(conn, {
+            "source": {"kind": "text", "raw_text": "원문"},
+            "items": [{"name": "명란", "category": "살거",
+                       "place_names": ["없는가게"]}],
+        })
+        assert False, "없는 장소 연결이 통과했다"
+    except trip.ValidationError as e:
+        assert e.code == "E4", e.code
+    assert conn.execute("SELECT count(*) FROM item").fetchone()[0] == 0
+    assert conn.execute("SELECT count(*) FROM source").fetchone()[0] == 0
+
+
 # 러너는 반드시 파일 맨 끝에 있어야 한다. 중간에 두면 그 아래 정의된
 # test_ 함수가 globals() 에 없는 채로 수집되어 조용히 건너뛴다.
 # 실제로 그래서 4개(체인점 오염·커서 페이징 회귀 테스트 포함)가 안 돌았다.

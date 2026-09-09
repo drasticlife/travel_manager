@@ -135,7 +135,8 @@ def insert_payload(conn, payload, force=False):
     validate_payload(payload)
     warnings = []
     result = {"source_id": None, "places_new": 0, "places_merged": 0,
-              "itinerary": 0, "packing": 0, "warnings": warnings}
+              "itinerary": 0, "packing": 0, "items": 0, "item_places": 0,
+              "tips": 0, "warnings": warnings}
     try:
         conn.execute("BEGIN")
         src = payload["source"]
@@ -192,6 +193,41 @@ def insert_payload(conn, payload, force=False):
                 (pk["item"], pk.get("category", "기타"),
                  pk.get("qty", 1), pk.get("owner", "공용")))
             result["packing"] += 1
+
+        def resolve_place(where, pname):
+            pid = name_to_id.get(pname)
+            if pid is None:
+                row = conn.execute(
+                    "SELECT id FROM place WHERE name = ?", (pname,)).fetchone()
+                pid = row[0] if row else None
+            if pid is None:
+                raise ValidationError("E4",
+                    f"{where} 의 place_name {pname!r} 을 places 에서도 "
+                    "DB 에서도 찾을 수 없습니다.")
+            return pid
+
+        for i, it in enumerate(payload.get("items") or []):
+            cur = conn.execute(
+                "INSERT INTO item (name, category, note, source_id) "
+                "VALUES (?,?,?,?)",
+                (it["name"], it["category"], it.get("note"), source_id))
+            item_id = cur.lastrowid
+            result["items"] += 1
+            for pname in it.get("place_names") or []:
+                conn.execute(
+                    "INSERT OR IGNORE INTO item_place (item_id, place_id) "
+                    "VALUES (?,?)", (item_id, resolve_place(f"items[{i}]", pname)))
+                result["item_places"] += 1
+
+        for i, t in enumerate(payload.get("tips") or []):
+            pid = (resolve_place(f"tips[{i}]", t["place_name"])
+                   if t.get("place_name") else None)
+            conn.execute(
+                "INSERT INTO tip (scope, day_no, place_id, category, text, "
+                "evidence_urls, source_id) VALUES (?,?,?,?,?,?,?)",
+                (t["scope"], t.get("day_no"), pid, t["category"], t["text"],
+                 t["evidence_urls"], source_id))
+            result["tips"] += 1
 
         conn.execute("COMMIT")
     except Exception:
