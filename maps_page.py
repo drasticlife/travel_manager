@@ -723,12 +723,9 @@ function summarizeTip(cat, txt) {
     if (txt.includes("비")) emoji = "☔";
     else if (txt.includes("맑")) emoji = "☀️";
     else if (txt.includes("흐")) emoji = "☁️";
-    let temp = txt.match(/\\d+\\/\\d+도/);
-    temp = temp ? ` ${temp[0]}` : "";
-    let desc = "날씨";
-    let m = txt.match(/:\\s*([^,]+)/);
-    if (m) desc = m[1].trim();
-    return `${emoji} ${desc}${temp}`;
+    let m = txt.match(/:\\s*(.+)/);
+    let desc = m ? m[1].trim() : txt;
+    return `${emoji} ${desc}`;
   }
   if (cat === "공휴일") {
     let name = "공휴일";
@@ -748,8 +745,7 @@ function tipBadges(dayNo) {
     const wide = t.scope === "trip";
     const text = String(t.text || "");
     const summary = summarizeTip(t.category, text);
-    return `<span class="tipbadge${wide ? " trip" : ""}" title="${esc(text)}">${
-      esc((wide ? "[전체] " : "") + summary)}</span>`;
+    return `<span class="tipbadge${wide ? " trip" : ""}" title="${esc(text)}">${esc(summary)}</span>`;
   }).join("") + `</div>`;
 }
 
