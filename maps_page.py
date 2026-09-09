@@ -235,6 +235,36 @@ def project(points, width=720, height=460, pad=40):
     return out
 
 
+def collect_route(conn):
+    """일차별 동선. 좌표 없는 장소는 못 그리므로 빼고, 뺀 사실을 남긴다."""
+    conn.row_factory = sqlite3.Row
+    rows = [dict(r) for r in conn.execute(
+        "SELECT i.id AS itin_id, i.day_no, i.slot, i.seq, i.place_id, "
+        "p.name, p.category, p.lat, p.lng "
+        "FROM itinerary i JOIN place p ON p.id = i.place_id")]
+    rows.sort(key=lambda r: (r["day_no"], SLOT_ORDER.get(r["slot"], 9), r["seq"]))
+
+    missing, keep = {}, []
+    for r in rows:
+        if r["lat"] is None or r["lng"] is None:
+            missing.setdefault(r["day_no"], []).append(r["name"])
+        else:
+            keep.append(r)
+
+    seen_per_day = {}
+    points = []
+    for r in keep:
+        n = seen_per_day.get(r["day_no"], 0) + 1
+        seen_per_day[r["day_no"]] = n
+        points.append({
+            "itin_id": r["itin_id"], "place_id": r["place_id"],
+            "day_no": r["day_no"], "seq_in_day": n, "name": r["name"],
+            "lat": r["lat"], "lng": r["lng"],
+            "icon": icon_for(r["name"], r["category"]),
+        })
+    return {"points": project(points), "missing": missing}
+
+
 TEMPLATE = """<!doctype html>
 <html lang="ko">
 <head>
@@ -332,6 +362,23 @@ a{color:var(--v-ink)}
 .step span{display:block;font-size:9.5px;color:var(--muted);line-height:1.3}
 .arrow{flex:0 0 auto;color:var(--heart);font-size:12px;padding-top:7px}
 .mnote{margin-top:4px}
+
+.mapwrap{background:var(--card);border:1px solid var(--line);border-radius:20px;
+  padding:14px;margin:16px 0}
+.maphead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.maphead .sec{margin:0}
+#routemap{width:100%;height:auto;display:block;background:var(--bg);
+  border-radius:14px}
+.mapnote{margin:8px 0 0;font-size:12px;color:var(--muted)}
+.rt-line{fill:none;stroke-width:2.5;stroke-linecap:round}
+.rt-dot{cursor:pointer}
+.rt-dot circle{stroke:#fff;stroke-width:2}
+.rt-dot text{font-size:11px;font-weight:700;fill:#fff;text-anchor:middle;
+  dominant-baseline:central;pointer-events:none}
+.rt-label{font-size:10.5px;fill:var(--ink);text-anchor:middle;pointer-events:none}
+.rt-grid{stroke:var(--line);stroke-width:1}
+.rt-scale{stroke:var(--muted);stroke-width:1.5}
+.rt-scale-text{font-size:10px;fill:var(--muted)}
 
 /* ---- 장소 목록 ---- */
 h3.sec{margin:32px 0 3px;font-size:19px;font-weight:800;color:var(--v-ink)}
@@ -448,6 +495,16 @@ footer{color:var(--muted);font-size:11.5px;padding:24px 0 6px;text-align:center}
   <div class="script">Fukuoka</div>
 </header>
 
+<section class="mapwrap">
+  <div class="maphead">
+    <h3 class="sec">동선</h3>
+    <div class="tabs" id="daytabs"></div>
+  </div>
+  <svg id="routemap" viewBox="0 0 720 460" role="img"
+       aria-label="일차별 이동 동선"></svg>
+  <p class="mapnote" id="mapnote"></p>
+</section>
+
 <div id="days"></div>
 
 <h3 class="sec">장소 목록</h3>
@@ -471,6 +528,7 @@ footer{color:var(--muted);font-size:11.5px;padding:24px 0 6px;text-align:center}
 const PLACES = __PLACES__;
 const DAYS = __DAYS__;
 const LABEL = __LABELS__;
+const ROUTE = __ROUTE__;
 const KEY = "trip.mymaps.checked";
 const byId = Object.fromEntries(PLACES.map(p => [p.id, p]));
 /* 샌드박스 iframe(Artifact 등)에서는 localStorage 접근 자체가 예외를 던진다.
@@ -649,6 +707,15 @@ function openPlace(id, itin) {
 
 document.addEventListener("click", e => {
   if (e.target.id === "close") return pop.close();
+  const dot = e.target.closest(".rt-dot");
+  if (dot) {
+    const iid = Number(dot.dataset.itin);
+    for (const d of DAYS) {
+      const it = d.items.find(x => x.id === iid);
+      if (it) return openPlace(it.place_id, { ...it, day_no: d.day_no });
+    }
+    return;
+  }
   const picBtn = e.target.closest(".pic");
   if (picBtn) {
     const iid = Number(picBtn.dataset.itin);
@@ -701,6 +768,69 @@ document.getElementById("copy").addEventListener("click", () => {
   setTimeout(() => b.textContent = "명령 복사", 1400);
 });
 
+/* ---------- 동선 지도 ---------- */
+const DAY_COLOR = {1: "#7b5ea7", 2: "#4a7fb5", 3: "#5aa469", 4: "#c9962f"};
+let mapFilter = "all";
+
+function renderMap() {
+  const svg = document.getElementById("routemap");
+  const pts = ROUTE.points.filter(
+    p => mapFilter === "all" || p.day_no === Number(mapFilter));
+  const days = [...new Set(pts.map(p => p.day_no))].sort((a, b) => a - b);
+
+  let out = "";
+  for (let g = 80; g < 720; g += 160)
+    out += `<line class="rt-grid" x1="${g}" y1="0" x2="${g}" y2="460"/>`;
+  for (let g = 80; g < 460; g += 120)
+    out += `<line class="rt-grid" x1="0" y1="${g}" x2="720" y2="${g}"/>`;
+
+  for (const d of days) {
+    const seq = pts.filter(p => p.day_no === d)
+                   .sort((a, b) => a.seq_in_day - b.seq_in_day);
+    const color = DAY_COLOR[d] || "#7b5ea7";
+    for (let i = 1; i < seq.length; i++) {
+      const a = seq[i - 1], b = seq[i];
+      out += `<line class="rt-line" stroke="${color}" x1="${a.x}" y1="${a.y}"
+                x2="${b.x}" y2="${b.y}" marker-end="url(#arrow${d})"/>`;
+    }
+    for (const p of seq) {
+      out += `<g class="rt-dot" data-itin="${p.itin_id}">
+        <circle cx="${p.x}" cy="${p.y}" r="13" fill="${color}"/>
+        <text x="${p.x}" y="${p.y}">${p.seq_in_day}</text></g>
+        <text class="rt-label" x="${p.x}" y="${p.y + 26}">${esc(p.name).slice(0, 12)}</text>`;
+    }
+  }
+
+  const defs = days.map(d => `<marker id="arrow${d}" viewBox="0 0 10 10"
+      refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="${DAY_COLOR[d] || "#7b5ea7"}"/></marker>`).join("");
+  svg.innerHTML = `<defs>${defs}</defs>${out}` ||
+    `<text x="360" y="230" text-anchor="middle" fill="#9b9096">표시할 좌표가 없다</text>`;
+
+  const miss = Object.entries(ROUTE.missing)
+    .filter(([d]) => mapFilter === "all" || Number(d) === Number(mapFilter));
+  const total = miss.reduce((n, [, names]) => n + names.length, 0);
+  document.getElementById("mapnote").textContent = total
+    ? `좌표가 없어 지도에 없는 곳 ${total}곳: ` +
+      miss.map(([d, names]) => `${d}일차 ${names.join(", ")}`).join(" / ")
+    : "";
+}
+
+document.getElementById("daytabs").innerHTML =
+  [["all", "전체"], ...[1, 2, 3, 4].map(d => [String(d), `DAY ${d}`])]
+    .map(([f, label], i) =>
+      `<button class="chip${i === 0 ? " on" : ""}" data-day="${f}">${label}</button>`)
+    .join("");
+document.getElementById("daytabs").addEventListener("click", e => {
+  const b = e.target.closest(".chip");
+  if (!b) return;
+  document.querySelectorAll("#daytabs .chip").forEach(x => x.classList.remove("on"));
+  b.classList.add("on");
+  mapFilter = b.dataset.day;
+  renderMap();
+});
+
+renderMap();
 renderDays();
 renderGrid();
 renderCmd();
@@ -720,6 +850,7 @@ def build_page(conn, generated="", fragment=False):
     page = (TEMPLATE
             .replace("__PLACES__", json.dumps(places, ensure_ascii=False))
             .replace("__DAYS__", json.dumps(collect_days(conn), ensure_ascii=False))
+            .replace("__ROUTE__", json.dumps(collect_route(conn), ensure_ascii=False))
             .replace("__LABELS__", json.dumps(STATUS_LABEL, ensure_ascii=False))
             .replace("__TOTAL__", str(len(places)))
             .replace("__GENERATED__", html.escape(generated)))

@@ -1004,6 +1004,52 @@ def test_project_empty_returns_empty():
     assert maps_page.project([]) == []
 
 
+def test_collect_route_skips_places_without_coords():
+    """좌표 없는 장소는 지도에서 빠지고, 빠진 사실이 남아야 한다."""
+    conn = trip.connect(":memory:")
+    conn.execute("INSERT INTO place (name, category, lat, lng) "
+                 "VALUES ('캐널시티', '쇼핑', 33.5896, 130.4108)")
+    conn.execute("INSERT INTO place (name, category) VALUES ('호텔', '숙소')")
+    conn.execute("INSERT INTO itinerary (day_no, slot, seq, place_id) "
+                 "VALUES (1, '오후', 0, 2)")
+    conn.execute("INSERT INTO itinerary (day_no, slot, seq, place_id) "
+                 "VALUES (1, '오후', 1, 1)")
+    conn.commit()
+    route = maps_page.collect_route(conn)
+    assert [p["name"] for p in route["points"]] == ["캐널시티"], route
+    assert route["missing"] == {1: ["호텔"]}, route
+
+
+def test_collect_route_numbers_within_day():
+    conn = trip.connect(":memory:")
+    for i, (name, lat) in enumerate(
+            [("A", 33.59), ("B", 33.60), ("C", 33.61)], start=1):
+        conn.execute("INSERT INTO place (name, category, lat, lng) "
+                     "VALUES (?, '관광', ?, 130.4)", (name, lat))
+    # 밤을 먼저 넣어도 슬롯 순서대로 번호가 매겨져야 한다
+    conn.execute("INSERT INTO itinerary (day_no, slot, seq, place_id) "
+                 "VALUES (1, '밤', 0, 3)")
+    conn.execute("INSERT INTO itinerary (day_no, slot, seq, place_id) "
+                 "VALUES (1, '오전', 0, 1)")
+    conn.execute("INSERT INTO itinerary (day_no, slot, seq, place_id) "
+                 "VALUES (2, '오전', 0, 2)")
+    conn.commit()
+    route = maps_page.collect_route(conn)
+    got = [(p["day_no"], p["seq_in_day"], p["name"]) for p in route["points"]]
+    assert got == [(1, 1, "A"), (1, 2, "C"), (2, 1, "B")], got
+
+
+def test_page_reports_missing_coords():
+    conn = trip.connect(":memory:")
+    conn.execute("INSERT INTO place (name, category) VALUES ('호텔', '숙소')")
+    conn.execute("INSERT INTO itinerary (day_no, slot, seq, place_id) "
+                 "VALUES (1, '오후', 0, 1)")
+    conn.commit()
+    page = maps_page.build_page(conn, "2026-09-09 12:00")
+    assert "__ROUTE__" not in page, "치환 안 된 자리표시자"
+    assert "좌표" in page, "좌표 누락 안내가 없다"
+
+
 # 러너는 반드시 파일 맨 끝에 있어야 한다. 중간에 두면 그 아래 정의된
 # test_ 함수가 globals() 에 없는 채로 수집되어 조용히 건너뛴다.
 # 실제로 그래서 4개(체인점 오염·커서 페이징 회귀 테스트 포함)가 안 돌았다.
