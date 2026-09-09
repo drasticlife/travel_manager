@@ -422,6 +422,43 @@ def list_plan(conn, day=None):
         f"{sql} ORDER BY i.day_no, {_SLOT_CASE}, i.seq", args).fetchall()
 
 
+def list_items(conn, category=None):
+    """아이템 목록. 연결된 장소 이름을 이름순으로 이어 붙여 함께 준다.
+
+    GROUP_CONCAT 은 정렬을 보장하지 않는다. 서브쿼리에서 ORDER BY 로 고정한다.
+    """
+    conn.row_factory = sqlite3.Row
+    sql = ("SELECT i.id, i.name, i.category, i.note, i.done, "
+           "(SELECT GROUP_CONCAT(x.name, ', ') FROM ("
+           "   SELECT p.name FROM item_place ip "
+           "   JOIN place p ON p.id = ip.place_id "
+           "   WHERE ip.item_id = i.id ORDER BY p.name) x) AS places "
+           "FROM item i WHERE 1=1")
+    args = []
+    if category:
+        sql += " AND i.category = ?"
+        args.append(category)
+    return conn.execute(sql + " ORDER BY i.category, i.name", args).fetchall()
+
+
+def list_tips(conn, day=None, scope=None):
+    """참고사항 목록. 장소 팁이면 장소 이름을 함께 준다."""
+    conn.row_factory = sqlite3.Row
+    sql = ("SELECT t.id, t.scope, t.day_no, t.category, t.text, "
+           "t.evidence_urls, p.name AS place_name "
+           "FROM tip t LEFT JOIN place p ON p.id = t.place_id WHERE 1=1")
+    args = []
+    if day:
+        sql += " AND t.day_no = ?"
+        args.append(day)
+    if scope:
+        sql += " AND t.scope = ?"
+        args.append(scope)
+    return conn.execute(
+        sql + " ORDER BY t.day_no IS NULL DESC, t.day_no, t.category, t.id",
+        args).fetchall()
+
+
 # --------------------------------------------------------------------------
 # CLI
 # --------------------------------------------------------------------------
@@ -502,6 +539,13 @@ def main(argv=None):
     p_mark = sub.add_parser("mark-saved", help="내 지도 저장 완료 표시")
     p_mark.add_argument("ids", nargs="+", type=int)
 
+    p_items = sub.add_parser("items", help="아이템 조회 (살거/먹을거/놀거)")
+    p_items.add_argument("--category")
+
+    p_tips = sub.add_parser("tips", help="참고사항 조회")
+    p_tips.add_argument("--day", type=int)
+    p_tips.add_argument("--scope")
+
     args = ap.parse_args(argv)
     conn = connect(args.db)
 
@@ -564,6 +608,26 @@ def main(argv=None):
 
     if args.cmd == "mark-saved":
         print(f"OK {mark_saved(conn, args.ids)} 건 저장 완료 표시")
+        return 0
+
+    if args.cmd == "items":
+        for r in list_items(conn, category=args.category):
+            mark = "[v]" if r["done"] else "[ ]"
+            print(f"{mark} [{r['id']:>3}] {r['category']:<4} {r['name']}")
+            if r["places"]:
+                print(f"        장소: {r['places']}")
+            if r["note"]:
+                print(f"        {r['note']}")
+        return 0
+
+    if args.cmd == "tips":
+        for r in list_tips(conn, day=args.day, scope=args.scope):
+            where = (f"{r['day_no']}일차" if r["day_no"]
+                     else r["place_name"] or "여행 전체")
+            print(f"[{r['id']:>3}] {r['category']:<4} ({where}) {r['text']}")
+            for u in (r["evidence_urls"] or "").split("\n"):
+                if u.strip():
+                    print(f"        근거 {u.strip()}")
         return 0
 
     return 1

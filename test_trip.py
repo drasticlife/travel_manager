@@ -882,6 +882,39 @@ def test_item_link_rollback_on_failure():
     assert conn.execute("SELECT count(*) FROM source").fetchone()[0] == 0
 
 
+def test_list_items_joins_place_names():
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "x"},
+        "places": [{"name": "야마야", "category": "쇼핑"},
+                   {"name": "로피아", "category": "쇼핑"}],
+        "items": [{"name": "명란", "category": "살거",
+                   "place_names": ["야마야", "로피아"]},
+                  {"name": "모츠나베", "category": "먹을거"}],
+    })
+    rows = trip.list_items(conn)
+    assert len(rows) == 2, rows
+    by = {r["name"]: r for r in rows}
+    assert by["명란"]["places"] == "로피아, 야마야", by["명란"]["places"]
+    assert by["모츠나베"]["places"] is None, by["모츠나베"]["places"]
+
+    only = trip.list_items(conn, category="먹을거")
+    assert [r["name"] for r in only] == ["모츠나베"], only
+
+
+def test_list_tips_filters_by_day():
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "x"},
+        "tips": [{"scope": "day", "day_no": 2, "category": "날씨",
+                  "text": "비 예보", "evidence_urls": "http://a"},
+                 {"scope": "trip", "category": "공휴일",
+                  "text": "실버위크", "evidence_urls": "http://b"}],
+    })
+    assert [r["text"] for r in trip.list_tips(conn, day=2)] == ["비 예보"]
+    assert len(trip.list_tips(conn)) == 2
+
+
 # 러너는 반드시 파일 맨 끝에 있어야 한다. 중간에 두면 그 아래 정의된
 # test_ 함수가 globals() 에 없는 채로 수집되어 조용히 건너뛴다.
 # 실제로 그래서 4개(체인점 오염·커서 페이징 회귀 테스트 포함)가 안 돌았다.
