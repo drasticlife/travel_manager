@@ -18,8 +18,11 @@
 """
 import html
 import json
+import math
 import re
 import sqlite3
+
+import trip
 
 SLOT_ORDER = {"오전": 0, "점심": 1, "오후": 2, "저녁": 3, "밤": 4}
 
@@ -201,6 +204,90 @@ def collect_days(conn):
     return days
 
 
+def project(points, width=720, height=460, pad=40):
+    """위경도를 SVG 좌표로 옮긴다.
+
+    후쿠오카 시내 범위(위도 0.1도 미만)라 Mercator 가 필요 없다. 위도에 따라
+    경도 1도의 실제 길이가 짧아지는 것만 cos(lat) 로 보정하면 모양이 안 찌그러진다.
+    """
+    if not points:
+        return []
+    lats = [p["lat"] for p in points]
+    mid_lat = (min(lats) + max(lats)) / 2
+    kx = math.cos(math.radians(mid_lat))          # 경도 축소 보정
+    xs = [p["lng"] * kx for p in points]
+    x0, x1 = min(xs), max(xs)
+    y0, y1 = min(lats), max(lats)
+    span_x, span_y = x1 - x0, y1 - y0
+    inner_w, inner_h = width - pad * 2, height - pad * 2
+    # 가로세로 같은 배율을 써야 실제 모양이 유지된다.
+    scale = min(inner_w / span_x if span_x else float("inf"),
+                inner_h / span_y if span_y else float("inf"))
+    if scale == float("inf"):
+        scale = 0                                  # 점이 하나뿐이면 중앙에 둔다
+    off_x = pad + (inner_w - span_x * scale) / 2
+    off_y = pad + (inner_h - span_y * scale) / 2
+    out = []
+    for p, x in zip(points, xs):
+        out.append({**p,
+                    "x": round(off_x + (x - x0) * scale, 1),
+                    # SVG 의 y 는 아래로 증가한다. 북쪽이 위로 가도록 뒤집는다.
+                    "y": round(off_y + (y1 - p["lat"]) * scale, 1)})
+    return out
+
+
+def collect_route(conn):
+    """일차별 동선. 좌표 없는 장소는 못 그리므로 빼고, 뺀 사실을 남긴다."""
+    conn.row_factory = sqlite3.Row
+    # LEFT JOIN 이어야 한다. INNER 로 하면 place_id 가 없는 일정(귀국 비행편 등)이
+    # points 에도 missing 에도 안 남아 통째로 사라진다.
+    rows = [dict(r) for r in conn.execute(
+        "SELECT i.id AS itin_id, i.day_no, i.slot, i.seq, i.place_id, i.memo, "
+        "p.name, p.category, p.lat, p.lng "
+        "FROM itinerary i LEFT JOIN place p ON p.id = i.place_id")]
+    rows.sort(key=lambda r: (r["day_no"], SLOT_ORDER.get(r["slot"], 9), r["seq"]))
+
+    missing, keep = {}, []
+    for r in rows:
+        if r["lat"] is None or r["lng"] is None:
+            hours, subtitle, _ = split_memo(r["memo"])
+            # collect_days 의 제목과 같은 순서로 고른다. 카드와 지도 주석이
+            # 서로 다른 이름을 부르면 사람이 대조를 못 한다.
+            label = r["name"] or subtitle or hours or "(장소 미지정)"
+            missing.setdefault(r["day_no"], []).append(label)
+        else:
+            keep.append(r)
+
+    seen_per_day = {}
+    points = []
+    for r in keep:
+        n = seen_per_day.get(r["day_no"], 0) + 1
+        seen_per_day[r["day_no"]] = n
+        points.append({
+            "itin_id": r["itin_id"], "place_id": r["place_id"],
+            "day_no": r["day_no"], "seq_in_day": n, "name": r["name"],
+            "lat": r["lat"], "lng": r["lng"],
+            "icon": icon_for(r["name"], r["category"]),
+        })
+    return {"points": project(points), "missing": missing}
+
+
+def collect_items(conn):
+    """아이템 목록. 조회 로직은 trip.list_items 를 그대로 쓴다."""
+    return [dict(r) for r in trip.list_items(conn)]
+
+
+def collect_tips(conn):
+    """참고사항. 조회는 trip.list_tips 를 그대로 쓰고, 근거만 리스트로 편다."""
+    out = []
+    for r in trip.list_tips(conn):
+        t = dict(r)
+        t["evidence_urls"] = [u.strip() for u in
+                              (t.get("evidence_urls") or "").split("\n") if u.strip()]
+        out.append(t)
+    return out
+
+
 TEMPLATE = """<!doctype html>
 <html lang="ko">
 <head>
@@ -299,6 +386,39 @@ a{color:var(--v-ink)}
 .arrow{flex:0 0 auto;color:var(--heart);font-size:12px;padding-top:7px}
 .mnote{margin-top:4px}
 
+.mapwrap{background:var(--card);border:1px solid var(--line);border-radius:20px;
+  padding:14px;margin:16px 0}
+.maphead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.maphead .sec{margin:0}
+#routemap{width:100%;height:auto;display:block;background:var(--bg);
+  border-radius:14px}
+.mapnote{margin:8px 0 0;font-size:12px;color:var(--muted)}
+.mapcap{margin:6px 0 0;font-size:11.5px;color:var(--muted)}
+.rt-line{fill:none;stroke-width:2.5;stroke-linecap:round}
+.rt-dot{cursor:pointer}
+.rt-dot circle{stroke:#fff;stroke-width:2}
+.rt-dot text{font-size:11px;font-weight:700;fill:#fff;text-anchor:middle;
+  dominant-baseline:central;pointer-events:none}
+.rt-label{font-size:10.5px;fill:var(--ink);text-anchor:middle;pointer-events:none}
+.rt-grid{stroke:var(--line);stroke-width:1}
+.rt-scale{stroke:var(--muted);stroke-width:1.5}
+.rt-scale-text{font-size:10px;fill:var(--muted)}
+
+/* ---- 팁 ---- */
+.tipbar{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.tipbadge{font-size:11.5px;border:1px solid var(--v-pill);background:var(--v-soft);
+  color:var(--v-ink);border-radius:999px;padding:2px 10px;max-width:100%;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* 여행 전체 팁은 네 카드에 모두 뜬다. 하루치 경고로 안 읽히게 톤을 낮춘다. */
+.tipbadge.trip{background:var(--card);border-color:var(--line);color:var(--muted)}
+.tipgroup{background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:11px 14px;margin-bottom:9px}
+.tipgroup h4{margin:0 0 5px;font-size:14px;font-weight:800;color:var(--v-ink)}
+.tip{border-top:1px dashed var(--line);padding:8px 0;font-size:13px}
+.tipgroup .tip:first-of-type{border-top:0}
+.tipmeta{font-size:11.5px;font-weight:700;color:var(--v)}
+.tipev{margin-top:3px;font-size:11.5px;word-break:break-all}
+
 /* ---- 장소 목록 ---- */
 h3.sec{margin:32px 0 3px;font-size:19px;font-weight:800;color:var(--v-ink)}
 .sec-sub{margin:0 0 11px;color:var(--muted);font-size:12.5px}
@@ -307,11 +427,14 @@ h3.sec{margin:32px 0 3px;font-size:19px;font-weight:800;color:var(--v-ink)}
   padding:5px 13px;font-size:12.5px;cursor:pointer;font-family:inherit;
   color:var(--ink)}
 .chip.on{background:var(--v-ink);color:#fff;border-color:var(--v-ink)}
-#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(224px,1fr));gap:9px}
+#grid,#itemgrid{display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(224px,1fr));gap:9px}
 .tile{display:flex;gap:9px;align-items:center;background:var(--card);
-  border:1px solid var(--line);border-radius:14px;padding:9px;cursor:pointer;
+  border:1px solid var(--line);border-radius:14px;padding:9px;
   text-align:left;font-family:inherit;font-size:13.5px;color:var(--ink);width:100%}
-.tile:hover{box-shadow:0 5px 14px rgba(123,94,167,.16)}
+/* 누를 수 있는 것만 누를 수 있게 보인다. 아이템 타일은 그냥 카드다. */
+button.tile{cursor:pointer}
+button.tile:hover{box-shadow:0 5px 14px rgba(123,94,167,.16)}
 .tile .e{font-size:22px;flex:none}
 .tile b{display:block;font-weight:700;line-height:1.3}
 .tile small{color:var(--muted)}
@@ -414,7 +537,28 @@ footer{color:var(--muted);font-size:11.5px;padding:24px 0 6px;text-align:center}
   <div class="script">Fukuoka</div>
 </header>
 
+<section class="mapwrap">
+  <div class="maphead">
+    <h3 class="sec">동선</h3>
+    <div class="tabs" id="daytabs"></div>
+  </div>
+  <svg id="routemap" viewBox="0 0 720 460" role="img"
+       aria-label="일차별 이동 동선"></svg>
+  <p class="mapnote" id="mapnote"></p>
+  <p class="mapcap">상대 위치만 보여준다. 실제 도로·경로가 아니고, 배율은 왼쪽 아래 축척으로 읽는다.</p>
+</section>
+
 <div id="days"></div>
+
+<h3 class="sec">가족 참고사항</h3>
+<p class="sec-sub">조사해서 근거와 함께 저장한 것이다.
+  날씨·공휴일·혼잡은 위 DAY 카드에도 배지로 얹혀 있다.</p>
+<div id="tips"></div>
+
+<h3 class="sec">살거 · 먹을거 · 놀거</h3>
+<p class="sec-sub">장소와 연결된 것은 장소 이름이 같이 나온다.</p>
+<div class="tabs" id="itemtabs"></div>
+<div id="itemgrid"></div>
 
 <h3 class="sec">장소 목록</h3>
 <p class="sec-sub">그림을 누르면 주소·근거·지도 링크가 팝업으로 열린다.
@@ -437,6 +581,9 @@ footer{color:var(--muted);font-size:11.5px;padding:24px 0 6px;text-align:center}
 const PLACES = __PLACES__;
 const DAYS = __DAYS__;
 const LABEL = __LABELS__;
+const ROUTE = __ROUTE__;
+const ITEMS = __ITEMS__;
+const TIPS = __TIPS__;
 const KEY = "trip.mymaps.checked";
 const byId = Object.fromEntries(PLACES.map(p => [p.id, p]));
 /* 샌드박스 iframe(Artifact 등)에서는 localStorage 접근 자체가 예외를 던진다.
@@ -497,6 +644,7 @@ function renderDays() {
       <div class="mood">${esc(d.mood)}</div>
     </div>
     <div class="panel">
+      ${tipBadges(d.day_no)}
       <div class="hdrow"><span>주요 일정</span><span>영업시간</span>
         <span>이동 동선 / 교통편</span></div>
       ${d.items.length ? d.items.map(row).join("")
@@ -533,6 +681,49 @@ function chain(steps) {
       ${s.detail ? `<span>${esc(s.detail)}</span>` : ""}</div>`).join("") + `</div>`;
 }
 
+/* ---------- 참고사항 ---------- */
+/* 날씨·공휴일·혼잡만 배지로 얹는다 (스펙 §4). 나머지는 아래 목록에서 본다.
+   여행 전체(scope=trip) 팁은 네 카드에 다 뜨므로 흐린 톤으로 구분한다. */
+const BADGE_CATS = ["날씨", "공휴일", "혼잡"];
+const BADGE_LEN = 38;
+
+function tipBadges(dayNo) {
+  const rel = TIPS.filter(t => BADGE_CATS.includes(t.category)
+    && (t.day_no === dayNo || t.scope === "trip"));
+  if (!rel.length) return "";
+  return `<div class="tipbar">` + rel.map(t => {
+    const wide = t.scope === "trip";
+    const text = String(t.text || "");
+    const head = text.slice(0, BADGE_LEN) + (text.length > BADGE_LEN ? "…" : "");
+    return `<span class="tipbadge${wide ? " trip" : ""}" title="${esc(text)}">${
+      esc((wide ? "여행 전체 · " : "") + t.category + " · " + head)}</span>`;
+  }).join("") + `</div>`;
+}
+
+function tipLinks(urls) {
+  if (!urls || !urls.length) return "";
+  return `<div class="tipev">근거 ` + urls.map(u =>
+    `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(host(u))}</a>`)
+    .join(" · ") + `</div>`;
+}
+
+function tipWho(t) {
+  if (t.day_no) return `${t.day_no}일차`;
+  if (t.scope === "place") return t.place_name || "장소";
+  return "여행 전체";
+}
+
+function renderTips() {
+  const cats = [...new Set(TIPS.map(t => t.category))];
+  document.getElementById("tips").innerHTML = cats.map(c =>
+    `<div class="tipgroup"><h4>${esc(c)}</h4>` +
+    TIPS.filter(t => t.category === c).map(t => `<div class="tip">
+      <div class="tipmeta">${esc(tipWho(t))}</div>
+      <div>${esc(t.text)}</div>
+      ${tipLinks(t.evidence_urls)}</div>`).join("") + `</div>`).join("")
+    || "<p>아직 없다. python trip.py add 로 넣는다.</p>";
+}
+
 /* ---------- 장소 목록 ---------- */
 const TABS = [["all", "전체"], ["planned", "일정에 있는 곳"], ["쇼핑", "쇼핑"],
               ["맛집", "맛집"], ["관광", "관광"], ["unsaved", "아직 저장 안 함"],
@@ -559,6 +750,36 @@ function renderGrid() {
         title="${esc(LABEL[p.verify_status] || "")}"></span></button>`;
   }).join("") || "<p>없음</p>";
 }
+
+/* ---------- 아이템 ---------- */
+const ITEM_TABS = ["전체", "살거", "먹을거", "놀거"];
+let itemFilter = "전체";
+
+function renderItems() {
+  const shown = ITEMS.filter(
+    i => itemFilter === "전체" || i.category === itemFilter);
+  document.getElementById("itemgrid").innerHTML = shown.map(i => {
+    const place = i.places
+      ? `<small>${esc(i.places)}</small>` : `<small>장소 미정</small>`;
+    return `<div class="tile${i.done ? " done" : ""}">
+      <span class="e">${i.category === "살거" ? "🛍️"
+        : i.category === "먹을거" ? "🍜" : "🎡"}</span>
+      <span><b>${esc(i.name)}</b>${place}
+        ${i.note ? `<small>${esc(i.note)}</small>` : ""}</span></div>`;
+  }).join("") || "<p>아직 없다. python trip.py add 로 넣는다.</p>";
+}
+
+document.getElementById("itemtabs").innerHTML = ITEM_TABS.map((label, i) =>
+  `<button class="chip${i === 0 ? " on" : ""}" data-i="${label}">${label}</button>`)
+  .join("");
+document.getElementById("itemtabs").addEventListener("click", e => {
+  const b = e.target.closest(".chip");
+  if (!b) return;
+  document.querySelectorAll("#itemtabs .chip").forEach(x => x.classList.remove("on"));
+  b.classList.add("on");
+  itemFilter = b.dataset.i;
+  renderItems();
+});
 
 /* ---------- 팝업 ---------- */
 const pop = document.getElementById("pop");
@@ -615,6 +836,15 @@ function openPlace(id, itin) {
 
 document.addEventListener("click", e => {
   if (e.target.id === "close") return pop.close();
+  const dot = e.target.closest(".rt-dot");
+  if (dot) {
+    const iid = Number(dot.dataset.itin);
+    for (const d of DAYS) {
+      const it = d.items.find(x => x.id === iid);
+      if (it) return openPlace(it.place_id, { ...it, day_no: d.day_no });
+    }
+    return;
+  }
   const picBtn = e.target.closest(".pic");
   if (picBtn) {
     const iid = Number(picBtn.dataset.itin);
@@ -624,7 +854,7 @@ document.addEventListener("click", e => {
     }
     return;
   }
-  const tile = e.target.closest(".tile");
+  const tile = e.target.closest("button.tile");
   if (tile) return openPlace(Number(tile.dataset.place), null);
   if (e.target === pop) pop.close();
 });
@@ -667,8 +897,99 @@ document.getElementById("copy").addEventListener("click", () => {
   setTimeout(() => b.textContent = "명령 복사", 1400);
 });
 
+/* ---------- 동선 지도 ---------- */
+const DAY_COLOR = {1: "#7b5ea7", 2: "#4a7fb5", 3: "#5aa469", 4: "#c9962f"};
+let mapFilter = "all";
+
+/* 자동 맞춤이라 세 점이 2km 를 차지하든 20km 를 차지하든 화면을 꽉 채운다.
+   축척이 없으면 지하철 한 정거장이 도시 횡단으로 읽힌다.
+   위도 1도 ≈ 111km, 경도는 cos(위도) 로 줄인다 — 이 범위면 이 근사로 충분하다. */
+const NICE_KM = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50];
+
+function scaleBar(pts) {
+  if (pts.length < 2) return "";          // 점이 하나면 배율을 알 수 없다
+  const span = a => Math.max(...a) - Math.min(...a);
+  const lat = span(pts.map(p => p.lat)), lng = span(pts.map(p => p.lng));
+  const midLat = (Math.max(...pts.map(p => p.lat))
+                  + Math.min(...pts.map(p => p.lat))) / 2;
+  const km = Math.hypot(lat * 111, lng * 111 * Math.cos(midLat * Math.PI / 180));
+  const px = Math.hypot(span(pts.map(p => p.x)), span(pts.map(p => p.y)));
+  if (!km || !px) return "";              // 좌표가 전부 같은 점이다
+  const perPx = km / px;
+  const unit = NICE_KM.filter(k => k / perPx <= 150).pop() || NICE_KM[0];
+  const w = Math.round(unit / perPx);
+  const label = unit >= 1 ? `약 ${unit}km` : `약 ${unit * 1000}m`;
+  const x = 40, y = 438;
+  return `<line class="rt-scale" x1="${x}" y1="${y}" x2="${x + w}" y2="${y}"/>
+    <line class="rt-scale" x1="${x}" y1="${y - 4}" x2="${x}" y2="${y + 4}"/>
+    <line class="rt-scale" x1="${x + w}" y1="${y - 4}" x2="${x + w}" y2="${y + 4}"/>
+    <text class="rt-scale-text" x="${x}" y="${y - 7}">${label}</text>`;
+}
+
+function renderMap() {
+  const svg = document.getElementById("routemap");
+  const pts = ROUTE.points.filter(
+    p => mapFilter === "all" || p.day_no === Number(mapFilter));
+  const days = [...new Set(pts.map(p => p.day_no))].sort((a, b) => a - b);
+
+  let out = "";
+  for (let g = 80; g < 720; g += 160)
+    out += `<line class="rt-grid" x1="${g}" y1="0" x2="${g}" y2="460"/>`;
+  for (let g = 80; g < 460; g += 120)
+    out += `<line class="rt-grid" x1="0" y1="${g}" x2="720" y2="${g}"/>`;
+
+  for (const d of days) {
+    const seq = pts.filter(p => p.day_no === d)
+                   .sort((a, b) => a.seq_in_day - b.seq_in_day);
+    const color = DAY_COLOR[d] || "#7b5ea7";
+    for (let i = 1; i < seq.length; i++) {
+      const a = seq[i - 1], b = seq[i];
+      out += `<line class="rt-line" stroke="${color}" x1="${a.x}" y1="${a.y}"
+                x2="${b.x}" y2="${b.y}" marker-end="url(#arrow${d})"/>`;
+    }
+    for (const p of seq) {
+      out += `<g class="rt-dot" data-itin="${p.itin_id}">
+        <circle cx="${p.x}" cy="${p.y}" r="13" fill="${color}"/>
+        <text x="${p.x}" y="${p.y}">${p.seq_in_day}</text></g>
+        <text class="rt-label" x="${p.x}" y="${p.y + 26}">${esc((p.name || "").slice(0, 12))}</text>`;
+    }
+  }
+
+  const defs = days.map(d => `<marker id="arrow${d}" viewBox="0 0 10 10"
+      refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="${DAY_COLOR[d] || "#7b5ea7"}"/></marker>`).join("");
+  out += scaleBar(pts);
+  // 격자선 때문에 out 은 항상 비지 않는다. '좌표 없음' 안내는 #mapnote 가 한다.
+  svg.innerHTML = `<defs>${defs}</defs>${out}`;
+
+  const miss = Object.entries(ROUTE.missing)
+    .filter(([d]) => mapFilter === "all" || Number(d) === Number(mapFilter));
+  const total = miss.reduce((n, [, names]) => n + names.length, 0);
+  document.getElementById("mapnote").textContent = total
+    ? `좌표가 없어 지도에 없는 곳 ${total}곳: ` +
+      miss.map(([d, names]) => `${d}일차 ${names.join(", ")}`).join(" / ")
+    : "";
+}
+
+document.getElementById("daytabs").innerHTML =
+  [["all", "전체"], ...[1, 2, 3, 4].map(d => [String(d), `DAY ${d}`])]
+    .map(([f, label], i) =>
+      `<button class="chip${i === 0 ? " on" : ""}" data-day="${f}">${label}</button>`)
+    .join("");
+document.getElementById("daytabs").addEventListener("click", e => {
+  const b = e.target.closest(".chip");
+  if (!b) return;
+  document.querySelectorAll("#daytabs .chip").forEach(x => x.classList.remove("on"));
+  b.classList.add("on");
+  mapFilter = b.dataset.day;
+  renderMap();
+});
+
+renderMap();
 renderDays();
+renderTips();
 renderGrid();
+renderItems();
 renderCmd();
 </script>
 </body>
@@ -686,6 +1007,9 @@ def build_page(conn, generated="", fragment=False):
     page = (TEMPLATE
             .replace("__PLACES__", json.dumps(places, ensure_ascii=False))
             .replace("__DAYS__", json.dumps(collect_days(conn), ensure_ascii=False))
+            .replace("__ROUTE__", json.dumps(collect_route(conn), ensure_ascii=False))
+            .replace("__ITEMS__", json.dumps(collect_items(conn), ensure_ascii=False))
+            .replace("__TIPS__", json.dumps(collect_tips(conn), ensure_ascii=False))
             .replace("__LABELS__", json.dumps(STATUS_LABEL, ensure_ascii=False))
             .replace("__TOTAL__", str(len(places)))
             .replace("__GENERATED__", html.escape(generated)))

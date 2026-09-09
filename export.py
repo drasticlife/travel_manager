@@ -69,6 +69,17 @@ def build_todoist_tasks(conn):
         tasks.append({"table": "itinerary", "row_id": r["id"],
                       "content": f"{r['day_no']}일차 [{r['slot']}] {label}",
                       "labels": [f"{r['day_no']}일차"]})
+    for r in conn.execute(
+            "SELECT i.id, i.name, i.category, "
+            "(SELECT GROUP_CONCAT(x.name, ', ') FROM ("
+            "   SELECT p.name FROM item_place ip "
+            "   JOIN place p ON p.id = ip.place_id "
+            "   WHERE ip.item_id = i.id ORDER BY p.name) x) AS places "
+            "FROM item i WHERE i.todoist_task_id IS NULL"):
+        where = f" @{r['places']}" if r["places"] else ""
+        tasks.append({"table": "item", "row_id": r["id"],
+                      "content": f"[{r['category']}] {r['name']}{where}",
+                      "labels": [r["category"]]})
     return tasks
 
 
@@ -119,6 +130,7 @@ def push_todoist(conn, token, project_id, dry_run=True, post=None, existing=None
     tasks = build_todoist_tasks(conn)
     total = conn.execute(
         "SELECT (SELECT COUNT(*) FROM packing) + (SELECT COUNT(*) FROM itinerary)"
+        " + (SELECT COUNT(*) FROM item)"
     ).fetchone()[0]
 
     # 여기서 네트워크를 타지 않는다. 원격 제목은 호출자가 넘긴다(main 이 조회).

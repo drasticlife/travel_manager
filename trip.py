@@ -40,6 +40,10 @@ CATEGORY = {"맛집", "쇼핑", "관광", "숙소", "이동", "기타"}
 SLOT = {"오전", "점심", "오후", "저녁", "밤"}
 PACK_CATEGORY = {"의류", "전자", "서류", "약", "세면", "기타"}
 OWNER = {"나", "아내", "공용"}
+ITEM_CATEGORY = {"살거", "먹을거", "놀거"}
+TIP_SCOPE = {"trip", "day", "place"}
+TIP_CATEGORY = {"날씨", "공휴일", "아기", "유모차", "요금",
+                "식사", "혼잡", "우천", "의료", "기타"}
 
 
 class ValidationError(Exception):
@@ -95,6 +99,30 @@ def validate_payload(payload):
         _enum(f"packing[{i}].category", pk.get("category", "기타"), PACK_CATEGORY)
         _enum(f"packing[{i}].owner", pk.get("owner", "공용"), OWNER)
 
+    for i, it in enumerate(payload.get("items") or []):
+        _check_forbidden(f"items[{i}]", it)
+        if not it.get("name"):
+            raise ValidationError("E2", f"items[{i}].name 이 필요합니다.")
+        _enum(f"items[{i}].category", it.get("category"), ITEM_CATEGORY)
+
+    for i, t in enumerate(payload.get("tips") or []):
+        _check_forbidden(f"tips[{i}]", t)
+        if not t.get("text"):
+            raise ValidationError("E2", f"tips[{i}].text 가 필요합니다.")
+        _enum(f"tips[{i}].scope", t.get("scope"), TIP_SCOPE)
+        _enum(f"tips[{i}].category", t.get("category"), TIP_CATEGORY)
+        # 근거 없는 팁은 저장하지 않는다. NOT NULL 로는 '' 가 통과한다.
+        if not (t.get("evidence_urls") or "").strip():
+            raise ValidationError("E2",
+                f"tips[{i}].evidence_urls 가 비었습니다. "
+                "근거 URL 없는 팁은 저장하지 않습니다.")
+        if t.get("scope") == "day" and not isinstance(t.get("day_no"), int):
+            raise ValidationError("E2",
+                f"tips[{i}].scope 가 'day' 이면 day_no 가 필요합니다.")
+        if t.get("scope") == "place" and not t.get("place_name"):
+            raise ValidationError("E2",
+                f"tips[{i}].scope 가 'place' 이면 place_name 이 필요합니다.")
+
     return payload
 
 
@@ -107,7 +135,8 @@ def insert_payload(conn, payload, force=False):
     validate_payload(payload)
     warnings = []
     result = {"source_id": None, "places_new": 0, "places_merged": 0,
-              "itinerary": 0, "packing": 0, "warnings": warnings}
+              "itinerary": 0, "packing": 0, "items": 0, "item_places": 0,
+              "tips": 0, "warnings": warnings}
     try:
         conn.execute("BEGIN")
         src = payload["source"]
@@ -165,6 +194,41 @@ def insert_payload(conn, payload, force=False):
                  pk.get("qty", 1), pk.get("owner", "공용")))
             result["packing"] += 1
 
+        def resolve_place(where, pname):
+            pid = name_to_id.get(pname)
+            if pid is None:
+                row = conn.execute(
+                    "SELECT id FROM place WHERE name = ?", (pname,)).fetchone()
+                pid = row[0] if row else None
+            if pid is None:
+                raise ValidationError("E4",
+                    f"{where} 의 place_name {pname!r} 을 places 에서도 "
+                    "DB 에서도 찾을 수 없습니다.")
+            return pid
+
+        for i, it in enumerate(payload.get("items") or []):
+            cur = conn.execute(
+                "INSERT INTO item (name, category, note, source_id) "
+                "VALUES (?,?,?,?)",
+                (it["name"], it["category"], it.get("note"), source_id))
+            item_id = cur.lastrowid
+            result["items"] += 1
+            for pname in it.get("place_names") or []:
+                conn.execute(
+                    "INSERT OR IGNORE INTO item_place (item_id, place_id) "
+                    "VALUES (?,?)", (item_id, resolve_place(f"items[{i}]", pname)))
+                result["item_places"] += 1
+
+        for i, t in enumerate(payload.get("tips") or []):
+            pid = (resolve_place(f"tips[{i}]", t["place_name"])
+                   if t.get("place_name") else None)
+            conn.execute(
+                "INSERT INTO tip (scope, day_no, place_id, category, text, "
+                "evidence_urls, source_id) VALUES (?,?,?,?,?,?,?)",
+                (t["scope"], t.get("day_no"), pid, t["category"], t["text"],
+                 t["evidence_urls"], source_id))
+            result["tips"] += 1
+
         conn.execute("COMMIT")
     except Exception:
         conn.execute("ROLLBACK")
@@ -204,19 +268,31 @@ def import_takeout(conn, csv_path):
 # 검증 — 네트워크·과금 단계. 수집과 분리되어 있어 실패해도 원문은 안전하다.
 # --------------------------------------------------------------------------
 
-def verify_places(conn, api_key, limit=50, search=None):
-    """pending 장소를 Places API 로 조회해 사실을 채운다.
+def verify_places(conn, api_key, limit=50, search=None, ids=None):
+    """장소를 Places API 로 조회해 사실을 채운다.
+
+    ids 를 주면 verify_status 와 무관하게 그 id 만 처리한다. 웹검색 경로로
+    이미 matched 가 된 장소는 좌표가 없는데, pending 만 보는 조건으로는
+    영영 안 잡히기 때문이다.
 
     조회 실패(E7)는 장애가 아니다. pending 을 유지하면 다음 실행이 재시도한다.
     """
     search = search or places_mod.search
     stats = {"matched": 0, "ambiguous": 0, "not_found": 0, "failed": 0}
-    rows = conn.execute(
-        "SELECT id, name FROM place WHERE verify_status = 'pending' "
-        "ORDER BY id LIMIT ?", (limit,)).fetchall()
-    for pid, name in rows:
+    if ids:
+        holes = ",".join("?" * len(ids))
+        rows = conn.execute(
+            f"SELECT id, name, address FROM place WHERE id IN ({holes}) "
+            "ORDER BY id", tuple(ids)).fetchall()
+    else:
+        rows = conn.execute(
+            "SELECT id, name, address FROM place WHERE verify_status = 'pending' "
+            "ORDER BY id LIMIT ?", (limit,)).fetchall()
+    for pid, name, address in rows:
+        # 정확한 일본 주소는 그 자체가 식별자다. 한국어 표기명보다 잘 잡힌다.
+        query = (address or "").strip() or name
         try:
-            candidates = search(name, api_key)
+            candidates = search(query, api_key)
         except places_mod.MissingApiKey:
             raise
         except Exception as e:
@@ -224,8 +300,11 @@ def verify_places(conn, api_key, limit=50, search=None):
             stats["failed"] += 1
             continue
         status, chosen = places_mod.judge(name, candidates)
+        # --ids 는 이미 확정된 행도 잡는다. ambiguous 후보를 덮어쓰면 사람이
+        # 확인해 둔 주소가 날아간다. 지정 조회에서는 matched 만 사실을 쓴다.
+        # (pending 경로는 잃을 게 없으므로 기존 동작 그대로 둔다.)
         try:
-            if chosen:
+            if chosen and (status == "matched" or not ids):
                 conn.execute(
                     "UPDATE place SET verify_status=?, place_id=?, name_verified=?, "
                     "address=?, lat=?, lng=?, maps_url=? WHERE id=?",
@@ -358,6 +437,43 @@ def list_plan(conn, day=None):
         f"{sql} ORDER BY i.day_no, {_SLOT_CASE}, i.seq", args).fetchall()
 
 
+def list_items(conn, category=None):
+    """아이템 목록. 연결된 장소 이름을 이름순으로 이어 붙여 함께 준다.
+
+    GROUP_CONCAT 은 정렬을 보장하지 않는다. 서브쿼리에서 ORDER BY 로 고정한다.
+    """
+    conn.row_factory = sqlite3.Row
+    sql = ("SELECT i.id, i.name, i.category, i.note, i.done, "
+           "(SELECT GROUP_CONCAT(x.name, ', ') FROM ("
+           "   SELECT p.name FROM item_place ip "
+           "   JOIN place p ON p.id = ip.place_id "
+           "   WHERE ip.item_id = i.id ORDER BY p.name) x) AS places "
+           "FROM item i WHERE 1=1")
+    args = []
+    if category:
+        sql += " AND i.category = ?"
+        args.append(category)
+    return conn.execute(sql + " ORDER BY i.category, i.name", args).fetchall()
+
+
+def list_tips(conn, day=None, scope=None):
+    """참고사항 목록. 장소 팁이면 장소 이름을 함께 준다."""
+    conn.row_factory = sqlite3.Row
+    sql = ("SELECT t.id, t.scope, t.day_no, t.category, t.text, "
+           "t.evidence_urls, p.name AS place_name "
+           "FROM tip t LEFT JOIN place p ON p.id = t.place_id WHERE 1=1")
+    args = []
+    if day:
+        sql += " AND t.day_no = ?"
+        args.append(day)
+    if scope:
+        sql += " AND t.scope = ?"
+        args.append(scope)
+    return conn.execute(
+        sql + " ORDER BY t.day_no IS NULL DESC, t.day_no, t.category, t.id",
+        args).fetchall()
+
+
 # --------------------------------------------------------------------------
 # CLI
 # --------------------------------------------------------------------------
@@ -420,8 +536,10 @@ def main(argv=None):
     p_imp = sub.add_parser("import-takeout", help="Google Takeout CSV 임포트")
     p_imp.add_argument("csv_path")
 
-    p_ver = sub.add_parser("verify", help="pending 장소를 Places API 로 검증 (키 필요)")
+    p_ver = sub.add_parser("verify", help="Places API 로 검증 (키 필요, 과금)")
     p_ver.add_argument("--limit", type=int, default=50)
+    p_ver.add_argument("--ids", nargs="+", type=int,
+                       help="이 id 만 검증한다. verify_status 를 무시한다.")
 
     p_pend = sub.add_parser("pending", help="조사할 장소 목록을 JSON 으로 출력")
     p_pend.add_argument("--limit", type=int, default=20)
@@ -437,6 +555,13 @@ def main(argv=None):
 
     p_mark = sub.add_parser("mark-saved", help="내 지도 저장 완료 표시")
     p_mark.add_argument("ids", nargs="+", type=int)
+
+    p_items = sub.add_parser("items", help="아이템 조회 (살거/먹을거/놀거)")
+    p_items.add_argument("--category")
+
+    p_tips = sub.add_parser("tips", help="참고사항 조회")
+    p_tips.add_argument("--day", type=int)
+    p_tips.add_argument("--scope")
 
     args = ap.parse_args(argv)
     conn = connect(args.db)
@@ -455,7 +580,7 @@ def main(argv=None):
         env = load_env()
         try:
             r = verify_places(conn, env.get("GOOGLE_MAPS_API_KEY", ""),
-                              limit=args.limit)
+                              limit=args.limit, ids=args.ids)
         except places_mod.MissingApiKey as e:
             print(f"ERROR E6: {e}", file=sys.stderr)
             return 1
@@ -500,6 +625,26 @@ def main(argv=None):
 
     if args.cmd == "mark-saved":
         print(f"OK {mark_saved(conn, args.ids)} 건 저장 완료 표시")
+        return 0
+
+    if args.cmd == "items":
+        for r in list_items(conn, category=args.category):
+            mark = "[v]" if r["done"] else "[ ]"
+            print(f"{mark} [{r['id']:>3}] {r['category']:<4} {r['name']}")
+            if r["places"]:
+                print(f"        장소: {r['places']}")
+            if r["note"]:
+                print(f"        {r['note']}")
+        return 0
+
+    if args.cmd == "tips":
+        for r in list_tips(conn, day=args.day, scope=args.scope):
+            where = (f"{r['day_no']}일차" if r["day_no"]
+                     else r["place_name"] or "여행 전체")
+            print(f"[{r['id']:>3}] {r['category']:<4} ({where}) {r['text']}")
+            for u in (r["evidence_urls"] or "").split("\n"):
+                if u.strip():
+                    print(f"        근거 {u.strip()}")
         return 0
 
     return 1
