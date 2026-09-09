@@ -25,6 +25,25 @@ def unwrap(data):
     return data or []
 
 
+def get_all(url, token, get=None):
+    """목록을 next_cursor 끝까지 따라간다.
+
+    v1 은 한 페이지 기본 50건에서 자른다. 이걸 안 따라가면 중복 검사가 앞의
+    50건만 보고, 공유 프로젝트에 이미 있는 태스크를 또 만든다. 실제로 밟았다 —
+    프로젝트에 115건이 있는데 50건만 읽혔다.
+    """
+    get = get or _real_get
+    out, cursor = [], None
+    while True:
+        sep = "&" if "?" in url else "?"
+        page = get(f"{url}{sep}limit=200" +
+                   (f"&cursor={urllib.parse.quote(cursor)}" if cursor else ""), token)
+        out += unwrap(page)
+        cursor = page.get("next_cursor") if isinstance(page, dict) else None
+        if not cursor:
+            return out
+
+
 def maps_links(conn):
     """내 지도에 아직 저장 안 한 장소만. 확인이 급한 것부터."""
     conn.row_factory = sqlite3.Row
@@ -77,9 +96,8 @@ def todoist_projects(token, get=None):
     v1 의 project_id 는 `6hR986mmJqCrxHc4` 같은 문자열이고, 브라우저 URL
     (.../project/2026-6hR986mmJqCrxHc4)의 대시 뒤 부분과 같다.
     """
-    get = get or _real_get
     return [{"id": str(p.get("id")), "name": p.get("name")}
-            for p in unwrap(get(TODOIST_PROJECTS_URL, token))]
+            for p in get_all(TODOIST_PROJECTS_URL, token, get)]
 
 
 def todoist_existing_contents(token, project_id, get=None):
@@ -88,9 +106,8 @@ def todoist_existing_contents(token, project_id, get=None):
     이 프로젝트는 아내와 공유 중이고 이미 수십 건이 들어 있다.
     같은 제목을 또 만들지 않기 위해 푸시 전에 대조한다.
     """
-    get = get or _real_get
     url = f"{TODOIST_URL}?project_id={urllib.parse.quote(str(project_id))}"
-    return {(t.get("content") or "").strip() for t in unwrap(get(url, token))}
+    return {(t.get("content") or "").strip() for t in get_all(url, token, get)}
 
 
 def push_todoist(conn, token, project_id, dry_run=True, post=None, existing=None):
@@ -140,6 +157,11 @@ def main(argv=None):
     ap.add_argument("--db", default=trip.DEFAULT_DB)
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("maps-links", help="내 지도에 저장할 링크 목록")
+    p_page = sub.add_parser("maps-page", help="여행 가이드 HTML 한 장 생성")
+    p_page.add_argument("--out", default="maps.html")
+    # Artifact 는 <html>/<head>/<body> 를 자기가 씌운다. 껍데기 없는 조각을 낸다.
+    p_page.add_argument("--fragment", action="store_true", default=False,
+                        help="Artifact 게시용 조각(<title>+<style>+본문)만 출력")
     sub.add_parser("todoist-projects", help="프로젝트 목록 + 숫자 ID 조회")
     p_td = sub.add_parser(
         "todoist", help="준비물·일정 체크리스트 푸시 (기본 미리보기)")
@@ -170,6 +192,17 @@ def main(argv=None):
             if verified and verified != r["name"]:
                 print(f"        구글 표기: {verified}")
             print(f"        {r['maps_url'] or '(링크 없음 — verify 필요)'}")
+        return 0
+
+    if args.cmd == "maps-page":
+        import datetime
+        import maps_page
+        page = maps_page.build_page(
+            conn, datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+            fragment=args.fragment)
+        with open(args.out, "w", encoding="utf-8") as f:
+            f.write(page)
+        print(f"OK {args.out} ({len(page):,} bytes) — 브라우저로 열어라")
         return 0
 
     env = trip.load_env()

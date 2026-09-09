@@ -612,7 +612,7 @@ def test_unwrap_handles_v1_and_bare():
 def test_todoist_projects_parses_v1_wrapper():
     """v1 은 목록을 {results, next_cursor} 로 감싼다."""
     def fake_get(url, token):
-        assert url.endswith("/projects"), url
+        assert url.startswith(export.TODOIST_PROJECTS_URL), url
         return {"results": [{"id": "6hR986mmJqCrxHc4", "name": "2026 후쿠오카"},
                             {"id": "6WJ8wCQ2pgPfW96V", "name": "Inbox"}],
                 "next_cursor": None}
@@ -648,3 +648,73 @@ if __name__ == "__main__":
                 print(f"  FAIL {name}: {e}")
     print(f"\n{'FAILED' if fails else 'OK'} — {fails} failure(s)")
     raise SystemExit(1 if fails else 0)
+
+
+def test_todoist_existing_contents_follows_cursor():
+    """페이지 1건만 읽으면 중복 검사가 뚫린다. 실제로 115건 중 50건만 읽혔다."""
+    pages = [{"results": [{"content": "여권"}], "next_cursor": "c1"},
+             {"results": [{"content": "우산"}], "next_cursor": None}]
+    seen = []
+
+    def fake_get(url, token):
+        seen.append(url)
+        return pages[len(seen) - 1]
+    got = export.todoist_existing_contents("TOK", "P1", get=fake_get)
+    assert got == {"여권", "우산"}, got
+    assert "cursor=c1" in seen[1], seen
+
+
+# ---------- 장소 확인 HTML ----------
+
+import maps_page
+
+
+def test_maps_page_orders_urgent_first_and_embeds_places():
+    """확인이 급한 것(모호 → 못 찾음 → 미조사)이 먼저 와야 한다."""
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, BASE)
+    conn.execute("UPDATE place SET verify_status = 'matched' WHERE id = 1")
+    conn.execute(
+        "INSERT INTO place (name, category, verify_status, source_id) "
+        "VALUES ('미조사', '쇼핑', 'pending', 1), ('모호', '맛집', 'ambiguous', 1)")
+    conn.commit()
+
+    got = [p["verify_status"] for p in maps_page.collect(conn)]
+    assert got[0] == "ambiguous" and got[1] == "pending", got
+    assert got[-1] == "matched", got
+
+    page = maps_page.build_page(conn, "2026-09-07 23:00")
+    assert "__PLACES__" not in page and "__LABELS__" not in page, "치환 안 된 자리표시자"
+    assert "이치란 라멘 나카스점" in page, "장소명이 페이지에 없다"
+    assert "mark-saved" in page
+
+
+def test_maps_page_marks_already_saved():
+    """이미 내 지도에 저장한 것은 체크박스가 잠겨야 한다 — 명령에 또 넣으면 안 된다."""
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, BASE)
+    trip.mark_saved(conn, [1])
+    saved = {p["id"]: p["saved_to_mymaps"] for p in maps_page.collect(conn)}
+    assert saved[1] == 1, saved
+
+
+def test_search_restricts_to_fukuoka():
+    """지역 제한을 빼면 체인점이 전국에서 잡힌다.
+
+    실제로 '카페 베로체 치쿠시구치' 를 찾다가 도쿄 니시신주쿠점의
+    주소·좌표가 DB 에 써졌다.
+    """
+    seen = {}
+
+    def fake_fetch(url, body, headers):
+        seen["body"] = body
+        return {"places": []}
+    places.search("카페 베로체 치쿠시구치", "KEY", fetch=fake_fetch)
+    box = seen["body"]["locationRestriction"]["rectangle"]
+    assert box["low"]["latitude"] < 33.6 < box["high"]["latitude"], box
+    assert box["low"]["longitude"] < 130.4 < box["high"]["longitude"], box
+    # 도쿄(35.69, 139.70)는 상자 밖이어야 한다
+    assert not (box["low"]["latitude"] <= 35.69 <= box["high"]["latitude"]), box
+
+    places.search("x", "KEY", fetch=fake_fetch, area=None)
+    assert "locationRestriction" not in seen["body"], seen["body"]

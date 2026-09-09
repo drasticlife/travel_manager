@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>후쿠오카 3박 4일 · 하카타역 거점 여행 가이드</title>
+<style>
+:root{
+  --bg:#f7f3fd; --card:#ffffff; --ink:#4a4550; --muted:#9b9096;
+  --line:#ece3f7;
+  --v:#7b5ea7; --v-ink:#6b4c9a; --v-soft:#f0e9fb; --v-pill:#ded0f5;
+  --y:#c9962f; --y-soft:#fdf6e3; --y-pill:#f7e6c8;
+  --pink:#d1568a; --pink-soft:#fce4ee; --heart:#f48fb1;
+  --star:#e8763a; --sky:#dff0fb;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Apple SD Gothic Neo","Malgun Gothic","Nanum Gothic",sans-serif;
+  font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%}
+.wrap{max-width:1000px;margin:0 auto;padding:0 14px 110px}
+a{color:var(--v-ink)}
+
+/* ---- 표지 ---- */
+.hero{position:relative;margin-top:16px;border-radius:22px;overflow:hidden;
+  background:var(--card);border:1px solid var(--line)}
+.hero .art{display:block;width:100%;height:auto}
+.hero .title{position:absolute;left:26px;top:22px}
+.hero h1{margin:0;font-size:33px;font-weight:800;letter-spacing:-.035em;
+  color:var(--v-ink);text-wrap:balance}
+.hero h1 .hh{color:var(--heart);font-size:22px;vertical-align:5px}
+.hero h2{margin:2px 0 0;font-size:17px;font-weight:700;color:var(--v)}
+.hero p{margin:4px 0 0;font-size:13px;color:var(--muted)}
+.script{position:absolute;right:26px;top:26px;font-size:27px;color:var(--v-ink);
+  font-family:"Segoe Script","Brush Script MT",cursive;transform:rotate(-6deg)}
+
+/* ---- 일차 카드 ---- */
+.day{margin:16px 0;border-radius:20px;border:1px solid var(--line);
+  background:var(--card);display:grid;grid-template-columns:132px 1fr;
+  overflow:hidden}
+.side{padding:16px 12px;background:var(--v-soft);position:relative;
+  display:flex;flex-direction:column;align-items:center;text-align:center}
+.day.y .side{background:var(--y-soft)}
+.side .n{font-size:25px;font-weight:800;color:var(--v-ink);letter-spacing:-.02em}
+.day.y .side .n{color:var(--y)}
+.side .n .hh{color:var(--heart);font-size:15px;vertical-align:4px}
+.side .d{font-size:16px;font-weight:700;color:var(--v);margin-top:1px}
+.day.y .side .d{color:var(--y)}
+.holi{margin-top:7px;font-size:11.5px;background:var(--card);border-radius:999px;
+  padding:2px 10px;border:1px solid var(--line);white-space:nowrap}
+.holi i{color:#e2536a;font-style:normal}
+.mascot{width:74px;height:74px;margin-top:14px}
+.side .mood{margin-top:8px;font-size:11.5px;color:var(--muted);white-space:pre-line;
+  line-height:1.45}
+
+.panel{padding:10px 12px 12px;min-width:0}
+.hdrow{display:grid;grid-template-columns:1fr 112px 1.6fr;gap:7px;
+  font-size:12px;font-weight:700;text-align:center;color:var(--v-ink)}
+.hdrow span{background:var(--v-pill);border-radius:8px;padding:4px 6px}
+.day.y .hdrow span{background:var(--y-pill);color:var(--y)}
+.row{display:grid;grid-template-columns:1fr 112px 1.6fr;gap:7px;
+  padding:11px 0;border-bottom:1px dashed var(--line);align-items:center}
+.row:last-child{border-bottom:0}
+
+.main{display:flex;align-items:center;gap:10px;min-width:0}
+.slot{flex:none;width:34px;font-size:12.5px;font-weight:700;color:var(--v);
+  text-align:center}
+.day.y .slot{color:var(--y)}
+.pic{flex:none;width:50px;height:50px;border:1px solid var(--line);
+  background:var(--v-soft);border-radius:14px;font-size:24px;line-height:1;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:transform .15s,box-shadow .15s}
+.day.y .pic{background:var(--y-soft)}
+.pic:hover{transform:translateY(-2px) scale(1.04);
+  box-shadow:0 5px 14px rgba(123,94,167,.22)}
+.pic:focus-visible{outline:2px solid var(--v);outline-offset:2px}
+.t{min-width:0}
+.t b{display:block;font-size:14.5px;font-weight:700;line-height:1.35}
+.t span{display:block;font-size:12px;color:var(--muted)}
+
+.hours{font-size:12px;text-align:center;color:var(--star);white-space:pre-line}
+.hours .star{font-size:13px}
+.row.none .hours{color:var(--muted)}
+
+.move{font-size:12px;color:#6d6570;min-width:0}
+.leg{display:inline-block;background:var(--pink-soft);color:var(--pink);
+  border-radius:999px;padding:2px 11px;font-weight:700;font-size:12px;
+  margin-bottom:5px}
+.day.y .leg{background:var(--y-pill);color:var(--y)}
+.chain{display:flex;align-items:flex-start;gap:2px;overflow-x:auto;padding-bottom:3px}
+.step{flex:0 0 auto;max-width:88px;text-align:center}
+.step .e{display:block;width:30px;height:30px;margin:0 auto 3px;
+  background:var(--sky);border-radius:10px;font-size:15px;line-height:30px}
+.step b{display:block;font-size:10.5px;font-weight:700;color:var(--v-ink);
+  line-height:1.25}
+.step span{display:block;font-size:9.5px;color:var(--muted);line-height:1.3}
+.arrow{flex:0 0 auto;color:var(--heart);font-size:12px;padding-top:7px}
+.mnote{margin-top:4px}
+
+/* ---- 장소 목록 ---- */
+h3.sec{margin:32px 0 3px;font-size:19px;font-weight:800;color:var(--v-ink)}
+.sec-sub{margin:0 0 11px;color:var(--muted);font-size:12.5px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:11px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;
+  padding:5px 13px;font-size:12.5px;cursor:pointer;font-family:inherit;
+  color:var(--ink)}
+.chip.on{background:var(--v-ink);color:#fff;border-color:var(--v-ink)}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(224px,1fr));gap:9px}
+.tile{display:flex;gap:9px;align-items:center;background:var(--card);
+  border:1px solid var(--line);border-radius:14px;padding:9px;cursor:pointer;
+  text-align:left;font-family:inherit;font-size:13.5px;color:var(--ink);width:100%}
+.tile:hover{box-shadow:0 5px 14px rgba(123,94,167,.16)}
+.tile .e{font-size:22px;flex:none}
+.tile b{display:block;font-weight:700;line-height:1.3}
+.tile small{color:var(--muted)}
+.tile.done{background:var(--v-soft)}
+.dot{width:7px;height:7px;border-radius:50%;flex:none}
+.d-ambiguous{background:#e0a02a} .d-not_found{background:#d1594c}
+.d-pending{background:#a8a0ad} .d-matched{background:#79b58a}
+
+/* ---- 팝업 ---- */
+dialog{border:0;border-radius:20px;padding:0;max-width:520px;
+  width:calc(100% - 28px);background:var(--card);color:var(--ink)}
+dialog::backdrop{background:rgba(74,69,80,.45)}
+.pop{padding:20px 22px 18px}
+.pop .top{display:flex;gap:12px;align-items:flex-start}
+.pop .e{font-size:36px;line-height:1}
+.pop h4{margin:0;font-size:19px;font-weight:800;color:var(--v-ink);
+  text-wrap:balance}
+.badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.badge{font-size:11.5px;border:1px solid var(--line);border-radius:999px;
+  padding:2px 9px;color:var(--muted)}
+.pop dl{margin:13px 0 0;display:grid;grid-template-columns:74px 1fr;
+  gap:6px 12px;font-size:13px}
+.pop dt{color:var(--muted)} .pop dd{margin:0;word-break:break-word}
+.pop .acts{display:flex;gap:8px;align-items:center;margin-top:15px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:10px;
+  padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit;
+  color:var(--ink);text-decoration:none}
+.btn.go{background:var(--v-ink);border-color:var(--v-ink);color:#fff}
+.btn.off{color:var(--muted);cursor:not-allowed}
+.savebox{display:flex;gap:7px;align-items:center;font-size:13px;margin-left:auto}
+
+/* ---- 하단 명령 바 ---- */
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);
+  border-top:1px solid var(--line);padding:8px 14px;display:flex;gap:10px;
+  align-items:center;flex-wrap:wrap;font-size:12.5px;z-index:5}
+.bar code{background:var(--bg);border:1px solid var(--line);border-radius:8px;
+  padding:5px 9px;flex:1;min-width:180px;overflow:auto;white-space:nowrap}
+footer{color:var(--muted);font-size:11.5px;padding:24px 0 6px;text-align:center}
+
+@keyframes fall{to{transform:translateY(78px) rotate(150deg);opacity:0}}
+.petal{animation:fall 9s linear infinite}
+.petal:nth-of-type(2){animation-delay:2.4s} .petal:nth-of-type(3){animation-delay:4.9s}
+@media(prefers-reduced-motion:reduce){.petal{animation:none}}
+
+@media(max-width:780px){
+  .day{grid-template-columns:1fr}
+  .side{flex-direction:row;gap:10px;justify-content:flex-start;text-align:left;
+    padding:11px 14px}
+  .side .mood{display:none} .mascot{width:42px;height:42px;margin:0}
+  .hdrow{display:none}
+  .row{grid-template-columns:1fr;gap:7px}
+  .hours,.move{text-align:left}
+  .hours::before{content:"영업시간 · "}
+  .hero h1{font-size:25px} .script{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <svg class="art" viewBox="0 0 1000 150" role="img"
+       aria-label="후쿠오카 하늘과 도시 일러스트">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#eaf5fd"/><stop offset="1" stop-color="#fdf4fa"/>
+      </linearGradient>
+    </defs>
+    <rect width="1000" height="150" fill="url(#sky)"/>
+    <g fill="#ffffff" opacity=".92">
+      <ellipse cx="640" cy="44" rx="30" ry="17"/><ellipse cx="668" cy="48" rx="22" ry="13"/>
+      <ellipse cx="860" cy="34" rx="26" ry="15"/><ellipse cx="884" cy="39" rx="19" ry="11"/>
+    </g>
+    <g fill="#cfe4f5">
+      <rect x="700" y="86" width="34" height="64" rx="4"/>
+      <rect x="742" y="70" width="26" height="80" rx="4"/>
+      <rect x="776" y="96" width="38" height="54" rx="4"/>
+      <rect x="900" y="80" width="30" height="70" rx="4"/>
+      <rect x="938" y="100" width="34" height="50" rx="4"/>
+    </g>
+    <g stroke="#a8cfe8" stroke-width="2" fill="#e4f1fa">
+      <path d="M836 150 L848 42 L860 150 Z"/>
+      <path d="M848 42 L848 30"/>
+    </g>
+    <g fill="#f7c8dc">
+      <circle class="petal" cx="120" cy="24" r="5"/>
+      <circle class="petal" cx="300" cy="14" r="4"/>
+      <circle class="petal" cx="470" cy="30" r="5"/>
+    </g>
+    <g fill="#fbdcea">
+      <circle cx="52" cy="112" r="7"/><circle cx="70" cy="132" r="5"/>
+      <circle cx="978" cy="126" r="6"/>
+    </g>
+  </svg>
+  <div class="title">
+    <h1>후쿠오카 3박 4일 <span class="hh">♥</span></h1>
+    <h2>하카타역 거점 여행 가이드</h2>
+    <p>맛있는 것도, 행복한 것도, 우리만의 속도로 :)</p>
+  </div>
+  <div class="script">Fukuoka</div>
+</header>
+
+<div id="days"></div>
+
+<h3 class="sec">장소 목록</h3>
+<p class="sec-sub">그림을 누르면 주소·근거·지도 링크가 팝업으로 열린다.
+  내 지도에 저장한 것은 팝업에서 체크하면 아래 명령이 만들어진다.</p>
+<div class="tabs" id="tabs"></div>
+<div id="grid"></div>
+
+<footer>생성 2026-09-09 13:44 · 장소 52건 · 이 페이지는 DB 에 아무것도 쓰지 않는다</footer>
+</div>
+
+<dialog id="pop"><div class="pop" id="popbody"></div></dialog>
+
+<div class="bar">
+  <b id="picked">0건</b>
+  <code id="cmd">체크한 장소가 없다</code>
+  <button class="btn" id="copy">명령 복사</button>
+</div>
+
+<script>
+const PLACES = [{"id": 4, "name": "후지우나ㅡ장어덮밥", "name_verified": "하카타우나기야 후지우나", "category": "맛집", "address": "후쿠오카시 하카타구 하카타에키히가시 2-2-10 하카타사카나빌딩 2F", "maps_url": "https://www.google.com/maps/search/?api=1&query=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%ED%95%98%EC%B9%B4%ED%83%80%EA%B5%AC%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%90%ED%82%A4%ED%9E%88%EA%B0%80%EC%8B%9C%202-2-10%20%ED%95%98%EC%B9%B4%ED%83%80%EC%82%AC%EC%B9%B4%EB%82%98%EB%B9%8C%EB%94%A9%202F%20%ED%95%98%EC%B9%B4%ED%83%80%EC%9A%B0%EB%82%98%EA%B8%B0%EC%95%BC%20%ED%9B%84%EC%A7%80%EC%9A%B0%EB%82%98", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "민물장어 요리 전문식당 · ¥3,000~5,000 · 평점 4.2 (1,145)", "evidence": ["https://kr.savorjapan.com/0006116904/menus"], "days": [], "icon": "🍜"}, {"id": 21, "name": "빅카메라 텐진2호점", "name_verified": "ビックカメラ 天神2号館 (빅카메라 텐진2호점)", "category": "쇼핑", "address": "〒810-0001 Fukuoka, Chuo Ward, Tenjin 2-4-5", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0001%20Fukuoka%2C%20Chuo%20Ward%2C%20Tenjin%202-4-5%20%E3%83%93%E3%83%83%E3%82%AF%E3%82%AB%E3%83%A1%E3%83%A9%20%E5%A4%A9%E7%A5%9E2%E5%8F%B7%E9%A4%A8%20%28%EB%B9%85%EC%B9%B4%EB%A9%94%EB%9D%BC%20%ED%85%90%EC%A7%842%ED%98%B8%EC%A0%90%29", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "전자제품 판매점 · 평점 3.8 (2,998)\n면세 10% + 주류 3% 추가쿠폰. 위스키·사케 코너 정돈 우수\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보", "evidence": ["https://kr.trip.com/moments/detail/fukuoka-576-124841257/"], "days": [], "icon": "🛍️"}, {"id": 29, "name": "코메다커피 하카타역 히가시", "name_verified": "코메다 커피 하카타역 히가시점", "category": "맛집", "address": "2-chōme-4-20 Hakataekihigashi, Hakata Ward, Fukuoka, 812-0013 일본", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJsTkIK8iRQTURlIc-Dy20kM0", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "카페 · 07:00~22:00 · 호텔 0.55km / 도보 7~9분", "evidence": [], "days": [], "icon": "🍜"}, {"id": 30, "name": "카페 베로체 치쿠시구치", "name_verified": "カフェ・ベローチェ 福岡薬院店", "category": "맛집", "address": "일본 후쿠오카시 하카타구 하카타역 치쿠시구치 1-11-1 (博多駅筑紫口 1-11-1)", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ57CBxKiRQTURFyz3l4Di9TA", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "카페 · 07:00~22:00 · 호텔 0.25km / 도보 3~5분\n지점 정정(2026-09-09): 저장돼 있던 것은 カフェ・ベローチェ 福岡薬院店(주오구 야쿠인, 호텔에서 2km+)이었다. 첨부 조식 가이드 기준 정확한 지점은 하카타역 치쿠시구치점(도보 3~5분, 250m). 좌표는 야쿠인점 값이라 삭제했다 — 재검증 필요", "evidence": [], "days": [], "icon": "🍜"}, {"id": 31, "name": "우에시마커피 AMU EST", "name_verified": "우에시마커피 아뮤에스토점", "category": "맛집", "address": "일본 〒812-0012 Fukuoka, Hakata Ward, Hakataekichūōgai, 1−１ アミュエスト 1F", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJAeB44seRQTURjrOJfsGg6kA", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "카페 · 07:00~22:00 · 호텔 0.35km / 도보 4~6분", "evidence": [], "days": [], "icon": "🍜"}, {"id": 32, "name": "TRAINDOR 하카타역점", "name_verified": "TRAINDOR Hakata Station", "category": "맛집", "address": "일본 〒812-0012 Fukuoka, Hakata Ward, Hakataekichūōgai, 1−１ ＪＲ九州博多駅構内", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJBVmI6seRQTURgAbIe1HmjfQ", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "베이커리 · 06:30~22:30 (아침 일찍 여는 곳) · 호텔 0.30km / 도보 4~6분", "evidence": [], "days": [], "icon": "🍜"}, {"id": 33, "name": "다이후쿠 우동 (大福うどん)", "name_verified": "다이후쿠우동 딘키비루점", "category": "맛집", "address": "일본 후쿠오카시 하카타구 JR 하카타역 B1F 하카타 1번가", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJgx_py5uRQTUR-ZvopWyAj28", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "우동 · 07:00~22:00 · 호텔 0.35km / 도보 5~7분\n지점 정정(2026-09-09): 저장돼 있던 것은 다이후쿠우동 덴키빌딩점(주오구 와타나베도리, 텐진 쪽)이었다. 첨부 조식 가이드 기준 정확한 지점은 JR 하카타역 B1F 하카타 1번가점(도보 5~7분, 350m). 좌표는 덴키빌딩점 값이라 삭제했다 — 재검증 필요", "evidence": [], "days": [], "icon": "🍜"}, {"id": 34, "name": "우치노타마고 (うちのたまご)", "name_verified": "우치노타마고 초쿠바이쇼", "category": "맛집", "address": "1-1 Hakataekichūōgai, Hakata Ward, Fukuoka, 812-0012 일본", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJJZ8gdsiRQTUR6SbVkacy35s", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "계란밥·정식 · 08:00~22:00 · 호텔 0.35km / 도보 5~7분", "evidence": [], "days": [], "icon": "🍜"}, {"id": 35, "name": "요도바시 카메라 하카타", "name_verified": "요도바시 카메라 멀티미디어 하카타", "category": "쇼핑", "address": "6-12 Hakataekichūōgai, Hakata Ward, Fukuoka, 812-0012 일본", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ48-N8beRQTURyQDOkx2DU2s", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "가전·장난감 · 09:30~22:00 · 호텔 0.2km / 도보 2~3분 · 4F에 로피아, 가샤폰 코너 있음\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보", "evidence": [], "days": [], "icon": "🛍️"}, {"id": 36, "name": "요도바시 4F GiGO", "name_verified": "Gigo Yodobashi Hakata", "category": "관광", "address": "일본 〒812-0012 Fukuoka, Hakata Ward, Hakataekichūōgai, 6−１２ ヨドバシ博多店 4F", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJp_Oa8C-RQTURzbJVnCymgSs", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "게임센터 · 10:00~21:00 · 호텔 0.2km / 도보 2~3분\n요도바시 어뮤즈먼트 플로어 09:30~23:00(매장별 상이), GiGO 자체는 10:00~21:00", "evidence": [], "days": [], "icon": "🎡"}, {"id": 37, "name": "쓰바메노모리 옥상정원", "name_verified": "쓰바메노모리히로바", "category": "관광", "address": "일본 〒812-0012 Fukuoka, Hakata Ward, Hakataekichūōgai, 1−１ RF", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJo_JcUNWRQTURtE96HvCRBz4", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "전망·산책 · 10:00~22:00 · 호텔 0.4km / 도보 5~7분 · 하카타역 옥상", "evidence": [], "days": [], "icon": "🎡"}, {"id": 40, "name": "KITTE 하카타", "name_verified": "킷테 하카타", "category": "쇼핑", "address": "9-1 Hakataekichūōgai, Hakata Ward, Fukuoka, 812-0012 일본", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJq6pqbriRQTUReE_oqoFCe4g", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "쇼핑·식당 · 쇼핑 10:00~21:00 / 식당 11:00~23:00 · 호텔 0.5km / 도보 6~8분", "evidence": [], "days": [], "icon": "🛍️"}, {"id": 41, "name": "DEITOS", "name_verified": "하카타 데이토스 아넥스", "category": "쇼핑", "address": "1-1 Hakataekichūōgai, Hakata Ward, Fukuoka, 812-0012 일본", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJrcfwHV2RQTURArL7mwzvhUE", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "하카타역 역내 식당·기념품 · 일부 ~23:00 · 호텔 0.3km / 도보 3~5분", "evidence": [], "days": [], "icon": "🛍️"}, {"id": 42, "name": "마잉구 (하카타 1번가)", "name_verified": "하카타1번가", "category": "쇼핑", "address": "일본 〒812-0012 Fukuoka, Hakata Ward, Hakataekichūōgai, 1−１ JR博多駅 B1F", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJzbqrwceRQTUROBe7Tr_QZO0", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "기념품·명과 · 09:00~21:00 · 호텔 0.4km / 도보 4~6분 · DAY 4 귀국일 기념 과자 매입처", "evidence": [], "days": [{"place_id": 42, "day_no": 4, "slot": "오전", "seq": 0, "memo": "체크아웃 11:00. 기념품 쇼핑(하카타역 마잉구 / 한큐 지하 등). 호텔→하카타역 도보 약 3분(0.2km), 치쿠시구치로 이동"}], "icon": "🎁"}, {"id": 45, "name": "JUMP SHOP 캐널시티", "name_verified": "점프 샵 후쿠오카점", "category": "쇼핑", "address": "1-chōme-2-22B1 Sumiyoshi, Hakata Ward, Fukuoka, 812-0018 일본", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJaxduH76RQTURcnUkUnD443U", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "점프 공식 굿즈 · 평점 3.9 (298) · 10:00~21:00 · 캐널시티 B1 · 호텔 1.12km / 도보 15분\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보", "evidence": [], "days": [], "icon": "🏬"}, {"id": 48, "name": "스루가야 신텐초", "name_verified": "신텐쵸상점가", "category": "쇼핑", "address": "2 Chome-9 Tenjin, Chuo Ward, Fukuoka, 810-0001 일본", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ17SOCI-RQTURJlkruvOsJb0", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "트레카 · 평점 3.9 (7) · 14:00~20:30 (금~일 12:00 오픈) · 호텔 2.36km · 오픈 늦으니 주의", "evidence": [], "days": [], "icon": "🛍️"}, {"id": 49, "name": "GiGO 텐진", "name_verified": "Gigo Fukuoka Tenjin", "category": "관광", "address": "일본 〒810-0001 Fukuoka, Chuo Ward, Tenjin, 2-chōme−7−６ Dadaビル", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJDdKPT3WRQTURQu_uG7uLO0s", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "크레인·경품 · 평점 3.3 (649) · 10:00~23:30 · 호텔 2.47km · 프라이즈 피규어", "evidence": [], "days": [], "icon": "🎡"}, {"id": 50, "name": "만다라케 후쿠오카 (다이묘)", "name_verified": "만다라케 후쿠오카점", "category": "쇼핑", "address": "일본 〒810-0041 Fukuoka, Chuo Ward, Daimyō, 2-chōme−9−５ グランドビル", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJAQBAJoaRQTURO3HsHm6qY3A", "verify_status": "ambiguous", "saved_to_mymaps": 0, "note": "중고 피규어 · 평점 4.2 (3,347) · 12:00~20:00 · 호텔 2.74km · 피규어 쇼핑 핵심. 12시 오픈이라 오전엔 못 감 → DAY 3 텐진은 점심 이후 출발\n다이묘 3점(만다라케·스텝스포츠·야마야)이 한 블록 안 → 텐진역→다이묘→파르코 순이 최단\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보", "evidence": [], "days": [], "icon": "🛍️"}, {"id": 7, "name": "7-Eleven", "name_verified": null, "category": "쇼핑", "address": null, "maps_url": null, "verify_status": "not_found", "saved_to_mymaps": 0, "note": "편의점 · 평점 3.1 (11) — 목록에 편의점이 3곳 있어 어느 지점인지 확인 필요", "evidence": [], "days": [], "icon": "🛍️"}, {"id": 8, "name": "세븐일레븐 키오스크 하카타 신칸센 13번승차장점", "name_verified": null, "category": "쇼핑", "address": null, "maps_url": null, "verify_status": "not_found", "saved_to_mymaps": 0, "note": "편의점 · 평점 4.2 (10)", "evidence": [], "days": [], "icon": "🛍️"}, {"id": 9, "name": "7-Eleven+Heart-in Hakata St. Shinkansen lounge", "name_verified": null, "category": "쇼핑", "address": null, "maps_url": null, "verify_status": "not_found", "saved_to_mymaps": 0, "note": "편의점 · 평점 3.1 (27)", "evidence": [], "days": [], "icon": "🛍️"}, {"id": 19, "name": "야마야 다이묘점", "name_verified": null, "category": "쇼핑", "address": null, "maps_url": null, "verify_status": "not_found", "saved_to_mymaps": 0, "note": "주류 판매점 · 평점 4.1 (387)\n면세 10% + 1만엔↑ 5% 추가쿠폰\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보", "evidence": [], "days": [], "icon": "🛍️"}, {"id": 52, "name": "라라포트 후쿠오카", "name_verified": null, "category": "쇼핑", "address": "〒812-8627 Fukuoka, Hakata Ward, Naka 6-23-1", "maps_url": null, "verify_status": "pending", "saved_to_mymaps": 0, "note": "복합몰 · 쇼핑 10:00~21:00 / 식당 ~22:00 · 실물크기 건담 νガンダム 전시 · 4F 에 Moff animal cafe · 호텔에서 JR 하카타역→다케시타역 약 5분, 역에서 도보 약 9분(0.6km) · 주소는 같은 건물인 Moff animal cafe(place 6) 에서 가져왔다. 좌표는 없음 — 재검증 대상", "evidence": [], "days": [{"place_id": 52, "day_no": 2, "slot": "저녁", "seq": 0, "memo": "쇼핑 10:00~21:00 / 식당 ~22:00. 건담 구경 + 쇼핑·식사. 호텔→라라포트: JR 하카타역 → 다케시타역 약 5분, 역에서 도보 약 9분(0.6km)"}], "icon": "🤖"}, {"id": 1, "name": "일 포르노 델 미뇽", "name_verified": "il FORNO del MIGNON 하카타역점", "category": "맛집", "address": "〒812-0012 Fukuoka, Hakata Ward, Hakataekichuogai 1-1, JR 하카타역 구내", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0012%20Fukuoka%2C%20Hakata%20Ward%2C%20Hakataekichuogai%201-1%2C%20JR%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%AD%20%EA%B5%AC%EB%82%B4%20il%20FORNO%20del%20MIGNON%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%AD%EC%A0%90", "verify_status": "matched", "saved_to_mymaps": 0, "note": "제과점 · ¥1~1,000 · 평점 4.2 (1,701)", "evidence": ["https://tabelog.com/en/fukuoka/A4001/A400101/40005043/", "https://shadowneo.net/2324", "https://triple.guide/regions/92ba56af-a93e-4877-a46a-3b84cf1af0cf/restaurants/9fca0767-f419-45f3-9464-bd55100c803a"], "days": [], "icon": "🍜"}, {"id": 2, "name": "키와미야 함바그 파르코 후쿠오카점", "name_verified": "키와미야 함바그 후쿠오카 파르코점", "category": "맛집", "address": "〒810-0001 Fukuoka, Chuo Ward, Tenjin 2-11-1, 후쿠오카 파르코 B1F", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0001%20Fukuoka%2C%20Chuo%20Ward%2C%20Tenjin%202-11-1%2C%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%20%ED%8C%8C%EB%A5%B4%EC%BD%94%20B1F%20%ED%82%A4%EC%99%80%EB%AF%B8%EC%95%BC%20%ED%95%A8%EB%B0%94%EA%B7%B8%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%20%ED%8C%8C%EB%A5%B4%EC%BD%94%EC%A0%90", "verify_status": "matched", "saved_to_mymaps": 0, "note": "고기(함바그) · ¥2,000~3,000 · 평점 4.3 (3,314)", "evidence": ["https://triple.guide/restaurants/5cfa5017-102c-4035-b159-2a75ee6fc508", "https://www.kyushurent.com/restaurants/Kiwamiya", "https://kr.trip.com/moments/detail/fukuoka-576-125568060/"], "days": [], "icon": "🍜"}, {"id": 3, "name": "하카타규마부시 무사시", "name_verified": "黒毛和牛 博多牛まぶし 武蔵", "category": "맛집", "address": "〒812-0013 Fukuoka, Hakata Ward, Hakataekihigashi 1-12-1, 선라이프호텔 2·3 1F", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0013%20Fukuoka%2C%20Hakata%20Ward%2C%20Hakataekihigashi%201-12-1%2C%20%EC%84%A0%EB%9D%BC%EC%9D%B4%ED%94%84%ED%98%B8%ED%85%94%202%C2%B73%201F%20%E9%BB%92%E6%AF%9B%E5%92%8C%E7%89%9B%20%E5%8D%9A%E5%A4%9A%E7%89%9B%E3%81%BE%E3%81%B6%E3%81%97%20%E6%AD%A6%E8%94%B5", "verify_status": "matched", "saved_to_mymaps": 0, "note": "일본 스테이크 전문점 · ¥2,000~3,000 · 평점 4.7 (764)", "evidence": ["https://tabelog.com/en/fukuoka/A4001/A400101/40066543/", "https://triple.guide/restaurants/9f2f6a1e-0f50-4dee-844f-b8b14ea2d120", "https://hakata-gyumabushi-musashi.owst.jp/"], "days": [], "icon": "🍜"}, {"id": 5, "name": "후쿠오카시 동식물원", "name_verified": "후쿠오카시 동식물원 (Fukuoka Zoo & Botanical Garden)", "category": "관광", "address": "〒810-0037 Fukuoka, Chuo Ward, Minamikoen 1-1", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0037%20Fukuoka%2C%20Chuo%20Ward%2C%20Minamikoen%201-1%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%EB%8F%99%EC%8B%9D%EB%AC%BC%EC%9B%90%20%28Fukuoka%20Zoo%20%26%20Botanical%20Garden%29", "verify_status": "matched", "saved_to_mymaps": 0, "note": "동물원 · 평점 4.2 (6,289)", "evidence": ["https://zoo.city.fukuoka.lg.jp/general/index_en", "https://en.wikipedia.org/wiki/Fukuoka_Municipal_Zoo_and_Botanical_Garden", "https://japantravel.navitime.com/en/area/jp/spot/02301-13500371/"], "days": [], "icon": "🎡"}, {"id": 6, "name": "Moff animal cafe LaLaport Fukuoka", "name_verified": "Moff animal cafe ららぽーと福岡店", "category": "관광", "address": "〒812-8627 Fukuoka, Hakata Ward, Naka 6-23-1, 라라포트 후쿠오카 몰동 4F", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-8627%20Fukuoka%2C%20Hakata%20Ward%2C%20Naka%206-23-1%2C%20%EB%9D%BC%EB%9D%BC%ED%8F%AC%ED%8A%B8%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%20%EB%AA%B0%EB%8F%99%204F%20Moff%20animal%20cafe%20%E3%82%89%E3%82%89%E3%81%BD%E3%83%BC%E3%81%A8%E7%A6%8F%E5%B2%A1%E5%BA%97", "verify_status": "matched", "saved_to_mymaps": 0, "note": "동물카페 · 평점 4.0 (214)", "evidence": ["https://mitsui-shopping-park.com/lalaport/fukuoka/shopguide/2098784.html", "https://tabelog.com/en/fukuoka/A4001/A400202/40060379/", "https://iko-yo.net/facilities/175612"], "days": [{"place_id": 6, "day_no": 2, "slot": "저녁", "seq": 1, "memo": "10:00~20:00(최종입장 19:30). 라라포트 후쿠오카 4F. 다양한 동물 친구들을 만날 수 있어요. 예약 불필요"}], "icon": "🐹"}, {"id": 10, "name": "한큐 하카타", "name_verified": "하카타 한큐 (阪急百貨店 博多店)", "category": "쇼핑", "address": "〒812-0012 Fukuoka, Hakata Ward, Hakataekichuogai 1-1", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0012%20Fukuoka%2C%20Hakata%20Ward%2C%20Hakataekichuogai%201-1%20%ED%95%98%EC%B9%B4%ED%83%80%20%ED%95%9C%ED%81%90%20%28%E9%98%AA%E6%80%A5%E7%99%BE%E8%B2%A8%E5%BA%97%20%E5%8D%9A%E5%A4%9A%E5%BA%97%29", "verify_status": "matched", "saved_to_mymaps": 0, "note": "백화점 · 평점 4.1 (9,051)", "evidence": ["https://website.hankyu-dept.co.jp/hakata/fl/korean/access.html", "https://triple.guide/attractions/cc6e04af-987a-4373-8604-4c7296bf2a4c", "https://japanshopping.org/ko/search/shops/detail/107"], "days": [{"place_id": 10, "day_no": 4, "slot": "오전", "seq": 1, "memo": "지하 식품관 기념품"}], "icon": "🎁"}, {"id": 11, "name": "이와타야 본점 신관", "name_verified": "이와타야 본점 (岩田屋本店)", "category": "쇼핑", "address": "〒810-8680 Fukuoka, Chuo Ward, Tenjin 2-5-35", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-8680%20Fukuoka%2C%20Chuo%20Ward%2C%20Tenjin%202-5-35%20%EC%9D%B4%EC%99%80%ED%83%80%EC%95%BC%20%EB%B3%B8%EC%A0%90%20%28%E5%B2%A9%E7%94%B0%E5%B1%8B%E6%9C%AC%E5%BA%97%29", "verify_status": "matched", "saved_to_mymaps": 0, "note": "백화점 · 평점 4.0 (233)", "evidence": ["https://www.iwataya-mitsukoshi.mistore.jp.k.kq.hp.transer.com/iwataya/access.html", "https://ko.wikipedia.org/wiki/%EC%9D%B4%EC%99%80%ED%83%80%EC%95%BC", "https://japantravel.navitime.com/en/area/jp/spot/02301-1600026/"], "days": [], "icon": "🛍️"}, {"id": 12, "name": "호텔 포르자 하카타역 치쿠시구치Ⅱ", "name_verified": "HOTEL FORZA HAKATAEKI CHIKUSHI-GUCHI II", "category": "숙소", "address": "〒812-0013 Fukuoka, Hakata Ward, Hakataekihigashi 1-13-3", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0013%20Fukuoka%2C%20Hakata%20Ward%2C%20Hakataekihigashi%201-13-3%20HOTEL%20FORZA%20HAKATAEKI%20CHIKUSHI-GUCHI%20II", "verify_status": "matched", "saved_to_mymaps": 0, "note": "3성급 호텔 · 평점 4.3 (520)", "evidence": ["https://www.hotelforza.jp/hakata2/en/", "https://www.booking.com/hotel/jp/forza-hakataeki-chikushiguchi-ii.en-gb.html", "https://www.agoda.com/hotel-forza-hakataeki-chikushiguchi/hotel/fukuoka-jp.html"], "days": [{"place_id": 12, "day_no": 1, "slot": "오후", "seq": 0, "memo": "14:00~15:00 체크인. 호텔 포르자 하카타에키 치쿠시구치Ⅱ"}, {"place_id": 12, "day_no": 2, "slot": "오후", "seq": 0, "memo": "하카타 호텔 복귀 & 휴식. 숙소에서 잠시 쉬어요. 복귀: 우미노나카미치역 → 가시이역 → 하카타역 약 40~50분"}], "icon": "🏨"}, {"id": 13, "name": "후쿠오카 호빵맨 어린이 박물관 in 쇼핑몰", "name_verified": "후쿠오카 호빵맨 어린이 박물관 in 쇼핑몰", "category": "관광", "address": "〒812-0027 Fukuoka, Hakata Ward, Shimokawabatacho 3-1, 하카타 리버레인 몰 5F·6F", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0027%20Fukuoka%2C%20Hakata%20Ward%2C%20Shimokawabatacho%203-1%2C%20%ED%95%98%EC%B9%B4%ED%83%80%20%EB%A6%AC%EB%B2%84%EB%A0%88%EC%9D%B8%20%EB%AA%B0%205F%C2%B76F%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%20%ED%98%B8%EB%B9%B5%EB%A7%A8%20%EC%96%B4%EB%A6%B0%EC%9D%B4%20%EB%B0%95%EB%AC%BC%EA%B4%80%20in%20%EC%87%BC%ED%95%91%EB%AA%B0", "verify_status": "matched", "saved_to_mymaps": 0, "note": "실내 놀이터 · 평점 4.3 (4,177)\n가이드 확정안(초록판) 일정에서 제외 — 시간 남으면 들를 후보", "evidence": ["https://www.fukuoka-anpanman.jp/kr/", "https://www.crossroadfukuoka.jp/kr/spot/11346", "https://www.gltjp.com/en/directory/item/16603/"], "days": [], "icon": "🍞"}, {"id": 14, "name": "마린월드 우미노나카미치 (Marine World Uminonakamichi)", "name_verified": "Marine World Uminonakamichi (마린월드 우미노나카미치)", "category": "관광", "address": "〒811-0321 Fukuoka, Higashi-ku, Saitozaki 18-28", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92811-0321%20Fukuoka%2C%20Higashi-ku%2C%20Saitozaki%2018-28%20Marine%20World%20Uminonakamichi%20%28%EB%A7%88%EB%A6%B0%EC%9B%94%EB%93%9C%20%EC%9A%B0%EB%AF%B8%EB%85%B8%EB%82%98%EC%B9%B4%EB%AF%B8%EC%B9%98%29", "verify_status": "matched", "saved_to_mymaps": 0, "note": "수족관 · 평점 4.5 (13,758)", "evidence": ["https://japantravel.navitime.com/en/area/jp/spot/02301-1301594/", "https://en.wikipedia.org/wiki/Marine_World_Uminonakamichi", "https://gofukuoka.jp/spots/detail/26800/"], "days": [{"place_id": 14, "day_no": 3, "slot": "오전", "seq": 0, "memo": "09:30~21:00(입장마감 20:00). 바다 생물을 만나는 시간. 연휴 특별운영이라 18:00부터 야간모드. 쇼 11:00/12:30/14:00/15:30. 경로: 호텔 도보 3분(0.2km) → 하카타역 JR 가고시마본선 약 11분 → 가시이역 JR 가시이선 환승 약 20분 → 우미노나카미치역 도보 약 5분(마린월드까지)"}], "icon": "🐬"}, {"id": 15, "name": "동물의숲 우미노나카미치카이힌 공원", "name_verified": "海の中道海浜公園 動物の森", "category": "관광", "address": "〒811-0321 Fukuoka, Higashi-ku, Saitozaki 18-25, 우미노나카미치 해변공원 내 동물의숲", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92811-0321%20Fukuoka%2C%20Higashi-ku%2C%20Saitozaki%2018-25%2C%20%EC%9A%B0%EB%AF%B8%EB%85%B8%EB%82%98%EC%B9%B4%EB%AF%B8%EC%B9%98%20%ED%95%B4%EB%B3%80%EA%B3%B5%EC%9B%90%20%EB%82%B4%20%EB%8F%99%EB%AC%BC%EC%9D%98%EC%88%B2%20%E6%B5%B7%E3%81%AE%E4%B8%AD%E9%81%93%E6%B5%B7%E6%B5%9C%E5%85%AC%E5%9C%92%20%E5%8B%95%E7%89%A9%E3%81%AE%E6%A3%AE", "verify_status": "matched", "saved_to_mymaps": 0, "note": "동물원 · 평점 4.4 (1,165)\n가이드 표기명: 우미노나카미치 해변공원 · 09:30~17:30", "evidence": ["https://japantravel.navitime.com/ko/area/jp/spot/02301-1301579/", "https://uminaka-park.jp/mt-static/support/theme_static/original/pdf/Korean_guide_240311.pdf", "https://www.crossroadfukuoka.jp/kr/spot/12408"], "days": [{"place_id": 15, "day_no": 2, "slot": "오전", "seq": 0, "memo": "09:30~17:30. 자연 속에서 즐기는 피크닉. 경로: 호텔 도보 3분(0.2km) → 하카타역 JR 가고시마본선(상행·고쿠라 방면) 약 11분 → 가시이역 JR 가시이선(사이토자키행) 환승 약 20분 → 우미노나카미치역 도보 약 5분(공원 입구까지)"}], "icon": "🌳"}, {"id": 16, "name": "마키노우동 하카타버스터미널점", "name_verified": "마키노우동 하카타버스터미널점 (牧のうどん)", "category": "맛집", "address": "후쿠오카현 후쿠오카시 하카타구 하카타에키추오가이 2-1, 하카타버스터미널 B1F", "maps_url": "https://www.google.com/maps/search/?api=1&query=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%ED%98%84%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%ED%95%98%EC%B9%B4%ED%83%80%EA%B5%AC%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%90%ED%82%A4%EC%B6%94%EC%98%A4%EA%B0%80%EC%9D%B4%202-1%2C%20%ED%95%98%EC%B9%B4%ED%83%80%EB%B2%84%EC%8A%A4%ED%84%B0%EB%AF%B8%EB%84%90%20B1F%20%EB%A7%88%ED%82%A4%EB%85%B8%EC%9A%B0%EB%8F%99%20%ED%95%98%EC%B9%B4%ED%83%80%EB%B2%84%EC%8A%A4%ED%84%B0%EB%AF%B8%EB%84%90%EC%A0%90%20%28%E7%89%A7%E3%81%AE%E3%81%86%E3%81%A9%E3%82%93%29", "verify_status": "matched", "saved_to_mymaps": 0, "note": "우동 · ¥1~1,000 · 평점 4.2 (3,141)", "evidence": ["https://ko.h-bt.jp/floor/shop62.html", "https://www.tripstore.kr/blog/%ED%95%98%EC%B9%B4%ED%83%80-%EC%9A%B0%EB%8F%99-%EB%A7%9B%EC%A7%91-%ED%98%BC%ED%96%89-%EC%8B%AC%EC%95%BC-%EC%95%84%EC%B9%A8-%EC%83%81%ED%99%A9%EB%B3%84-%EA%B3%B5%EB%9E%B5"], "days": [], "icon": "🍜"}, {"id": 17, "name": "요시즈카 우나기야", "name_verified": "博多名代 吉塚うなぎ屋 (요시즈카 우나기야)", "category": "맛집", "address": "〒810-0801 Fukuoka, Hakata Ward, Nakasu 2-8-27", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0801%20Fukuoka%2C%20Hakata%20Ward%2C%20Nakasu%202-8-27%20%E5%8D%9A%E5%A4%9A%E5%90%8D%E4%BB%A3%20%E5%90%89%E5%A1%9A%E3%81%86%E3%81%AA%E3%81%8E%E5%B1%8B%20%28%EC%9A%94%EC%8B%9C%EC%A6%88%EC%B9%B4%20%EC%9A%B0%EB%82%98%EA%B8%B0%EC%95%BC%29", "verify_status": "matched", "saved_to_mymaps": 0, "note": "민물장어 요리 전문식당 · ¥3,000~5,000 · 평점 4.4 (9,312)", "evidence": ["https://triple.guide/restaurants/1239f853-d0b3-40e3-9c96-1ae7bb0c24ef", "https://www.siksinhot.com/P/342641", "https://boborifood.com/14", "https://fuk-info.com/fukuoka_food_yoshizukaunagiya/"], "days": [], "icon": "🍜"}, {"id": 18, "name": "치카에", "name_verified": "稚加榮 (치카에)", "category": "맛집", "address": "〒810-0041 Fukuoka, Chuo Ward, Daimyo 2-2-17", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0041%20Fukuoka%2C%20Chuo%20Ward%2C%20Daimyo%202-2-17%20%E7%A8%9A%E5%8A%A0%E6%A6%AE%20%28%EC%B9%98%EC%B9%B4%EC%97%90%29", "verify_status": "matched", "saved_to_mymaps": 0, "note": "해산물 요리 · ¥10,000 이상 · 평점 4.3 (3,738)", "evidence": ["https://www.tablecheck.com/en/chikae", "https://www.siksinhot.com/P/342648", "https://autoreserve.com/ko/restaurants/PLmMXUnTcarAwKBG5fFx", "https://triple.guide/restaurants/b338d5d8-4565-4c86-94ce-e95152a6ecd7"], "days": [], "icon": "🍜"}, {"id": 20, "name": "로피아 하카타 요도바시", "name_verified": "ロピア ヨドバシ博多店 (로피아 하카타 요도바시점)", "category": "쇼핑", "address": "〒812-0012 Fukuoka, Hakata Ward, Hakataekichuogai 6-12", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0012%20Fukuoka%2C%20Hakata%20Ward%2C%20Hakataekichuogai%206-12%20%E3%83%AD%E3%83%94%E3%82%A2%20%E3%83%A8%E3%83%89%E3%83%90%E3%82%B7%E5%8D%9A%E5%A4%9A%E5%BA%97%20%28%EB%A1%9C%ED%94%BC%EC%95%84%20%ED%95%98%EC%B9%B4%ED%83%80%20%EC%9A%94%EB%8F%84%EB%B0%94%EC%8B%9C%EC%A0%90%29", "verify_status": "matched", "saved_to_mymaps": 0, "note": "슈퍼마켓 · 평점 4.2 (1,833)\n요도바시 4F. 산토리 올드 특가. 현금만, 면세 불가\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보", "evidence": ["https://triple.guide/attractions/0e47a43e-fba8-49ae-8cee-020211d091c9", "https://map.yahoo.co.jp/v3/place/R3OMPnOE-Gc", "https://lopia.jp/shops/hakatayodobashi"], "days": [], "icon": "🛍️"}, {"id": 22, "name": "鉄板焼きもんじゃココきよ大名店", "name_verified": "鉄板焼きもんじゃ ココきよ 大名店", "category": "맛집", "address": "후쿠오카시 주오구 다이묘 1-9-14 시티맨션 다이묘 별관", "maps_url": "https://www.google.com/maps/search/?api=1&query=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%EC%A3%BC%EC%98%A4%EA%B5%AC%20%EB%8B%A4%EC%9D%B4%EB%AC%98%201-9-14%20%EC%8B%9C%ED%8B%B0%EB%A7%A8%EC%85%98%20%EB%8B%A4%EC%9D%B4%EB%AC%98%20%EB%B3%84%EA%B4%80%20%E9%89%84%E6%9D%BF%E7%84%BC%E3%81%8D%E3%82%82%E3%82%93%E3%81%98%E3%82%83%20%E3%82%B3%E3%82%B3%E3%81%8D%E3%82%88%20%E5%A4%A7%E5%90%8D%E5%BA%97", "verify_status": "matched", "saved_to_mymaps": 0, "note": "몬자야키 전문점 · ¥2,000~3,000 · 평점 4.6 (32)", "evidence": ["https://tabelog.com/fukuoka/A4001/A400104/40064737/", "https://www.hotpepper.jp/strJ004169173/", "https://r.gnavi.co.jp/1uppfkde0000/"], "days": [], "icon": "🍜"}, {"id": 23, "name": "Mizutaki Motsunabe Hakataro Nishinakasu", "name_verified": "水炊き もつ鍋 博多流 西中洲 (Mizutaki Motsunabe Hakataro Nishinakasu)", "category": "맛집", "address": "후쿠오카현 후쿠오카시 주오구 니시나카스 13-1 SHIP'S GARDEN 2F", "maps_url": "https://www.google.com/maps/search/?api=1&query=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%ED%98%84%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%EC%A3%BC%EC%98%A4%EA%B5%AC%20%EB%8B%88%EC%8B%9C%EB%82%98%EC%B9%B4%EC%8A%A4%2013-1%20SHIP%27S%20GARDEN%202F%20%E6%B0%B4%E7%82%8A%E3%81%8D%20%E3%82%82%E3%81%A4%E9%8D%8B%20%E5%8D%9A%E5%A4%9A%E6%B5%81%20%E8%A5%BF%E4%B8%AD%E6%B4%B2%20%28Mizutaki%20Motsunabe%20Hakataro%20Nishinakasu%29", "verify_status": "matched", "saved_to_mymaps": 0, "note": "일식 내장 냄비 요리(미즈타키·모츠나베) · ¥2,000~7,000 · 평점 4.2 (130)", "evidence": ["https://www.tablecheck.com/en/hakatarou-nishinakasu", "https://tabelog.com/en/fukuoka/A4001/A400103/40066852/", "https://arne.media/en/gourmet/511418/"], "days": [], "icon": "🍜"}, {"id": 24, "name": "MIZUNO SPORTSTYLE FUKUOKA PARCO POP-UP", "name_verified": "MIZUNO SPORTSTYLE FUKUOKA PARCO POP-UP", "category": "쇼핑", "address": "〒810-0001 후쿠오카시 주오구 텐진 2-11-1 후쿠오카 PARCO 본관", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0001%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%EC%A3%BC%EC%98%A4%EA%B5%AC%20%ED%85%90%EC%A7%84%202-11-1%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%20PARCO%20%EB%B3%B8%EA%B4%80%20MIZUNO%20SPORTSTYLE%20FUKUOKA%20PARCO%20POP-UP", "verify_status": "matched", "saved_to_mymaps": 0, "note": "신발 판매점 · 평점 4.8 (33) — 팝업이라 여행 시점에 영업 여부 확인 필요", "evidence": ["https://jpn.mizuno.com/shop/mizunosportstyle_fukuokaparco", "https://en.fukuoka.parco.jp/shop/detail/?cd=030872", "https://tenjin.keizai.biz/headline/8335/"], "days": [], "icon": "🛍️"}, {"id": 25, "name": "야키니쿠 바쿠로 하카타점", "name_verified": "やきにくのバクロ 博多店", "category": "맛집", "address": "후쿠오카현 후쿠오카시 하카타구 스미요시 1-1-9 RJR하카타빌딩 2F", "maps_url": "https://www.google.com/maps/search/?api=1&query=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%ED%98%84%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%ED%95%98%EC%B9%B4%ED%83%80%EA%B5%AC%20%EC%8A%A4%EB%AF%B8%EC%9A%94%EC%8B%9C%201-1-9%20RJR%ED%95%98%EC%B9%B4%ED%83%80%EB%B9%8C%EB%94%A9%202F%20%E3%82%84%E3%81%8D%E3%81%AB%E3%81%8F%E3%81%AE%E3%83%90%E3%82%AF%E3%83%AD%20%E5%8D%9A%E5%A4%9A%E5%BA%97", "verify_status": "matched", "saved_to_mymaps": 0, "note": "야키니쿠 · ¥3,000~9,000 · 평점 4.4 (1,127)", "evidence": ["https://tabelog.com/en/fukuoka/A4001/A400101/40045144/", "https://map.yahoo.co.jp/v3/place/DuPsUxeEU_E", "https://www.bakuro09.com/shop/hakata/", "https://hitosara.com/0031454747/"], "days": [], "icon": "🍜"}, {"id": 26, "name": "오호리 우나기", "name_verified": "大濠うなぎ (오호리 우나기)", "category": "맛집", "address": "〒810-0042 후쿠오카시 주오구 아카사카 1-15-1 아카사카코가빌딩 1F", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0042%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%EC%A3%BC%EC%98%A4%EA%B5%AC%20%EC%95%84%EC%B9%B4%EC%82%AC%EC%B9%B4%201-15-1%20%EC%95%84%EC%B9%B4%EC%82%AC%EC%B9%B4%EC%BD%94%EA%B0%80%EB%B9%8C%EB%94%A9%201F%20%E5%A4%A7%E6%BF%A0%E3%81%86%E3%81%AA%E3%81%8E%20%28%EC%98%A4%ED%98%B8%EB%A6%AC%20%EC%9A%B0%EB%82%98%EA%B8%B0%29", "verify_status": "matched", "saved_to_mymaps": 0, "note": "민물장어 요리 전문식당 · ¥5,000~6,000 · 평점 4.7 (325)", "evidence": ["https://ohoriunagi.com/", "https://www.tablecheck.com/en/ohoriunagi"], "days": [], "icon": "🍜"}, {"id": 27, "name": "알펜 후쿠오카", "name_verified": "Alpen FUKUOKA (스포츠데포 플래그십스토어 캐널시티 하카타점)", "category": "쇼핑", "address": "〒812-0018 후쿠오카시 하카타구 스미요시 1-2, 캐널시티 하카타 사우스빌딩", "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0018%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%ED%95%98%EC%B9%B4%ED%83%80%EA%B5%AC%20%EC%8A%A4%EB%AF%B8%EC%9A%94%EC%8B%9C%201-2%2C%20%EC%BA%90%EB%84%90%EC%8B%9C%ED%8B%B0%20%ED%95%98%EC%B9%B4%ED%83%80%20%EC%82%AC%EC%9A%B0%EC%8A%A4%EB%B9%8C%EB%94%A9%20Alpen%20FUKUOKA%20%28%EC%8A%A4%ED%8F%AC%EC%B8%A0%EB%8D%B0%ED%8F%AC%20%ED%94%8C%EB%9E%98%EA%B7%B8%EC%8B%AD%EC%8A%A4%ED%86%A0%EC%96%B4%20%EC%BA%90%EB%84%90%EC%8B%9C%ED%8B%B0%20%ED%95%98%EC%B9%B4%ED%83%80%EC%A0%90%29", "verify_status": "matched", "saved_to_mymaps": 0, "note": "야외스포츠용품점 · 평점 4.1 (379)\n러닝화 1차 피팅·트랙 테스트\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보", "evidence": ["https://store.alpen-group.jp/Form/RealShop/ShopDetail.aspx?rsid=5402", "https://map.yahoo.co.jp/v3/place/sxyUK0ZxDDY", "https://triple.guide/attractions/e65bba26-9e72-4b92-8cc3-7fda17b9ca12"], "days": [], "icon": "🛍️"}, {"id": 28, "name": "노코노시마 아일랜드 파크", "name_verified": "노코노시마 아일랜드 파크", "category": "관광", "address": "일본 〒819-0012 福岡県福岡市西区能古島", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJE6u5HzftQTURE9rzcFvhlM0", "verify_status": "matched", "saved_to_mymaps": 0, "note": "컨트리 파크 · 평점 4.4 (2,781) · 09:00 오픈 · 호텔에서 12.15km, 버스+페리 1시간~1시간 20분", "evidence": [], "days": [], "icon": "🎡"}, {"id": 38, "name": "아뮤플라자 하카타 (AMU)", "name_verified": "아뮤플라자 하카타", "category": "쇼핑", "address": "1-1 Hakataekichūōgai, Hakata Ward, Fukuoka, 812-0012 일본", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJBVmI6seRQTUR9OtcJluKGVY", "verify_status": "matched", "saved_to_mymaps": 0, "note": "쇼핑몰 · 10:00~20:00 · 호텔 0.4km / 도보 5분", "evidence": [], "days": [], "icon": "🛍️"}, {"id": 39, "name": "하카타 마루이", "name_verified": "하카타 마루이", "category": "쇼핑", "address": "9-1 Hakataekichūōgai, Hakata Ward, Fukuoka, 812-0012 일본", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJvUtJb7iRQTURBIy9sCktfDM", "verify_status": "matched", "saved_to_mymaps": 0, "note": "쇼핑몰 · 10:00~21:00 · 호텔 0.5km / 도보 6~8분 · KITTE 하카타와 같은 건물(옆 동)이라 묶어서 이동", "evidence": [], "days": [], "icon": "🛍️"}, {"id": 43, "name": "캐널시티 하카타", "name_verified": "캐널시티 하카타", "category": "쇼핑", "address": "1-chōme-2-2 Sumiyoshi, Hakata Ward, Fukuoka, 812-0018 일본", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJYcOBiZWRQTUR0Rl0ehe67eA", "verify_status": "matched", "saved_to_mymaps": 0, "note": "복합몰 · 쇼핑 10:00~21:00 / 식당 ~23:00 · 호텔 1.3km / 도보 18분, 평지·유모차 가능", "evidence": [], "days": [{"place_id": 43, "day_no": 1, "slot": "오후", "seq": 1, "memo": "쇼핑 10:00~21:00 / 식당 ~23:00. 호텔→캐널시티 도보 약 18분(1.3km), 하카타역 치쿠시구치에서 나와 도보(평지·유모차 가능). 귀가도 왔던 길 도보 18분"}], "icon": "🏬"}, {"id": 44, "name": "텐진 지하상가", "name_verified": "텐진 지하상가", "category": "쇼핑", "address": "일본 〒810-0001 Fukuoka, Chuo Ward, Tenjin, 2-chōme−1, 地下1・2・3号", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ970Xo46RQTURm6GUmUJcn6Y", "verify_status": "matched", "saved_to_mymaps": 0, "note": "지하상가 · 10:00~20:00 (식당 일부 ~21:00) · 호텔 2.3km · DAY 3 오후 쇼핑 메인", "evidence": [], "days": [{"place_id": 44, "day_no": 3, "slot": "오후", "seq": 0, "memo": "10:00~20:00(식당 일부 ~21:00). 텐진 시내 쇼핑. 마린월드→텐진(전철): 우미노나카미치역 → 가시이역 → 니시테츠 가이즈카역 → 텐진역 약 1시간"}], "icon": "🛍️"}, {"id": 46, "name": "돈키호테 나카스점", "name_verified": "돈키호테 나카스점", "category": "쇼핑", "address": "3-chōme-7-24 Nakasu, Hakata Ward, Fukuoka, 810-0801 일본", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJU6_Qh5SRQTURhTacOuDrmZo", "verify_status": "matched", "saved_to_mymaps": 0, "note": "종합·주류 · 평점 3.7 (7,669) · 24시간 영업 · 호텔 1.66km / 도보 22분", "evidence": [], "days": [], "icon": "🛍️"}, {"id": 47, "name": "애니메이트 후쿠오카 파르코", "name_verified": "애니메이트 후쿠오카파르코점", "category": "쇼핑", "address": "일본 〒810-0001 Fukuoka, Chuo Ward, Tenjin, 2-chōme−11−１ 福岡パルコ本館 ８F", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJtTHWz4iRQTURJjWhyDSwJXk", "verify_status": "matched", "saved_to_mymaps": 0, "note": "애니 굿즈 · 평점 4.2 (2,889) · 10:00~20:30 · 파르코 8F · 호텔 2.27km · 가샤폰은 매장 앞 복도\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보", "evidence": [], "days": [], "icon": "🛍️"}, {"id": 51, "name": "스텝스포츠 후쿠오카 (다이묘)", "name_verified": "스텝 스포츠 후쿠오카", "category": "쇼핑", "address": "2-chōme-11-19 Daimyō, Chuo Ward, Fukuoka, 810-0041 일본", "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ6e5ZiYeRQTUR9DUQtduKudc", "verify_status": "matched", "saved_to_mymaps": 0, "note": "러닝 전문 · 평점 4.3 (260) · 11:00~20:00 · 호텔 3.01km · 면세 10%, 마라톤 전문\n러닝화 2차 피팅\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보", "evidence": [], "days": [], "icon": "🛍️"}];
+const DAYS = [{"day_no": 1, "items": [{"id": 1, "slot": "오후", "place_id": 12, "title": "호텔 포르자 하카타역 치쿠시구치Ⅱ", "subtitle": "", "hours": "14:00~15:00 체크인", "star": true, "memo": "14:00~15:00 체크인. 호텔 포르자 하카타에키 치쿠시구치Ⅱ", "icon": "🏨", "leg": null, "chain": [], "note": ""}, {"id": 2, "slot": "오후", "place_id": 43, "title": "캐널시티 하카타", "subtitle": "", "hours": "쇼핑 10:00~21:00 / 식당 ~23:00", "star": false, "memo": "쇼핑 10:00~21:00 / 식당 ~23:00. 호텔→캐널시티 도보 약 18분(1.3km), 하카타역 치쿠시구치에서 나와 도보(평지·유모차 가능). 귀가도 왔던 길 도보 18분", "icon": "🏬", "leg": "호텔 → 캐널시티", "chain": [], "note": "도보 약 18분(1.3km), 하카타역 치쿠시구치에서 나와 도보(평지·유모차 가능). 귀가도 왔던 길 도보 18분"}], "date": "9/21 (월)", "holiday": true, "tone": "v", "mascot": "dog", "mood": "여행의 시작\n설레는 후쿠오카!"}, {"day_no": 2, "items": [{"id": 5, "slot": "오전", "place_id": 15, "title": "동물의숲 우미노나카미치카이힌 공원", "subtitle": "자연 속에서 즐기는 피크닉", "hours": "09:30~17:30", "star": false, "memo": "09:30~17:30. 자연 속에서 즐기는 피크닉. 경로: 호텔 도보 3분(0.2km) → 하카타역 JR 가고시마본선(상행·고쿠라 방면) 약 11분 → 가시이역 JR 가시이선(사이토자키행) 환승 약 20분 → 우미노나카미치역 도보 약 5분(공원 입구까지)", "icon": "🌳", "leg": null, "chain": [{"name": "호텔", "detail": "도보 3분(0.2km)", "icon": "🚶"}, {"name": "하카타역", "detail": "JR 가고시마본선(상행·고쿠라 방면) 약 11분", "icon": "🚃"}, {"name": "가시이역", "detail": "JR 가시이선(사이토자키행) 환승 약 20분", "icon": "🚃"}, {"name": "우미노나카미치역", "detail": "도보 약 5분(공원 입구까지)", "icon": "🚶"}], "note": ""}, {"id": 19, "slot": "오후", "place_id": 12, "title": "호텔 포르자 하카타역 치쿠시구치Ⅱ", "subtitle": "하카타 호텔 복귀 & 휴식", "hours": "–", "star": false, "memo": "하카타 호텔 복귀 & 휴식. 숙소에서 잠시 쉬어요. 복귀: 우미노나카미치역 → 가시이역 → 하카타역 약 40~50분", "icon": "🏨", "leg": null, "chain": [{"name": "우미노나카미치역", "detail": "", "icon": "🚃"}, {"name": "가시이역", "detail": "", "icon": "🚃"}, {"name": "하카타역", "detail": "약 40~50분", "icon": "🚃"}], "note": "숙소에서 잠시 쉬어요"}, {"id": 20, "slot": "저녁", "place_id": 52, "title": "라라포트 후쿠오카", "subtitle": "건담 구경 + 쇼핑·식사", "hours": "쇼핑 10:00~21:00 / 식당 ~22:00", "star": false, "memo": "쇼핑 10:00~21:00 / 식당 ~22:00. 건담 구경 + 쇼핑·식사. 호텔→라라포트: JR 하카타역 → 다케시타역 약 5분, 역에서 도보 약 9분(0.6km)", "icon": "🤖", "leg": "호텔 → 라라포트", "chain": [{"name": "JR 하카타역", "detail": "", "icon": "🚃"}, {"name": "다케시타역", "detail": "약 5분, 역에서 도보 약 9분(0.6km)", "icon": "🚶"}], "note": ""}, {"id": 21, "slot": "저녁", "place_id": 6, "title": "Moff animal cafe LaLaport Fukuoka", "subtitle": "라라포트 후쿠오카 4F", "hours": "10:00~20:00(최종입장 19:30)", "star": false, "memo": "10:00~20:00(최종입장 19:30). 라라포트 후쿠오카 4F. 다양한 동물 친구들을 만날 수 있어요. 예약 불필요", "icon": "🐹", "leg": null, "chain": [], "note": "다양한 동물 친구들을 만날 수 있어요. 예약 불필요"}], "date": "9/22 (화)", "holiday": true, "tone": "v", "mascot": "bunny", "mood": "바다와 자연이\n가득한 하루"}, {"day_no": 3, "items": [{"id": 6, "slot": "오전", "place_id": 14, "title": "마린월드 우미노나카미치 (Marine World Uminonakamichi)", "subtitle": "바다 생물을 만나는 시간", "hours": "09:30~21:00(입장마감 20:00)", "star": false, "memo": "09:30~21:00(입장마감 20:00). 바다 생물을 만나는 시간. 연휴 특별운영이라 18:00부터 야간모드. 쇼 11:00/12:30/14:00/15:30. 경로: 호텔 도보 3분(0.2km) → 하카타역 JR 가고시마본선 약 11분 → 가시이역 JR 가시이선 환승 약 20분 → 우미노나카미치역 도보 약 5분(마린월드까지)", "icon": "🐬", "leg": null, "chain": [{"name": "호텔", "detail": "도보 3분(0.2km)", "icon": "🚶"}, {"name": "하카타역", "detail": "JR 가고시마본선 약 11분", "icon": "🚃"}, {"name": "가시이역", "detail": "JR 가시이선 환승 약 20분", "icon": "🚃"}, {"name": "우미노나카미치역", "detail": "도보 약 5분(마린월드까지)", "icon": "🚶"}], "note": "연휴 특별운영이라 18:00부터 야간모드. 쇼 11:00/12:30/14:00/15:30"}, {"id": 10, "slot": "오후", "place_id": 44, "title": "텐진 지하상가", "subtitle": "텐진 시내 쇼핑", "hours": "10:00~20:00(식당 일부 ~21:00)", "star": false, "memo": "10:00~20:00(식당 일부 ~21:00). 텐진 시내 쇼핑. 마린월드→텐진(전철): 우미노나카미치역 → 가시이역 → 니시테츠 가이즈카역 → 텐진역 약 1시간", "icon": "🛍️", "leg": "마린월드 → 텐진(전철)", "chain": [{"name": "우미노나카미치역", "detail": "", "icon": "🚃"}, {"name": "가시이역", "detail": "", "icon": "🚃"}, {"name": "니시테츠 가이즈카역", "detail": "", "icon": "🚃"}, {"name": "텐진역", "detail": "약 1시간", "icon": "🚃"}], "note": ""}, {"id": 22, "slot": "저녁", "place_id": null, "title": "텐진 맛집에서 저녁 식사", "subtitle": "", "hours": "–", "star": false, "memo": "텐진 맛집에서 저녁 식사. 텐진 주변 맛집 탐방. 텐진역 주변 도보 이동(지하상가·백화점 등). 저녁 후 하카타 호텔로 복귀 — 지하철 공항선 약 6분(3정거장)", "icon": "🍽️", "leg": null, "chain": [], "note": "텐진 주변 맛집 탐방. 텐진역 주변 도보 이동(지하상가·백화점 등). 저녁 후 하카타 호텔로 복귀 — 지하철 공항선 약 6분(3정거장)"}], "date": "9/23 (수)", "holiday": true, "tone": "v", "mascot": "cat", "mood": "바다 생물을 만나고\n텐진에서 즐기는 하루"}, {"day_no": 4, "items": [{"id": 16, "slot": "오전", "place_id": 42, "title": "마잉구 (하카타 1번가)", "subtitle": "기념품 쇼핑(하카타역 마잉구 / 한큐 지하 등)", "hours": "체크아웃 11:00", "star": true, "memo": "체크아웃 11:00. 기념품 쇼핑(하카타역 마잉구 / 한큐 지하 등). 호텔→하카타역 도보 약 3분(0.2km), 치쿠시구치로 이동", "icon": "🎁", "leg": "호텔 → 하카타역", "chain": [], "note": "도보 약 3분(0.2km), 치쿠시구치로 이동"}, {"id": 17, "slot": "오전", "place_id": 10, "title": "한큐 하카타", "subtitle": "지하 식품관 기념품", "hours": "–", "star": false, "memo": "지하 식품관 기념품", "icon": "🎁", "leg": null, "chain": [], "note": ""}, {"id": 18, "slot": "오후", "place_id": null, "title": "후쿠오카 출발 18:00, 한국으로 귀국", "subtitle": "", "hours": "–", "star": false, "memo": "후쿠오카 출발 18:00, 한국으로 귀국. 하카타역→후쿠오카공항(국제선) 택시 약 12~20분(4~5km). 비행기 3시간 전 도착 권장 → 15:00 공항 도착 권장. 유모차·다정이 동반이면 여유 30분 더", "icon": "✈️", "leg": "하카타역 → 후쿠오카공항(국제선)", "chain": [], "note": "택시 약 12~20분(4~5km). 비행기 3시간 전 도착 권장 → 15:00 공항 도착 권장. 유모차·다정이 동반이면 여유 30분 더"}], "date": "9/24 (목)", "holiday": false, "tone": "y", "mascot": "bear", "mood": "아쉬운 잠시,\n다음에 또 :)"}];
+const LABEL = {"ambiguous": "모호 — 후보가 여럿이다", "not_found": "못 찾음 — 검색으로 안 나왔다", "pending": "미조사 — 주소가 아직 없다", "matched": "확인됨"};
+const KEY = "trip.mymaps.checked";
+const byId = Object.fromEntries(PLACES.map(p => [p.id, p]));
+/* 샌드박스 iframe(Artifact 등)에서는 localStorage 접근 자체가 예외를 던진다.
+   막아 두지 않으면 스크립트가 통째로 죽어 빈 화면이 된다. */
+const store = {
+  read() { try { return JSON.parse(localStorage.getItem(KEY) || "[]"); }
+           catch { return []; } },
+  write(v) { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch {} },
+};
+let checked = new Set(store.read());
+let filter = "all";
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g,
+  c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const host = u => { try { return new URL(u).hostname.replace(/^www\./, ""); }
+                    catch { return u; } };
+
+/* ---------- 마스코트 (자체 도안) ---------- */
+const MASCOT = {
+  dog: `<circle cx="37" cy="40" r="24" fill="#fff" stroke="#e3d6f2" stroke-width="2"/>
+    <ellipse cx="20" cy="32" rx="6.5" ry="10" fill="#d9b48f" transform="rotate(-22 20 32)"/>
+    <ellipse cx="54" cy="32" rx="6.5" ry="10" fill="#d9b48f" transform="rotate(22 54 32)"/>
+    <circle cx="29" cy="38" r="3" fill="#4a4550"/><circle cx="45" cy="38" r="3" fill="#4a4550"/>
+    <ellipse cx="37" cy="46" rx="4" ry="3" fill="#c98fa6"/>
+    <circle cx="22" cy="46" r="4" fill="#fbdcea"/><circle cx="52" cy="46" r="4" fill="#fbdcea"/>`,
+  bunny: `<ellipse cx="21" cy="18" rx="6" ry="14" fill="#fff" stroke="#e3d6f2" stroke-width="2"/>
+    <ellipse cx="53" cy="18" rx="6" ry="14" fill="#fff" stroke="#e3d6f2" stroke-width="2"/>
+    <circle cx="37" cy="42" r="23" fill="#fff" stroke="#e3d6f2" stroke-width="2"/>
+    <circle cx="29" cy="40" r="3" fill="#4a4550"/><circle cx="45" cy="40" r="3" fill="#4a4550"/>
+    <path d="M33 48 q4 4 8 0" stroke="#c98fa6" stroke-width="2" fill="none"/>
+    <circle cx="22" cy="47" r="4" fill="#dff0fb"/><circle cx="52" cy="47" r="4" fill="#dff0fb"/>`,
+  cat: `<path d="M18 26 L22 10 L32 20 Z" fill="#5b5266"/>
+    <path d="M56 26 L52 10 L42 20 Z" fill="#5b5266"/>
+    <circle cx="37" cy="42" r="23" fill="#5b5266"/>
+    <circle cx="29" cy="40" r="3.4" fill="#fff"/><circle cx="45" cy="40" r="3.4" fill="#fff"/>
+    <path d="M32 49 q5 5 10 0" stroke="#f2b8cf" stroke-width="2" fill="none"/>
+    <circle cx="52" cy="20" r="6" fill="#f2b8cf"/>`,
+  bear: `<circle cx="20" cy="24" r="9" fill="#f2d69a"/><circle cx="54" cy="24" r="9" fill="#f2d69a"/>
+    <circle cx="37" cy="42" r="24" fill="#fbe9bd" stroke="#efd79a" stroke-width="2"/>
+    <circle cx="29" cy="39" r="3" fill="#4a4550"/><circle cx="45" cy="39" r="3" fill="#4a4550"/>
+    <ellipse cx="37" cy="47" rx="9" ry="7" fill="#fff6e0"/>
+    <ellipse cx="37" cy="45" rx="3.4" ry="2.6" fill="#8a6a3d"/>`,
+};
+const mascot = k => `<svg class="mascot" viewBox="0 0 74 74" aria-hidden="true">
+  ${MASCOT[k] || MASCOT.dog}</svg>`;
+
+/* ---------- 일차 카드 ---------- */
+function renderDays() {
+  document.getElementById("days").innerHTML = DAYS.map(d => `
+  <section class="day ${d.tone === "y" ? "y" : ""}">
+    <div class="side">
+      <div>
+        <div class="n">DAY ${d.day_no} <span class="hh">♥</span></div>
+        <div class="d">${esc(d.date)}</div>
+        ${d.holiday ? '<div class="holi"><i>●</i> 공휴일</div>' : ""}
+      </div>
+      ${mascot(d.mascot)}
+      <div class="mood">${esc(d.mood)}</div>
+    </div>
+    <div class="panel">
+      <div class="hdrow"><span>주요 일정</span><span>영업시간</span>
+        <span>이동 동선 / 교통편</span></div>
+      ${d.items.length ? d.items.map(row).join("")
+        : '<div class="row"><div class="main">일정 없음</div></div>'}
+    </div>
+  </section>`).join("");
+}
+
+function row(it) {
+  return `
+  <div class="row${it.hours === "–" ? " none" : ""}">
+    <div class="main">
+      <div class="slot">${esc(it.slot)}</div>
+      <button class="pic" data-itin="${it.id}"
+        aria-label="${esc(it.title)} 상세 보기">${it.icon}</button>
+      <div class="t">
+        <b>${esc(it.title)}</b>
+        ${it.subtitle ? `<span>${esc(it.subtitle)}</span>` : ""}</div>
+    </div>
+    <div class="hours">${it.star ? '<span class="star">★</span> ' : ""}${esc(it.hours)}</div>
+    <div class="move">
+      ${it.leg ? `<div class="leg">${esc(it.leg)}</div>` : ""}
+      ${it.chain.length ? chain(it.chain) : ""}
+      ${it.note ? `<div class="mnote">${esc(it.note)}</div>` : ""}
+    </div>
+  </div>`;
+}
+
+function chain(steps) {
+  return `<div class="chain">` + steps.map((s, i) => `
+    ${i ? '<span class="arrow">→</span>' : ""}
+    <div class="step"><span class="e">${s.icon}</span>
+      <b>${esc(s.name)}</b>
+      ${s.detail ? `<span>${esc(s.detail)}</span>` : ""}</div>`).join("") + `</div>`;
+}
+
+/* ---------- 장소 목록 ---------- */
+const TABS = [["all", "전체"], ["planned", "일정에 있는 곳"], ["쇼핑", "쇼핑"],
+              ["맛집", "맛집"], ["관광", "관광"], ["unsaved", "아직 저장 안 함"],
+              ["ambiguous", "확인 필요"]];
+
+function matches(p) {
+  if (filter === "all") return true;
+  if (filter === "planned") return p.days.length > 0;
+  if (filter === "unsaved") return !p.saved_to_mymaps && !checked.has(p.id);
+  if (filter === "ambiguous") return p.verify_status !== "matched";
+  return p.category === filter;
+}
+
+function renderGrid() {
+  const shown = PLACES.filter(matches);
+  document.getElementById("grid").innerHTML = shown.map(p => {
+    const on = p.saved_to_mymaps || checked.has(p.id);
+    return `<button class="tile${on ? " done" : ""}" data-place="${p.id}">
+      <span class="e">${p.icon}</span>
+      <span><b>${esc(p.name)}</b>
+        <small>${esc(p.category)}${p.days.length
+          ? " · " + p.days.map(d => d.day_no + "일차").join(",") : ""}</small></span>
+      <span class="dot d-${p.verify_status}"
+        title="${esc(LABEL[p.verify_status] || "")}"></span></button>`;
+  }).join("") || "<p>없음</p>";
+}
+
+/* ---------- 팝업 ---------- */
+const pop = document.getElementById("pop");
+
+function openPlace(id, itin) {
+  const p = byId[id];
+  if (!p && !itin) return;
+  const on = p && (p.saved_to_mymaps || checked.has(p.id));
+  const ev = (p?.evidence || []).map(u =>
+    `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(host(u))}</a>`).join(" · ");
+  const rows = [];
+  if (itin) {
+    rows.push(["일정", `${itin.day_no}일차 ${esc(itin.slot)}`]);
+    if (itin.hours && itin.hours !== "–") rows.push(["영업시간", esc(itin.hours)]);
+    if (itin.memo) rows.push(["메모", esc(itin.memo)]);
+  }
+  if (p) {
+    rows.push(["카테고리", esc(p.category)]);
+    if (p.name_verified && p.name_verified !== p.name)
+      rows.push(["구글 표기", esc(p.name_verified)]);
+    rows.push(["주소", p.address ? esc(p.address)
+      : '<span style="color:#9b9096">주소 미확보 — trip.py pending 으로 조사 필요</span>']);
+    if (p.note) rows.push(["노트", esc(p.note)]);
+    if (ev) rows.push(["근거", ev]);
+    if (!itin && p.days.length)
+      rows.push(["일정", p.days.map(d => `${d.day_no}일차 ${esc(d.slot)}`).join(", ")]);
+  }
+
+  document.getElementById("popbody").innerHTML = `
+    <div class="top">
+      <div class="e">${(p && p.icon) || (itin && itin.icon) || "📍"}</div>
+      <div>
+        <h4>${esc(p ? p.name : itin.title)}</h4>
+        <div class="badges">
+          ${p ? `<span class="badge">#${p.id}</span>
+                 <span class="badge">${esc(LABEL[p.verify_status] || p.verify_status)}</span>`
+              : '<span class="badge">장소 미지정</span>'}
+        </div>
+      </div>
+    </div>
+    <dl>${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
+    <div class="acts">
+      ${p && p.maps_url
+        ? `<a class="btn go" href="${esc(p.maps_url)}" target="_blank"
+             rel="noopener">지도 열기</a>`
+        : '<span class="btn off">지도 링크 없음</span>'}
+      ${p ? `<label class="savebox">
+        <input type="checkbox" data-id="${p.id}"${on ? " checked" : ""}
+          ${p.saved_to_mymaps ? " disabled" : ""}> 내 지도에 저장함</label>` : ""}
+      <button class="btn" id="close">닫기</button>
+    </div>`;
+  pop.showModal();
+}
+
+document.addEventListener("click", e => {
+  if (e.target.id === "close") return pop.close();
+  const picBtn = e.target.closest(".pic");
+  if (picBtn) {
+    const iid = Number(picBtn.dataset.itin);
+    for (const d of DAYS) {
+      const it = d.items.find(x => x.id === iid);
+      if (it) return openPlace(it.place_id, { ...it, day_no: d.day_no });
+    }
+    return;
+  }
+  const tile = e.target.closest(".tile");
+  if (tile) return openPlace(Number(tile.dataset.place), null);
+  if (e.target === pop) pop.close();
+});
+
+pop.addEventListener("change", e => {
+  const id = Number(e.target.dataset.id);
+  if (!id) return;
+  e.target.checked ? checked.add(id) : checked.delete(id);
+  store.write([...checked]);
+  renderGrid();
+  renderCmd();
+});
+
+/* ---------- 하단 명령 ---------- */
+function renderCmd() {
+  const ids = [...checked].filter(i => !byId[i]?.saved_to_mymaps).sort((a, b) => a - b);
+  document.getElementById("cmd").textContent = ids.length
+    ? `python trip.py mark-saved ${ids.join(" ")}` : "체크한 장소가 없다";
+  document.getElementById("picked").textContent = `${ids.length}건`;
+}
+
+document.getElementById("tabs").innerHTML = TABS.map(([f, label], i) =>
+  `<button class="chip${i === 0 ? " on" : ""}" data-f="${f}">${label}</button>`).join("");
+document.getElementById("tabs").addEventListener("click", e => {
+  const b = e.target.closest(".chip");
+  if (!b) return;
+  document.querySelectorAll(".chip").forEach(x => x.classList.remove("on"));
+  b.classList.add("on");
+  filter = b.dataset.f;
+  renderGrid();
+});
+document.getElementById("copy").addEventListener("click", () => {
+  const t = document.getElementById("cmd").textContent;
+  if (!t.startsWith("python")) return;
+  const b = document.getElementById("copy");
+  // 샌드박스 iframe 은 클립보드를 막는다. 실패해도 페이지는 살아 있어야 한다.
+  Promise.resolve(navigator.clipboard?.writeText(t))
+    .then(() => b.textContent = "복사됨")
+    .catch(() => b.textContent = "복사 불가");
+  setTimeout(() => b.textContent = "명령 복사", 1400);
+});
+
+renderDays();
+renderGrid();
+renderCmd();
+</script>
+</body>
+</html>
