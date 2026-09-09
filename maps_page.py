@@ -325,11 +325,16 @@ a{color:var(--v-ink);text-decoration:underline;text-underline-offset:3px}
   font-family:"Segoe Script","Brush Script MT",cursive;transform:rotate(-6deg)}
 
 /* ---- 글로벌 네비게이션 ---- */
-.global-nav{margin:16px 0;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:12px;display:flex;gap:6px;overflow-x:auto;box-shadow:0 2px 10px rgba(123,94,167,.04)}
+.global-nav{margin:16px 0;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:12px;display:flex;gap:6px;overflow-x:auto;box-shadow:0 2px 10px rgba(123,94,167,.04);align-items:center}
 .global-nav .chip{flex:none;font-size:14px;padding:6px 16px;border-radius:12px;border:none;background:var(--v-soft);color:var(--v-ink);font-weight:700;transition:all .2s;cursor:pointer}
 .global-nav .chip.on{background:var(--v-ink);color:#fff}
 .global-nav .chip:hover:not(.on){background:var(--v-pill)}
+.global-nav .divider{width:1px;height:24px;background:var(--line);margin:0 4px;flex:none}
+.global-nav .chip.extra{background:var(--y-soft);color:var(--y)}
+.global-nav .chip.extra.on{background:var(--star);color:#fff}
+.global-nav .chip.extra:hover:not(.on){background:var(--y-pill)}
 .day-hidden { display: none !important; }
+.section-hidden { display: none !important; }
 
 /* ---- 일차 카드 ---- */
 .day{margin:16px 0;border-radius:20px;border:1px solid var(--line);
@@ -549,33 +554,41 @@ footer{color:var(--muted);font-size:11.5px;padding:24px 0 6px;text-align:center}
 
 <nav class="global-nav" id="globalnav"></nav>
 
-<div id="days"></div>
+<div id="section-days">
+  <div id="days"></div>
 
-<section class="mapwrap">
-  <div class="maphead">
-    <h3 class="sec">동선</h3>
-    <div class="tabs" id="daytabs"></div>
-  </div>
-  <div id="routemap"></div>
-  <p class="mapnote" id="mapnote"></p>
-  <p class="mapcap">실제 도로 및 교통편을 반영한 구글 지도 동선입니다.</p>
-</section>
+  <section class="mapwrap">
+    <div class="maphead">
+      <h3 class="sec">동선</h3>
+      <div class="tabs" id="daytabs"></div>
+    </div>
+    <div id="routemap"></div>
+    <p class="mapnote" id="mapnote"></p>
+    <p class="mapcap">실제 도로 및 교통편을 반영한 구글 지도 동선입니다.</p>
+  </section>
+</div>
 
-<h3 class="sec">가족 참고사항</h3>
-<p class="sec-sub">조사해서 근거와 함께 저장한 것이다.
-  날씨·공휴일·혼잡은 위 DAY 카드에도 배지로 얹혀 있다.</p>
-<div id="tips"></div>
+<div id="section-tips" class="section-hidden">
+  <h3 class="sec">참고사항</h3>
+  <p class="sec-sub">조사해서 근거와 함께 저장한 것이다.
+    날씨·공휴일·혼잡은 위 DAY 카드에도 배지로 얹혀 있다.</p>
+  <div id="tips"></div>
+</div>
 
-<h3 class="sec">살거 · 먹을거 · 놀거</h3>
-<p class="sec-sub">장소와 연결된 것은 장소 이름이 같이 나온다.</p>
-<div class="tabs" id="itemtabs"></div>
-<div id="itemgrid"></div>
+<div id="section-items" class="section-hidden">
+  <h3 class="sec">살거 · 먹을거 · 놀거</h3>
+  <p class="sec-sub">장소와 연결된 것은 장소 이름이 같이 나온다.</p>
+  <div class="tabs" id="itemtabs"></div>
+  <div id="itemgrid"></div>
+</div>
 
-<h3 class="sec">장소 목록</h3>
-<p class="sec-sub">그림을 누르면 주소·근거·지도 링크가 팝업으로 열린다.
-  내 지도에 저장한 것은 팝업에서 체크하면 아래 명령이 만들어진다.</p>
-<div class="tabs" id="tabs"></div>
-<div id="grid"></div>
+<div id="section-places" class="section-hidden">
+  <h3 class="sec">장소 목록</h3>
+  <p class="sec-sub">그림을 누르면 주소·근거·지도 링크가 팝업으로 열린다.
+    내 지도에 저장한 것은 팝업에서 체크하면 아래 명령이 만들어진다.</p>
+  <div class="tabs" id="tabs"></div>
+  <div id="grid"></div>
+</div>
 
 <footer>생성 __GENERATED__ · 장소 __TOTAL__건 · 이 페이지는 DB 에 아무것도 쓰지 않는다</footer>
 </div>
@@ -704,6 +717,29 @@ function chain(steps) {
 const BADGE_CATS = ["날씨", "공휴일", "혼잡"];
 const BADGE_LEN = 38;
 
+function summarizeTip(cat, txt) {
+  if (cat === "날씨") {
+    let emoji = "⛅";
+    if (txt.includes("비")) emoji = "☔";
+    else if (txt.includes("맑")) emoji = "☀️";
+    else if (txt.includes("흐")) emoji = "☁️";
+    let temp = txt.match(/\\d+\\/\\d+도/);
+    temp = temp ? ` ${temp[0]}` : "";
+    let desc = "날씨";
+    let m = txt.match(/:\\s*([^,]+)/);
+    if (m) desc = m[1].trim();
+    return `${emoji} ${desc}${temp}`;
+  }
+  if (cat === "공휴일") {
+    let name = "공휴일";
+    let m = txt.match(/\\(([^)]+)\\)/);
+    if (m) name = m[1];
+    return `🎌 ${name}`;
+  }
+  if (cat === "혼잡") return "⚠️ 혼잡주의";
+  return `💡 ${cat}`;
+}
+
 function tipBadges(dayNo) {
   const rel = TIPS.filter(t => BADGE_CATS.includes(t.category)
     && (t.day_no === dayNo || t.scope === "trip"));
@@ -711,9 +747,9 @@ function tipBadges(dayNo) {
   return `<div class="tipbar">` + rel.map(t => {
     const wide = t.scope === "trip";
     const text = String(t.text || "");
-    const head = text.slice(0, BADGE_LEN) + (text.length > BADGE_LEN ? "…" : "");
+    const summary = summarizeTip(t.category, text);
     return `<span class="tipbadge${wide ? " trip" : ""}" title="${esc(text)}">${
-      esc((wide ? "여행 전체 · " : "") + t.category + " · " + head)}</span>`;
+      esc((wide ? "[전체] " : "") + summary)}</span>`;
   }).join("") + `</div>`;
 }
 
@@ -1009,10 +1045,15 @@ function renderMap() {
 
 /* ---------- 글로벌 네비게이션 & 벚꽃 애니메이션 ---------- */
 const ALL_DAYS = [["all", "전체"], ...[1, 2, 3, 4].map(d => [String(d), `DAY ${d}`])];
+const EXTRA_TABS = [["tips", "참고사항"], ["items", "살거·먹을거·놀거"], ["places", "장소 목록"]];
+
 function initNav() {
   document.getElementById("globalnav").innerHTML = ALL_DAYS.map(([f, label], i) =>
-    `<button class="chip${i === 0 ? " on" : ""}" data-day="${f}">${label}</button>`
+    `<button class="chip${i === 0 ? " on" : ""}" data-nav="${f}">${label}</button>`
+  ).join("") + `<div class="divider"></div>` + EXTRA_TABS.map(([f, label]) => 
+    `<button class="chip extra" data-nav="${f}">${label}</button>`
   ).join("");
+  
   const oldDayTabs = document.getElementById("daytabs");
   if (oldDayTabs) oldDayTabs.style.display = "none";
   
@@ -1021,13 +1062,23 @@ function initNav() {
     if (!b) return;
     document.querySelectorAll("#globalnav .chip").forEach(x => x.classList.remove("on"));
     b.classList.add("on");
-    const df = b.dataset.day;
-    mapFilter = df;
-    document.querySelectorAll("#days section.day").forEach(el => {
-      const dayNo = el.dataset.dayno;
-      el.classList.toggle("day-hidden", df !== "all" && df !== dayNo);
-    });
-    renderMap();
+    const nav = b.dataset.nav;
+    
+    // 섹션 토글
+    document.getElementById("section-days").classList.toggle("section-hidden", !["all", "1", "2", "3", "4"].includes(nav));
+    document.getElementById("section-tips").classList.toggle("section-hidden", nav !== "tips");
+    document.getElementById("section-items").classList.toggle("section-hidden", nav !== "items");
+    document.getElementById("section-places").classList.toggle("section-hidden", nav !== "places");
+    
+    // 일차(DAY) 필터링 (days 섹션일 때만)
+    if (["all", "1", "2", "3", "4"].includes(nav)) {
+      mapFilter = nav;
+      document.querySelectorAll("#days section.day").forEach(el => {
+        const dayNo = el.dataset.dayno;
+        el.classList.toggle("day-hidden", nav !== "all" && nav !== dayNo);
+      });
+      renderMap();
+    }
   });
 }
 
