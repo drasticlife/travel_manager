@@ -636,19 +636,6 @@ def test_push_skips_tasks_already_on_remote():
     assert posted == ["3일차 [점심] 이치란 라멘 나카스점"], posted
 
 
-if __name__ == "__main__":
-    fails = 0
-    for name, fn in sorted(globals().items()):
-        if name.startswith("test_") and callable(fn):
-            try:
-                fn()
-                print(f"  PASS {name}")
-            except Exception as e:
-                fails += 1
-                print(f"  FAIL {name}: {e}")
-    print(f"\n{'FAILED' if fails else 'OK'} — {fails} failure(s)")
-    raise SystemExit(1 if fails else 0)
-
 
 def test_todoist_existing_contents_follows_cursor():
     """페이지 1건만 읽으면 중복 검사가 뚫린다. 실제로 115건 중 50건만 읽혔다."""
@@ -718,3 +705,20 @@ def test_search_restricts_to_fukuoka():
 
     places.search("x", "KEY", fetch=fake_fetch, area=None)
     assert "locationRestriction" not in seen["body"], seen["body"]
+
+
+# 러너는 반드시 파일 맨 끝에 있어야 한다. 중간에 두면 그 아래 정의된
+# test_ 함수가 globals() 에 없는 채로 수집되어 조용히 건너뛴다.
+# 실제로 그래서 4개(체인점 오염·커서 페이징 회귀 테스트 포함)가 안 돌았다.
+if __name__ == "__main__":
+    fails = 0
+    for name, fn in sorted(globals().items()):
+        if name.startswith("test_") and callable(fn):
+            try:
+                fn()
+                print(f"  PASS {name}")
+            except Exception as e:
+                fails += 1
+                print(f"  FAIL {name}: {e}")
+    print(f"\n{'FAILED' if fails else 'OK'} — {fails} failure(s)")
+    raise SystemExit(1 if fails else 0)
