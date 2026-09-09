@@ -40,6 +40,10 @@ CATEGORY = {"맛집", "쇼핑", "관광", "숙소", "이동", "기타"}
 SLOT = {"오전", "점심", "오후", "저녁", "밤"}
 PACK_CATEGORY = {"의류", "전자", "서류", "약", "세면", "기타"}
 OWNER = {"나", "아내", "공용"}
+ITEM_CATEGORY = {"살거", "먹을거", "놀거"}
+TIP_SCOPE = {"trip", "day", "place"}
+TIP_CATEGORY = {"날씨", "공휴일", "아기", "유모차", "요금",
+                "식사", "혼잡", "우천", "의료", "기타"}
 
 
 class ValidationError(Exception):
@@ -94,6 +98,30 @@ def validate_payload(payload):
             raise ValidationError("E2", f"packing[{i}].item 이 필요합니다.")
         _enum(f"packing[{i}].category", pk.get("category", "기타"), PACK_CATEGORY)
         _enum(f"packing[{i}].owner", pk.get("owner", "공용"), OWNER)
+
+    for i, it in enumerate(payload.get("items") or []):
+        _check_forbidden(f"items[{i}]", it)
+        if not it.get("name"):
+            raise ValidationError("E2", f"items[{i}].name 이 필요합니다.")
+        _enum(f"items[{i}].category", it.get("category"), ITEM_CATEGORY)
+
+    for i, t in enumerate(payload.get("tips") or []):
+        _check_forbidden(f"tips[{i}]", t)
+        if not t.get("text"):
+            raise ValidationError("E2", f"tips[{i}].text 가 필요합니다.")
+        _enum(f"tips[{i}].scope", t.get("scope"), TIP_SCOPE)
+        _enum(f"tips[{i}].category", t.get("category"), TIP_CATEGORY)
+        # 근거 없는 팁은 저장하지 않는다. NOT NULL 로는 '' 가 통과한다.
+        if not (t.get("evidence_urls") or "").strip():
+            raise ValidationError("E2",
+                f"tips[{i}].evidence_urls 가 비었습니다. "
+                "근거 URL 없는 팁은 저장하지 않습니다.")
+        if t.get("scope") == "day" and not isinstance(t.get("day_no"), int):
+            raise ValidationError("E2",
+                f"tips[{i}].scope 가 'day' 이면 day_no 가 필요합니다.")
+        if t.get("scope") == "place" and not t.get("place_name"):
+            raise ValidationError("E2",
+                f"tips[{i}].scope 가 'place' 이면 place_name 이 필요합니다.")
 
     return payload
 

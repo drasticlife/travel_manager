@@ -740,6 +740,89 @@ def test_search_restricts_to_fukuoka():
     assert "locationRestriction" not in seen["body"], seen["body"]
 
 
+# ---------- Task 2: items·tips 검증 ----------
+
+def test_reject_bad_item_category():
+    try:
+        trip.validate_payload({
+            "source": {"kind": "text", "raw_text": "x"},
+            "items": [{"name": "명란", "category": "기념품"}]})
+        assert False, "잘못된 item category가 통과했다"
+    except trip.ValidationError as e:
+        assert e.code == "E2", e.code
+        assert "기념품" in str(e)
+
+
+def test_reject_item_without_name():
+    try:
+        trip.validate_payload({
+            "source": {"kind": "text", "raw_text": "x"},
+            "items": [{"category": "살거"}]})
+        assert False, "name 없는 item이 통과했다"
+    except trip.ValidationError as e:
+        assert e.code == "E2", e.code
+
+
+def test_reject_tip_without_evidence():
+    """근거 없는 팁은 저장하지 않는다. 공백뿐인 값도 막는다."""
+    for bad in (None, "", "   ", "\n"):
+        try:
+            trip.validate_payload({
+                "source": {"kind": "text", "raw_text": "x"},
+                "tips": [{"scope": "trip", "category": "날씨",
+                          "text": "덥다", "evidence_urls": bad}]})
+            assert False, f"근거 없는 팁이 통과했다: {bad!r}"
+        except trip.ValidationError as e:
+            assert e.code == "E2", e.code
+
+
+def test_reject_day_tip_without_day_no():
+    try:
+        trip.validate_payload({
+            "source": {"kind": "text", "raw_text": "x"},
+            "tips": [{"scope": "day", "category": "날씨", "text": "비",
+                      "evidence_urls": "http://a"}]})
+        assert False, "day_no 없는 day 팁이 통과했다"
+    except trip.ValidationError as e:
+        assert e.code == "E2", e.code
+        assert "day_no" in str(e)
+
+
+def test_reject_place_tip_without_place_name():
+    try:
+        trip.validate_payload({
+            "source": {"kind": "text", "raw_text": "x"},
+            "tips": [{"scope": "place", "category": "유모차", "text": "엘리베이터",
+                      "evidence_urls": "http://a"}]})
+        assert False, "place_name 없는 place 팁이 통과했다"
+    except trip.ValidationError as e:
+        assert e.code == "E2", e.code
+        assert "place_name" in str(e)
+
+
+def test_accept_valid_items_and_tips():
+    payload = {
+        "source": {"kind": "text", "raw_text": "원문"},
+        "items": [{"name": "명란", "category": "살거", "note": "위탁수화물만",
+                   "place_names": ["야마야 다이묘점"]}],
+        "tips": [{"scope": "trip", "category": "공휴일", "text": "9/21~23 연휴",
+                  "evidence_urls": "http://a\nhttp://b"}],
+    }
+    assert trip.validate_payload(payload) is payload
+
+
+def test_reject_forbidden_fields_in_tip():
+    """팁에도 좌표 금지 가드가 걸려야 한다."""
+    try:
+        trip.validate_payload({
+            "source": {"kind": "text", "raw_text": "x"},
+            "tips": [{"scope": "trip", "category": "날씨", "text": "x",
+                      "evidence_urls": "http://a", "lat": 33.5}]})
+        assert False, "팁의 lat이 통과했다"
+    except trip.ValidationError as e:
+        assert e.code == "E3", e.code
+
+
 # 러너는 반드시 파일 맨 끝에 있어야 한다. 중간에 두면 그 아래 정의된
 # test_ 함수가 globals() 에 없는 채로 수집되어 조용히 건너뛴다.
 # 실제로 그래서 4개(체인점 오염·커서 페이징 회귀 테스트 포함)가 안 돌았다.
