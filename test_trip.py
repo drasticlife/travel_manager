@@ -1050,6 +1050,31 @@ def test_page_reports_missing_coords():
     assert "좌표" in page, "좌표 누락 안내가 없다"
 
 
+def test_collect_items_groups_by_category():
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "x"},
+        "places": [{"name": "야마야", "category": "쇼핑"}],
+        "items": [{"name": "명란", "category": "살거", "place_names": ["야마야"]},
+                  {"name": "모츠나베", "category": "먹을거"}],
+    })
+    got = maps_page.collect_items(conn)
+    assert {i["category"] for i in got} == {"살거", "먹을거"}, got
+    myeong = [i for i in got if i["name"] == "명란"][0]
+    assert myeong["places"] == "야마야", myeong
+
+
+def test_page_embeds_items():
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "x"},
+        "items": [{"name": "모츠나베", "category": "먹을거"}],
+    })
+    page = maps_page.build_page(conn, "2026-09-09 12:00")
+    assert "__ITEMS__" not in page, "치환 안 된 자리표시자"
+    assert "모츠나베" in page, "아이템이 페이지에 없다"
+
+
 # 러너는 반드시 파일 맨 끝에 있어야 한다. 중간에 두면 그 아래 정의된
 # test_ 함수가 globals() 에 없는 채로 수집되어 조용히 건너뛴다.
 # 실제로 그래서 4개(체인점 오염·커서 페이징 회귀 테스트 포함)가 안 돌았다.

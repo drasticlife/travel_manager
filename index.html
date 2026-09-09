@@ -240,13 +240,19 @@ footer{color:var(--muted);font-size:11.5px;padding:24px 0 6px;text-align:center}
 
 <div id="days"></div>
 
+<h3 class="sec">살거 · 먹을거 · 놀거</h3>
+<p class="sec-sub">장소와 연결된 것은 장소 이름이 같이 나온다.
+  누르면 그 장소의 상세가 열린다.</p>
+<div class="tabs" id="itemtabs"></div>
+<div id="itemgrid"></div>
+
 <h3 class="sec">장소 목록</h3>
 <p class="sec-sub">그림을 누르면 주소·근거·지도 링크가 팝업으로 열린다.
   내 지도에 저장한 것은 팝업에서 체크하면 아래 명령이 만들어진다.</p>
 <div class="tabs" id="tabs"></div>
 <div id="grid"></div>
 
-<footer>생성 2026-09-09 18:04 · 장소 52건 · 이 페이지는 DB 에 아무것도 쓰지 않는다</footer>
+<footer>생성 2026-09-09 18:34 · 장소 52건 · 이 페이지는 DB 에 아무것도 쓰지 않는다</footer>
 </div>
 
 <dialog id="pop"><div class="pop" id="popbody"></div></dialog>
@@ -262,6 +268,7 @@ const PLACES = [{"id": 4, "name": "후지우나ㅡ장어덮밥", "name_verified"
 const DAYS = [{"day_no": 1, "items": [{"id": 1, "slot": "오후", "place_id": 12, "title": "호텔 포르자 하카타역 치쿠시구치Ⅱ", "subtitle": "", "hours": "14:00~15:00 체크인", "star": true, "memo": "14:00~15:00 체크인. 호텔 포르자 하카타에키 치쿠시구치Ⅱ", "icon": "🏨", "leg": null, "chain": [], "note": ""}, {"id": 2, "slot": "오후", "place_id": 43, "title": "캐널시티 하카타", "subtitle": "", "hours": "쇼핑 10:00~21:00 / 식당 ~23:00", "star": false, "memo": "쇼핑 10:00~21:00 / 식당 ~23:00. 호텔→캐널시티 도보 약 18분(1.3km), 하카타역 치쿠시구치에서 나와 도보(평지·유모차 가능). 귀가도 왔던 길 도보 18분", "icon": "🏬", "leg": "호텔 → 캐널시티", "chain": [], "note": "도보 약 18분(1.3km), 하카타역 치쿠시구치에서 나와 도보(평지·유모차 가능). 귀가도 왔던 길 도보 18분"}], "date": "9/21 (월)", "holiday": true, "tone": "v", "mascot": "dog", "mood": "여행의 시작\n설레는 후쿠오카!"}, {"day_no": 2, "items": [{"id": 5, "slot": "오전", "place_id": 15, "title": "동물의숲 우미노나카미치카이힌 공원", "subtitle": "자연 속에서 즐기는 피크닉", "hours": "09:30~17:30", "star": false, "memo": "09:30~17:30. 자연 속에서 즐기는 피크닉. 경로: 호텔 도보 3분(0.2km) → 하카타역 JR 가고시마본선(상행·고쿠라 방면) 약 11분 → 가시이역 JR 가시이선(사이토자키행) 환승 약 20분 → 우미노나카미치역 도보 약 5분(공원 입구까지)", "icon": "🌳", "leg": null, "chain": [{"name": "호텔", "detail": "도보 3분(0.2km)", "icon": "🚶"}, {"name": "하카타역", "detail": "JR 가고시마본선(상행·고쿠라 방면) 약 11분", "icon": "🚃"}, {"name": "가시이역", "detail": "JR 가시이선(사이토자키행) 환승 약 20분", "icon": "🚃"}, {"name": "우미노나카미치역", "detail": "도보 약 5분(공원 입구까지)", "icon": "🚶"}], "note": ""}, {"id": 19, "slot": "오후", "place_id": 12, "title": "호텔 포르자 하카타역 치쿠시구치Ⅱ", "subtitle": "하카타 호텔 복귀 & 휴식", "hours": "–", "star": false, "memo": "하카타 호텔 복귀 & 휴식. 숙소에서 잠시 쉬어요. 복귀: 우미노나카미치역 → 가시이역 → 하카타역 약 40~50분", "icon": "🏨", "leg": null, "chain": [{"name": "우미노나카미치역", "detail": "", "icon": "🚃"}, {"name": "가시이역", "detail": "", "icon": "🚃"}, {"name": "하카타역", "detail": "약 40~50분", "icon": "🚃"}], "note": "숙소에서 잠시 쉬어요"}, {"id": 20, "slot": "저녁", "place_id": 52, "title": "라라포트 후쿠오카", "subtitle": "건담 구경 + 쇼핑·식사", "hours": "쇼핑 10:00~21:00 / 식당 ~22:00", "star": false, "memo": "쇼핑 10:00~21:00 / 식당 ~22:00. 건담 구경 + 쇼핑·식사. 호텔→라라포트: JR 하카타역 → 다케시타역 약 5분, 역에서 도보 약 9분(0.6km)", "icon": "🤖", "leg": "호텔 → 라라포트", "chain": [{"name": "JR 하카타역", "detail": "", "icon": "🚃"}, {"name": "다케시타역", "detail": "약 5분, 역에서 도보 약 9분(0.6km)", "icon": "🚶"}], "note": ""}, {"id": 21, "slot": "저녁", "place_id": 6, "title": "Moff animal cafe LaLaport Fukuoka", "subtitle": "라라포트 후쿠오카 4F", "hours": "10:00~20:00(최종입장 19:30)", "star": false, "memo": "10:00~20:00(최종입장 19:30). 라라포트 후쿠오카 4F. 다양한 동물 친구들을 만날 수 있어요. 예약 불필요", "icon": "🐹", "leg": null, "chain": [], "note": "다양한 동물 친구들을 만날 수 있어요. 예약 불필요"}], "date": "9/22 (화)", "holiday": true, "tone": "v", "mascot": "bunny", "mood": "바다와 자연이\n가득한 하루"}, {"day_no": 3, "items": [{"id": 6, "slot": "오전", "place_id": 14, "title": "마린월드 우미노나카미치 (Marine World Uminonakamichi)", "subtitle": "바다 생물을 만나는 시간", "hours": "09:30~21:00(입장마감 20:00)", "star": false, "memo": "09:30~21:00(입장마감 20:00). 바다 생물을 만나는 시간. 연휴 특별운영이라 18:00부터 야간모드. 쇼 11:00/12:30/14:00/15:30. 경로: 호텔 도보 3분(0.2km) → 하카타역 JR 가고시마본선 약 11분 → 가시이역 JR 가시이선 환승 약 20분 → 우미노나카미치역 도보 약 5분(마린월드까지)", "icon": "🐬", "leg": null, "chain": [{"name": "호텔", "detail": "도보 3분(0.2km)", "icon": "🚶"}, {"name": "하카타역", "detail": "JR 가고시마본선 약 11분", "icon": "🚃"}, {"name": "가시이역", "detail": "JR 가시이선 환승 약 20분", "icon": "🚃"}, {"name": "우미노나카미치역", "detail": "도보 약 5분(마린월드까지)", "icon": "🚶"}], "note": "연휴 특별운영이라 18:00부터 야간모드. 쇼 11:00/12:30/14:00/15:30"}, {"id": 10, "slot": "오후", "place_id": 44, "title": "텐진 지하상가", "subtitle": "텐진 시내 쇼핑", "hours": "10:00~20:00(식당 일부 ~21:00)", "star": false, "memo": "10:00~20:00(식당 일부 ~21:00). 텐진 시내 쇼핑. 마린월드→텐진(전철): 우미노나카미치역 → 가시이역 → 니시테츠 가이즈카역 → 텐진역 약 1시간", "icon": "🛍️", "leg": "마린월드 → 텐진(전철)", "chain": [{"name": "우미노나카미치역", "detail": "", "icon": "🚃"}, {"name": "가시이역", "detail": "", "icon": "🚃"}, {"name": "니시테츠 가이즈카역", "detail": "", "icon": "🚃"}, {"name": "텐진역", "detail": "약 1시간", "icon": "🚃"}], "note": ""}, {"id": 22, "slot": "저녁", "place_id": null, "title": "텐진 맛집에서 저녁 식사", "subtitle": "", "hours": "–", "star": false, "memo": "텐진 맛집에서 저녁 식사. 텐진 주변 맛집 탐방. 텐진역 주변 도보 이동(지하상가·백화점 등). 저녁 후 하카타 호텔로 복귀 — 지하철 공항선 약 6분(3정거장)", "icon": "🍽️", "leg": null, "chain": [], "note": "텐진 주변 맛집 탐방. 텐진역 주변 도보 이동(지하상가·백화점 등). 저녁 후 하카타 호텔로 복귀 — 지하철 공항선 약 6분(3정거장)"}], "date": "9/23 (수)", "holiday": true, "tone": "v", "mascot": "cat", "mood": "바다 생물을 만나고\n텐진에서 즐기는 하루"}, {"day_no": 4, "items": [{"id": 16, "slot": "오전", "place_id": 42, "title": "마잉구 (하카타 1번가)", "subtitle": "기념품 쇼핑(하카타역 마잉구 / 한큐 지하 등)", "hours": "체크아웃 11:00", "star": true, "memo": "체크아웃 11:00. 기념품 쇼핑(하카타역 마잉구 / 한큐 지하 등). 호텔→하카타역 도보 약 3분(0.2km), 치쿠시구치로 이동", "icon": "🎁", "leg": "호텔 → 하카타역", "chain": [], "note": "도보 약 3분(0.2km), 치쿠시구치로 이동"}, {"id": 17, "slot": "오전", "place_id": 10, "title": "한큐 하카타", "subtitle": "지하 식품관 기념품", "hours": "–", "star": false, "memo": "지하 식품관 기념품", "icon": "🎁", "leg": null, "chain": [], "note": ""}, {"id": 18, "slot": "오후", "place_id": null, "title": "후쿠오카 출발 18:00, 한국으로 귀국", "subtitle": "", "hours": "–", "star": false, "memo": "후쿠오카 출발 18:00, 한국으로 귀국. 하카타역→후쿠오카공항(국제선) 택시 약 12~20분(4~5km). 비행기 3시간 전 도착 권장 → 15:00 공항 도착 권장. 유모차·다정이 동반이면 여유 30분 더", "icon": "✈️", "leg": "하카타역 → 후쿠오카공항(국제선)", "chain": [], "note": "택시 약 12~20분(4~5km). 비행기 3시간 전 도착 권장 → 15:00 공항 도착 권장. 유모차·다정이 동반이면 여유 30분 더"}], "date": "9/24 (목)", "holiday": false, "tone": "y", "mascot": "bear", "mood": "아쉬운 잠시,\n다음에 또 :)"}];
 const LABEL = {"ambiguous": "모호 — 후보가 여럿이다", "not_found": "못 찾음 — 검색으로 안 나왔다", "pending": "미조사 — 주소가 아직 없다", "matched": "확인됨"};
 const ROUTE = {"points": [{"itin_id": 2, "place_id": 43, "day_no": 1, "seq_in_day": 1, "name": "캐널시티 하카타", "lat": 33.5896305, "lng": 130.41094780000003, "icon": "🏬", "x": 395.0, "y": 246.2}, {"itin_id": 10, "place_id": 44, "day_no": 3, "seq_in_day": 1, "name": "텐진 지하상가", "lat": 33.589571899999996, "lng": 130.3997484, "icon": "🛍️", "x": 40.0, "y": 248.4}, {"itin_id": 16, "place_id": 42, "day_no": 4, "seq_in_day": 1, "name": "마잉구 (하카타 1번가)", "lat": 33.590537999999995, "lng": 130.4199371, "icon": "🎁", "x": 680.0, "y": 211.6}], "missing": {"1": ["호텔 포르자 하카타역 치쿠시구치Ⅱ"], "2": ["동물의숲 우미노나카미치카이힌 공원", "호텔 포르자 하카타역 치쿠시구치Ⅱ", "라라포트 후쿠오카", "Moff animal cafe LaLaport Fukuoka"], "3": ["마린월드 우미노나카미치 (Marine World Uminonakamichi)"], "4": ["한큐 하카타"]}};
+const ITEMS = [{"id": 14, "name": "Moff animal cafe", "category": "놀거", "note": "아이가 동물과 교감", "done": 0, "places": "Moff animal cafe LaLaport Fukuoka"}, {"id": 15, "name": "건담 구경", "category": "놀거", "note": null, "done": 0, "places": "라라포트 후쿠오카"}, {"id": 17, "name": "동식물원", "category": "놀거", "note": "동물+식물원 겸용, 유모차 동선 좋음", "done": 0, "places": "후쿠오카시 동식물원"}, {"id": 12, "name": "마린월드", "category": "놀거", "note": null, "done": 0, "places": "마린월드 우미노나카미치 (Marine World Uminonakamichi)"}, {"id": 13, "name": "우미노나카미치 해변공원 산책", "category": "놀거", "note": "잔디밭·꽃밭. 유모차로 돌기 좋음", "done": 0, "places": "동물의숲 우미노나카미치카이힌 공원"}, {"id": 16, "name": "호빵맨 어린이 박물관", "category": "놀거", "note": "3세 다정이에게 최적", "done": 0, "places": "후쿠오카 호빵맨 어린이 박물관 in 쇼핑몰"}, {"id": 6, "name": "모츠나베", "category": "먹을거", "note": null, "done": 0, "places": "Mizutaki Motsunabe Hakataro Nishinakasu"}, {"id": 10, "name": "아마오우 딸기 디저트", "category": "먹을거", "note": "제철이면 카페 찾아서 방문 — 매장 미정", "done": 0, "places": null}, {"id": 8, "name": "우동", "category": "먹을거", "note": null, "done": 0, "places": "다이후쿠 우동 (大福うどん), 마키노우동 하카타버스터미널점"}, {"id": 9, "name": "장어덮밥", "category": "먹을거", "note": null, "done": 0, "places": "오호리 우나기, 요시즈카 우나기야, 후지우나ㅡ장어덮밥"}, {"id": 7, "name": "하카타 돈코츠 라멘", "category": "먹을거", "note": "가게는 현지에서 정한다", "done": 0, "places": null}, {"id": 11, "name": "함바그", "category": "먹을거", "note": "아이가 먹기 좋은 부드러운 메뉴", "done": 0, "places": "키와미야 함바그 파르코 후쿠오카점"}, {"id": 5, "name": "다정이 옷·장난감·생활용품", "category": "살거", "note": "물티슈·기저귀 등도 같이. 24시간이라 늦게 들러도 됨", "done": 0, "places": "돈키호테 나카스점"}, {"id": 1, "name": "명란(멘타이코)", "category": "살거", "note": "위탁수화물로만 반입 가능 — 기내 반입 액체류 제한", "done": 0, "places": "로피아 하카타 요도바시, 야마야 다이묘점"}, {"id": 2, "name": "바오바오 백", "category": "살거", "note": "이세이 미야케. Todoist 01.쇼핑 LIST 이월", "done": 0, "places": "한큐 하카타"}, {"id": 3, "name": "플리츠", "category": "살거", "note": "이세이 미야케. Todoist 01.쇼핑 LIST 이월", "done": 0, "places": "한큐 하카타"}, {"id": 4, "name": "하카타 명과·기념 과자", "category": "살거", "note": null, "done": 0, "places": "아뮤플라자 하카타 (AMU)"}];
 const KEY = "trip.mymaps.checked";
 const byId = Object.fromEntries(PLACES.map(p => [p.id, p]));
 /* 샌드박스 iframe(Artifact 등)에서는 localStorage 접근 자체가 예외를 던진다.
@@ -384,6 +391,36 @@ function renderGrid() {
         title="${esc(LABEL[p.verify_status] || "")}"></span></button>`;
   }).join("") || "<p>없음</p>";
 }
+
+/* ---------- 아이템 ---------- */
+const ITEM_TABS = ["전체", "살거", "먹을거", "놀거"];
+let itemFilter = "전체";
+
+function renderItems() {
+  const shown = ITEMS.filter(
+    i => itemFilter === "전체" || i.category === itemFilter);
+  document.getElementById("itemgrid").innerHTML = shown.map(i => {
+    const place = i.places
+      ? `<small>${esc(i.places)}</small>` : `<small>장소 미정</small>`;
+    return `<div class="tile${i.done ? " done" : ""}">
+      <span class="e">${i.category === "살거" ? "🛍️"
+        : i.category === "먹을거" ? "🍜" : "🎡"}</span>
+      <span><b>${esc(i.name)}</b>${place}
+        ${i.note ? `<small>${esc(i.note)}</small>` : ""}</span></div>`;
+  }).join("") || "<p>아직 없다. python trip.py add 로 넣는다.</p>";
+}
+
+document.getElementById("itemtabs").innerHTML = ITEM_TABS.map((label, i) =>
+  `<button class="chip${i === 0 ? " on" : ""}" data-i="${label}">${label}</button>`)
+  .join("");
+document.getElementById("itemtabs").addEventListener("click", e => {
+  const b = e.target.closest(".chip");
+  if (!b) return;
+  document.querySelectorAll("#itemtabs .chip").forEach(x => x.classList.remove("on"));
+  b.classList.add("on");
+  itemFilter = b.dataset.i;
+  renderItems();
+});
 
 /* ---------- 팝업 ---------- */
 const pop = document.getElementById("pop");
@@ -566,6 +603,7 @@ document.getElementById("daytabs").addEventListener("click", e => {
 renderMap();
 renderDays();
 renderGrid();
+renderItems();
 renderCmd();
 </script>
 </body>

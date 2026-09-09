@@ -22,6 +22,8 @@ import math
 import re
 import sqlite3
 
+import trip
+
 SLOT_ORDER = {"오전": 0, "점심": 1, "오후": 2, "저녁": 3, "밤": 4}
 
 STATUS_ORDER = ["ambiguous", "not_found", "pending", "matched"]
@@ -263,6 +265,11 @@ def collect_route(conn):
             "icon": icon_for(r["name"], r["category"]),
         })
     return {"points": project(points), "missing": missing}
+
+
+def collect_items(conn):
+    """아이템 목록. 조회 로직은 trip.list_items 를 그대로 쓴다."""
+    return [dict(r) for r in trip.list_items(conn)]
 
 
 TEMPLATE = """<!doctype html>
@@ -507,6 +514,12 @@ footer{color:var(--muted);font-size:11.5px;padding:24px 0 6px;text-align:center}
 
 <div id="days"></div>
 
+<h3 class="sec">살거 · 먹을거 · 놀거</h3>
+<p class="sec-sub">장소와 연결된 것은 장소 이름이 같이 나온다.
+  누르면 그 장소의 상세가 열린다.</p>
+<div class="tabs" id="itemtabs"></div>
+<div id="itemgrid"></div>
+
 <h3 class="sec">장소 목록</h3>
 <p class="sec-sub">그림을 누르면 주소·근거·지도 링크가 팝업으로 열린다.
   내 지도에 저장한 것은 팝업에서 체크하면 아래 명령이 만들어진다.</p>
@@ -529,6 +542,7 @@ const PLACES = __PLACES__;
 const DAYS = __DAYS__;
 const LABEL = __LABELS__;
 const ROUTE = __ROUTE__;
+const ITEMS = __ITEMS__;
 const KEY = "trip.mymaps.checked";
 const byId = Object.fromEntries(PLACES.map(p => [p.id, p]));
 /* 샌드박스 iframe(Artifact 등)에서는 localStorage 접근 자체가 예외를 던진다.
@@ -651,6 +665,36 @@ function renderGrid() {
         title="${esc(LABEL[p.verify_status] || "")}"></span></button>`;
   }).join("") || "<p>없음</p>";
 }
+
+/* ---------- 아이템 ---------- */
+const ITEM_TABS = ["전체", "살거", "먹을거", "놀거"];
+let itemFilter = "전체";
+
+function renderItems() {
+  const shown = ITEMS.filter(
+    i => itemFilter === "전체" || i.category === itemFilter);
+  document.getElementById("itemgrid").innerHTML = shown.map(i => {
+    const place = i.places
+      ? `<small>${esc(i.places)}</small>` : `<small>장소 미정</small>`;
+    return `<div class="tile${i.done ? " done" : ""}">
+      <span class="e">${i.category === "살거" ? "🛍️"
+        : i.category === "먹을거" ? "🍜" : "🎡"}</span>
+      <span><b>${esc(i.name)}</b>${place}
+        ${i.note ? `<small>${esc(i.note)}</small>` : ""}</span></div>`;
+  }).join("") || "<p>아직 없다. python trip.py add 로 넣는다.</p>";
+}
+
+document.getElementById("itemtabs").innerHTML = ITEM_TABS.map((label, i) =>
+  `<button class="chip${i === 0 ? " on" : ""}" data-i="${label}">${label}</button>`)
+  .join("");
+document.getElementById("itemtabs").addEventListener("click", e => {
+  const b = e.target.closest(".chip");
+  if (!b) return;
+  document.querySelectorAll("#itemtabs .chip").forEach(x => x.classList.remove("on"));
+  b.classList.add("on");
+  itemFilter = b.dataset.i;
+  renderItems();
+});
 
 /* ---------- 팝업 ---------- */
 const pop = document.getElementById("pop");
@@ -833,6 +877,7 @@ document.getElementById("daytabs").addEventListener("click", e => {
 renderMap();
 renderDays();
 renderGrid();
+renderItems();
 renderCmd();
 </script>
 </body>
@@ -851,6 +896,7 @@ def build_page(conn, generated="", fragment=False):
             .replace("__PLACES__", json.dumps(places, ensure_ascii=False))
             .replace("__DAYS__", json.dumps(collect_days(conn), ensure_ascii=False))
             .replace("__ROUTE__", json.dumps(collect_route(conn), ensure_ascii=False))
+            .replace("__ITEMS__", json.dumps(collect_items(conn), ensure_ascii=False))
             .replace("__LABELS__", json.dumps(STATUS_LABEL, ensure_ascii=False))
             .replace("__TOTAL__", str(len(places)))
             .replace("__GENERATED__", html.escape(generated)))
