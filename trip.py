@@ -533,7 +533,7 @@ def main(argv=None):
     p_imp = sub.add_parser("import-takeout", help="Google Takeout CSV 임포트")
     p_imp.add_argument("csv_path")
 
-    p_ver = sub.add_parser("verify", help="pending 장소를 Places API 로 검증 (키 필요)")
+    p_ver = sub.add_parser("verify", help="Places API 로 검증 (키 필요, 과금)")
     p_ver.add_argument("--limit", type=int, default=50)
     p_ver.add_argument("--ids", nargs="+", type=int,
                        help="이 id 만 검증한다. verify_status 를 무시한다.")
