@@ -1075,6 +1075,46 @@ def test_page_embeds_items():
     assert "모츠나베" in page, "아이템이 페이지에 없다"
 
 
+def test_todoist_tasks_include_items():
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "x"},
+        "places": [{"name": "야마야", "category": "쇼핑"}],
+        "items": [{"name": "명란", "category": "살거", "place_names": ["야마야"]}],
+    })
+    tasks = export.build_todoist_tasks(conn)
+    item_tasks = [t for t in tasks if t["table"] == "item"]
+    assert len(item_tasks) == 1, tasks
+    assert item_tasks[0]["content"] == "[살거] 명란 @야마야", item_tasks[0]
+    assert item_tasks[0]["labels"] == ["살거"], item_tasks[0]
+
+
+def test_todoist_skips_pushed_items():
+    """이미 푸시한 아이템은 다시 만들지 않는다."""
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "x"},
+        "items": [{"name": "명란", "category": "살거"}],
+    })
+    conn.execute("UPDATE item SET todoist_task_id = 'T1' WHERE id = 1")
+    conn.commit()
+    assert [t for t in export.build_todoist_tasks(conn)
+            if t["table"] == "item"] == []
+
+
+def test_todoist_skipped_count_includes_items():
+    """skipped 집계가 item 을 빼먹으면 숫자가 틀어진다."""
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "x"},
+        "items": [{"name": "명란", "category": "살거"}],
+    })
+    conn.execute("UPDATE item SET todoist_task_id = 'T1' WHERE id = 1")
+    conn.commit()
+    r = export.push_todoist(conn, "TOK", "P1", dry_run=True)
+    assert r["skipped"] == 1, r
+
+
 # 러너는 반드시 파일 맨 끝에 있어야 한다. 중간에 두면 그 아래 정의된
 # test_ 함수가 globals() 에 없는 채로 수집되어 조용히 건너뛴다.
 # 실제로 그래서 4개(체인점 오염·커서 페이징 회귀 테스트 포함)가 안 돌았다.
