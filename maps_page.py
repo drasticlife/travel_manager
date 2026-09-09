@@ -815,13 +815,25 @@ function renderItems() {
   const shown = ITEMS.filter(
     i => itemFilter === "전체" || i.category === itemFilter);
   document.getElementById("itemgrid").innerHTML = shown.map(i => {
-    const place = i.places
-      ? `<small>${esc(i.places)}</small>` : `<small>장소 미정</small>`;
+    let placeHtml = `<small>장소 미정</small>`;
+    if (i.places) {
+      const names = i.places.split(", ");
+      placeHtml = names.map(name => {
+        const p = PLACES.find(x => x.name === name);
+        if (p) return `<a href="#" onclick="openPlace(${p.id}); return false;" style="display:inline-block; margin-right:8px; text-decoration:underline;">📍 ${esc(name)}</a>`;
+        return `<small style="margin-right:8px;">${esc(name)}</small>`;
+      }).join("");
+      placeHtml = `<div style="margin-top:4px; font-size:13px;">${placeHtml}</div>`;
+    }
+    
     return `<div class="tile${i.done ? " done" : ""}">
       <span class="e">${i.category === "살거" ? "🛍️"
         : i.category === "먹을거" ? "🍜" : "🎡"}</span>
-      <span><b>${esc(i.name)}</b>${place}
-        ${i.note ? `<small>${esc(i.note)}</small>` : ""}</span></div>`;
+      <span style="display:flex; flex-direction:column; align-items:flex-start;">
+        <b>${esc(i.name)}</b>
+        ${placeHtml}
+        ${i.note ? `<small style="margin-top:4px; color:var(--muted);">${esc(i.note)}</small>` : ""}
+      </span></div>`;
   }).join("") || "<p>아직 없다. python trip.py add 로 넣는다.</p>";
 }
 
