@@ -723,14 +723,21 @@ function summarizeTip(cat, txt) {
     if (txt.includes("비")) emoji = "☔";
     else if (txt.includes("맑")) emoji = "☀️";
     else if (txt.includes("흐")) emoji = "☁️";
-    let m = txt.match(/:\\s*(.+)/);
-    let desc = m ? m[1].trim() : txt;
+    let desc = txt;
+    let parts = txt.split(/은\\s+/);
+    if (parts.length > 1) {
+      desc = parts[1].split(".")[0].trim();
+    }
     return `${emoji} ${desc}`;
   }
   if (cat === "공휴일") {
     let name = "공휴일";
-    let m = txt.match(/\\(([^)]+)\\)/);
-    if (m) name = m[1];
+    let parts = txt.split(/은\\s+/);
+    if (parts.length > 1) {
+      let m = parts[1].match(/\\(([^)]+)\\)/);
+      if (m) name = m[1];
+      else name = parts[1].split(/[.,\\s]/)[0];
+    }
     return `🎌 ${name}`;
   }
   if (cat === "혼잡") return "⚠️ 혼잡주의";
