@@ -268,19 +268,31 @@ def import_takeout(conn, csv_path):
 # 검증 — 네트워크·과금 단계. 수집과 분리되어 있어 실패해도 원문은 안전하다.
 # --------------------------------------------------------------------------
 
-def verify_places(conn, api_key, limit=50, search=None):
-    """pending 장소를 Places API 로 조회해 사실을 채운다.
+def verify_places(conn, api_key, limit=50, search=None, ids=None):
+    """장소를 Places API 로 조회해 사실을 채운다.
+
+    ids 를 주면 verify_status 와 무관하게 그 id 만 처리한다. 웹검색 경로로
+    이미 matched 가 된 장소는 좌표가 없는데, pending 만 보는 조건으로는
+    영영 안 잡히기 때문이다.
 
     조회 실패(E7)는 장애가 아니다. pending 을 유지하면 다음 실행이 재시도한다.
     """
     search = search or places_mod.search
     stats = {"matched": 0, "ambiguous": 0, "not_found": 0, "failed": 0}
-    rows = conn.execute(
-        "SELECT id, name FROM place WHERE verify_status = 'pending' "
-        "ORDER BY id LIMIT ?", (limit,)).fetchall()
-    for pid, name in rows:
+    if ids:
+        holes = ",".join("?" * len(ids))
+        rows = conn.execute(
+            f"SELECT id, name, address FROM place WHERE id IN ({holes}) "
+            "ORDER BY id", tuple(ids)).fetchall()
+    else:
+        rows = conn.execute(
+            "SELECT id, name, address FROM place WHERE verify_status = 'pending' "
+            "ORDER BY id LIMIT ?", (limit,)).fetchall()
+    for pid, name, address in rows:
+        # 정확한 일본 주소는 그 자체가 식별자다. 한국어 표기명보다 잘 잡힌다.
+        query = (address or "").strip() or name
         try:
-            candidates = search(name, api_key)
+            candidates = search(query, api_key)
         except places_mod.MissingApiKey:
             raise
         except Exception as e:
@@ -523,6 +535,8 @@ def main(argv=None):
 
     p_ver = sub.add_parser("verify", help="pending 장소를 Places API 로 검증 (키 필요)")
     p_ver.add_argument("--limit", type=int, default=50)
+    p_ver.add_argument("--ids", nargs="+", type=int,
+                       help="이 id 만 검증한다. verify_status 를 무시한다.")
 
     p_pend = sub.add_parser("pending", help="조사할 장소 목록을 JSON 으로 출력")
     p_pend.add_argument("--limit", type=int, default=20)
@@ -563,7 +577,7 @@ def main(argv=None):
         env = load_env()
         try:
             r = verify_places(conn, env.get("GOOGLE_MAPS_API_KEY", ""),
-                              limit=args.limit)
+                              limit=args.limit, ids=args.ids)
         except places_mod.MissingApiKey as e:
             print(f"ERROR E6: {e}", file=sys.stderr)
             return 1

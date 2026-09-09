@@ -357,6 +357,63 @@ def test_verify_respects_limit():
     assert len(calls) == 2, calls
 
 
+def test_verify_ids_targets_matched_rows():
+    """이미 matched 인 행도 --ids 로 지정하면 다시 조회한다.
+
+    웹검색 경로로 matched 가 된 장소는 좌표가 없다. pending 만 보는
+    선택 조건으로는 영영 안 잡힌다.
+    """
+    conn = trip.connect(":memory:")
+    conn.execute("INSERT INTO place (name, category, verify_status) "
+                 "VALUES ('마린월드', '관광', 'matched')")
+    conn.commit()
+    seen = []
+
+    def fake_search(query, api_key):
+        seen.append(query)
+        return [{"place_id": "P1", "name": "마린월드", "address": "후쿠오카",
+                 "lat": 33.66, "lng": 130.36}]
+
+    trip.verify_places(conn, "KEY", search=fake_search, ids=[1])
+    assert seen == ["마린월드"], seen
+    row = conn.execute("SELECT lat, lng FROM place WHERE id=1").fetchone()
+    assert row[0] == 33.66 and row[1] == 130.36, row
+
+
+def test_verify_prefers_address_over_name():
+    """주소가 있으면 주소로 검색한다. 일본 주소는 그 자체가 식별자다."""
+    conn = trip.connect(":memory:")
+    conn.execute("INSERT INTO place (name, category, address, verify_status) "
+                 "VALUES ('동물의숲 우미노나카미치카이힌 공원', '관광', "
+                 "'후쿠오카 히가시구 사이토자키 18-25', 'matched')")
+    conn.commit()
+    seen = []
+
+    def fake_search(query, api_key):
+        seen.append(query)
+        return []
+
+    trip.verify_places(conn, "KEY", search=fake_search, ids=[1])
+    assert seen == ["후쿠오카 히가시구 사이토자키 18-25"], seen
+
+
+def test_verify_without_ids_still_only_pending():
+    """--ids 를 안 주면 기존 동작 그대로여야 한다."""
+    conn = trip.connect(":memory:")
+    conn.execute("INSERT INTO place (name, category, verify_status) "
+                 "VALUES ('이미확인', '관광', 'matched')")
+    conn.execute("INSERT INTO place (name, category) VALUES ('미조사', '관광')")
+    conn.commit()
+    seen = []
+
+    def fake_search(query, api_key):
+        seen.append(query)
+        return []
+
+    trip.verify_places(conn, "KEY", search=fake_search)
+    assert seen == ["미조사"], seen
+
+
 def test_mark_saved():
     conn = trip.connect(":memory:")
     _seed_places(conn, ["가게"])
