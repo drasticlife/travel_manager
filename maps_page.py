@@ -19,6 +19,7 @@
 import html
 import json
 import math
+import os
 import re
 import sqlite3
 
@@ -296,7 +297,7 @@ TEMPLATE = """<!doctype html>
 <title>후쿠오카 3박 4일 · 하카타역 거점 여행 가이드</title>
 <style>
 :root{
-  --bg:#f7f3fd; --card:#ffffff; --ink:#4a4550; --muted:#9b9096;
+  --bg:#f7f3fd; --card:#ffffff; --ink:#4a4550; --muted:#756b71;
   --line:#ece3f7;
   --v:#7b5ea7; --v-ink:#6b4c9a; --v-soft:#f0e9fb; --v-pill:#ded0f5;
   --y:#c9962f; --y-soft:#fdf6e3; --y-pill:#f7e6c8;
@@ -308,7 +309,7 @@ body{margin:0;background:var(--bg);color:var(--ink);
   font-family:"Apple SD Gothic Neo","Malgun Gothic","Nanum Gothic",sans-serif;
   font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%}
 .wrap{max-width:1000px;margin:0 auto;padding:0 14px 110px}
-a{color:var(--v-ink)}
+a{color:var(--v-ink);text-decoration:underline;text-underline-offset:3px}
 
 /* ---- 표지 ---- */
 .hero{position:relative;margin-top:16px;border-radius:22px;overflow:hidden;
@@ -322,6 +323,13 @@ a{color:var(--v-ink)}
 .hero p{margin:4px 0 0;font-size:13px;color:var(--muted)}
 .script{position:absolute;right:26px;top:26px;font-size:27px;color:var(--v-ink);
   font-family:"Segoe Script","Brush Script MT",cursive;transform:rotate(-6deg)}
+
+/* ---- 글로벌 네비게이션 ---- */
+.global-nav{margin:16px 0;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:12px;display:flex;gap:6px;overflow-x:auto;box-shadow:0 2px 10px rgba(123,94,167,.04)}
+.global-nav .chip{flex:none;font-size:14px;padding:6px 16px;border-radius:12px;border:none;background:var(--v-soft);color:var(--v-ink);font-weight:700;transition:all .2s;cursor:pointer}
+.global-nav .chip.on{background:var(--v-ink);color:#fff}
+.global-nav .chip:hover:not(.on){background:var(--v-pill)}
+.day-hidden { display: none !important; }
 
 /* ---- 일차 카드 ---- */
 .day{margin:16px 0;border-radius:20px;border:1px solid var(--line);
@@ -390,19 +398,10 @@ a{color:var(--v-ink)}
   padding:14px;margin:16px 0}
 .maphead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
 .maphead .sec{margin:0}
-#routemap{width:100%;height:auto;display:block;background:var(--bg);
-  border-radius:14px}
+#routemap{width:100%;height:460px;background:var(--bg);
+  border-radius:14px;overflow:hidden;}
 .mapnote{margin:8px 0 0;font-size:12px;color:var(--muted)}
 .mapcap{margin:6px 0 0;font-size:11.5px;color:var(--muted)}
-.rt-line{fill:none;stroke-width:2.5;stroke-linecap:round}
-.rt-dot{cursor:pointer}
-.rt-dot circle{stroke:#fff;stroke-width:2}
-.rt-dot text{font-size:11px;font-weight:700;fill:#fff;text-anchor:middle;
-  dominant-baseline:central;pointer-events:none}
-.rt-label{font-size:10.5px;fill:var(--ink);text-anchor:middle;pointer-events:none}
-.rt-grid{stroke:var(--line);stroke-width:1}
-.rt-scale{stroke:var(--muted);stroke-width:1.5}
-.rt-scale-text{font-size:10px;fill:var(--muted)}
 
 /* ---- 팁 ---- */
 .tipbar{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
@@ -477,7 +476,18 @@ footer{color:var(--muted);font-size:11.5px;padding:24px 0 6px;text-align:center}
 @keyframes fall{to{transform:translateY(78px) rotate(150deg);opacity:0}}
 .petal{animation:fall 9s linear infinite}
 .petal:nth-of-type(2){animation-delay:2.4s} .petal:nth-of-type(3){animation-delay:4.9s}
-@media(prefers-reduced-motion:reduce){.petal{animation:none}}
+
+/* 인터랙티브 애니메이션 */
+@keyframes shake { 0%,100%{transform:translateY(0)} 25%{transform:translateY(-2px) rotate(-3deg)} 75%{transform:translateY(1px) rotate(3deg)} }
+.anim-shake { animation: shake 0.6s infinite ease-in-out }
+@keyframes walk { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(-8deg)} 75%{transform:rotate(8deg)} }
+.anim-walk { animation: walk 0.8s infinite ease-in-out; transform-origin: bottom center }
+@keyframes flow { 0%{transform:translateX(0);opacity:.5} 50%{transform:translateX(3px);opacity:1} 100%{transform:translateX(0);opacity:.5} }
+.anim-flow { animation: flow 1.5s infinite ease-in-out; display:inline-block }
+@keyframes cherryFall { 0%{transform:translateY(-10px) rotate(0deg) translateX(0);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateY(100vh) rotate(360deg) translateX(50px);opacity:0} }
+.cherry-blossom { position:fixed; top:-20px; color:#f48fb1; user-select:none; pointer-events:none; z-index:9999; animation:cherryFall linear forwards }
+
+@media(prefers-reduced-motion:reduce){.petal,.anim-shake,.anim-walk,.anim-flow,.cherry-blossom{animation:none}}
 
 @media(max-width:780px){
   .day{grid-template-columns:1fr}
@@ -537,18 +547,19 @@ footer{color:var(--muted);font-size:11.5px;padding:24px 0 6px;text-align:center}
   <div class="script">Fukuoka</div>
 </header>
 
+<nav class="global-nav" id="globalnav"></nav>
+
+<div id="days"></div>
+
 <section class="mapwrap">
   <div class="maphead">
     <h3 class="sec">동선</h3>
     <div class="tabs" id="daytabs"></div>
   </div>
-  <svg id="routemap" viewBox="0 0 720 460" role="img"
-       aria-label="일차별 이동 동선"></svg>
+  <div id="routemap"></div>
   <p class="mapnote" id="mapnote"></p>
-  <p class="mapcap">상대 위치만 보여준다. 실제 도로·경로가 아니고, 배율은 왼쪽 아래 축척으로 읽는다.</p>
+  <p class="mapcap">실제 도로 및 교통편을 반영한 구글 지도 동선입니다.</p>
 </section>
-
-<div id="days"></div>
 
 <h3 class="sec">가족 참고사항</h3>
 <p class="sec-sub">조사해서 근거와 함께 저장한 것이다.
@@ -577,6 +588,7 @@ footer{color:var(--muted);font-size:11.5px;padding:24px 0 6px;text-align:center}
   <button class="btn" id="copy">명령 복사</button>
 </div>
 
+<script src="https://maps.googleapis.com/maps/api/js?key=__API_KEY__"></script>
 <script>
 const PLACES = __PLACES__;
 const DAYS = __DAYS__;
@@ -633,7 +645,7 @@ const mascot = k => `<svg class="mascot" viewBox="0 0 74 74" aria-hidden="true">
 /* ---------- 일차 카드 ---------- */
 function renderDays() {
   document.getElementById("days").innerHTML = DAYS.map(d => `
-  <section class="day ${d.tone === "y" ? "y" : ""}">
+  <section class="day ${d.tone === "y" ? "y" : ""}" data-dayno="${d.day_no}">
     <div class="side">
       <div>
         <div class="n">DAY ${d.day_no} <span class="hh">♥</span></div>
@@ -674,11 +686,16 @@ function row(it) {
 }
 
 function chain(steps) {
-  return `<div class="chain">` + steps.map((s, i) => `
-    ${i ? '<span class="arrow">→</span>' : ""}
-    <div class="step"><span class="e">${s.icon}</span>
+  return `<div class="chain">` + steps.map((s, i) => {
+    let animClass = "";
+    if (["🚇","🚃","🚌","🚕"].includes(s.icon)) animClass = " anim-shake";
+    else if (s.icon.includes("🚶")) animClass = " anim-walk";
+    return `
+    ${i ? '<span class="arrow anim-flow">→</span>' : ""}
+    <div class="step"><span class="e${animClass}">${s.icon}</span>
       <b>${esc(s.name)}</b>
-      ${s.detail ? `<span>${esc(s.detail)}</span>` : ""}</div>`).join("") + `</div>`;
+      ${s.detail ? `<span>${esc(s.detail)}</span>` : ""}</div>`;
+  }).join("") + `</div>`;
 }
 
 /* ---------- 참고사항 ---------- */
@@ -901,66 +918,85 @@ document.getElementById("copy").addEventListener("click", () => {
 const DAY_COLOR = {1: "#7b5ea7", 2: "#4a7fb5", 3: "#5aa469", 4: "#c9962f"};
 let mapFilter = "all";
 
-/* 자동 맞춤이라 세 점이 2km 를 차지하든 20km 를 차지하든 화면을 꽉 채운다.
-   축척이 없으면 지하철 한 정거장이 도시 횡단으로 읽힌다.
-   위도 1도 ≈ 111km, 경도는 cos(위도) 로 줄인다 — 이 범위면 이 근사로 충분하다. */
-const NICE_KM = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50];
-
-function scaleBar(pts) {
-  if (pts.length < 2) return "";          // 점이 하나면 배율을 알 수 없다
-  const span = a => Math.max(...a) - Math.min(...a);
-  const lat = span(pts.map(p => p.lat)), lng = span(pts.map(p => p.lng));
-  const midLat = (Math.max(...pts.map(p => p.lat))
-                  + Math.min(...pts.map(p => p.lat))) / 2;
-  const km = Math.hypot(lat * 111, lng * 111 * Math.cos(midLat * Math.PI / 180));
-  const px = Math.hypot(span(pts.map(p => p.x)), span(pts.map(p => p.y)));
-  if (!km || !px) return "";              // 좌표가 전부 같은 점이다
-  const perPx = km / px;
-  const unit = NICE_KM.filter(k => k / perPx <= 150).pop() || NICE_KM[0];
-  const w = Math.round(unit / perPx);
-  const label = unit >= 1 ? `약 ${unit}km` : `약 ${unit * 1000}m`;
-  const x = 40, y = 438;
-  return `<line class="rt-scale" x1="${x}" y1="${y}" x2="${x + w}" y2="${y}"/>
-    <line class="rt-scale" x1="${x}" y1="${y - 4}" x2="${x}" y2="${y + 4}"/>
-    <line class="rt-scale" x1="${x + w}" y1="${y - 4}" x2="${x + w}" y2="${y + 4}"/>
-    <text class="rt-scale-text" x="${x}" y="${y - 7}">${label}</text>`;
-}
-
 function renderMap() {
-  const svg = document.getElementById("routemap");
+  const container = document.getElementById("routemap");
   const pts = ROUTE.points.filter(
     p => mapFilter === "all" || p.day_no === Number(mapFilter));
-  const days = [...new Set(pts.map(p => p.day_no))].sort((a, b) => a - b);
-
-  let out = "";
-  for (let g = 80; g < 720; g += 160)
-    out += `<line class="rt-grid" x1="${g}" y1="0" x2="${g}" y2="460"/>`;
-  for (let g = 80; g < 460; g += 120)
-    out += `<line class="rt-grid" x1="0" y1="${g}" x2="720" y2="${g}"/>`;
-
-  for (const d of days) {
-    const seq = pts.filter(p => p.day_no === d)
-                   .sort((a, b) => a.seq_in_day - b.seq_in_day);
-    const color = DAY_COLOR[d] || "#7b5ea7";
-    for (let i = 1; i < seq.length; i++) {
-      const a = seq[i - 1], b = seq[i];
-      out += `<line class="rt-line" stroke="${color}" x1="${a.x}" y1="${a.y}"
-                x2="${b.x}" y2="${b.y}" marker-end="url(#arrow${d})"/>`;
-    }
-    for (const p of seq) {
-      out += `<g class="rt-dot" data-itin="${p.itin_id}">
-        <circle cx="${p.x}" cy="${p.y}" r="13" fill="${color}"/>
-        <text x="${p.x}" y="${p.y}">${p.seq_in_day}</text></g>
-        <text class="rt-label" x="${p.x}" y="${p.y + 26}">${esc((p.name || "").slice(0, 12))}</text>`;
-    }
+  
+  if (!pts.length) {
+    container.innerHTML = "<div style='padding:20px;text-align:center;'>표시할 지점이 없습니다.</div>";
+    return;
   }
 
-  const defs = days.map(d => `<marker id="arrow${d}" viewBox="0 0 10 10"
-      refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-      <path d="M0,0 L10,5 L0,10 z" fill="${DAY_COLOR[d] || "#7b5ea7"}"/></marker>`).join("");
-  out += scaleBar(pts);
-  // 격자선 때문에 out 은 항상 비지 않는다. '좌표 없음' 안내는 #mapnote 가 한다.
-  svg.innerHTML = `<defs>${defs}</defs>${out}`;
+  const map = new google.maps.Map(container, {
+    zoom: 12,
+    center: {lat: pts[0].lat, lng: pts[0].lng},
+    mapTypeId: 'roadmap',
+    disableDefaultUI: true,
+    zoomControl: true,
+  });
+
+  const bounds = new google.maps.LatLngBounds();
+  pts.forEach(p => {
+    const pos = {lat: p.lat, lng: p.lng};
+    bounds.extend(pos);
+    new google.maps.Marker({
+      position: pos,
+      map: map,
+      label: {
+        text: String(p.seq_in_day),
+        color: "white",
+        fontWeight: "bold"
+      },
+      title: p.name
+    });
+  });
+  
+  if (pts.length > 1) {
+    map.fitBounds(bounds, {top: 40, bottom: 40, left: 40, right: 40});
+  }
+
+  const days = [...new Set(pts.map(p => p.day_no))].sort((a, b) => a - b);
+  const directionsService = new google.maps.DirectionsService();
+
+  for (const d of days) {
+    const seq = pts.filter(p => p.day_no === d).sort((a, b) => a.seq_in_day - b.seq_in_day);
+    if (seq.length < 2) continue;
+    const color = DAY_COLOR[d] || "#7b5ea7";
+    
+    for (let i = 0; i < seq.length - 1; i++) {
+        directionsService.route({
+            origin: {lat: seq[i].lat, lng: seq[i].lng},
+            destination: {lat: seq[i+1].lat, lng: seq[i+1].lng},
+            travelMode: google.maps.TravelMode.TRANSIT
+        }, (response, status) => {
+            if (status === 'OK') {
+                new google.maps.DirectionsRenderer({
+                    map: map,
+                    directions: response,
+                    suppressMarkers: true,
+                    preserveViewport: true,
+                    polylineOptions: {
+                        strokeColor: color,
+                        strokeOpacity: 0.8,
+                        strokeWeight: 5
+                    }
+                });
+            } else {
+                new google.maps.Polyline({
+                    path: [
+                        {lat: seq[i].lat, lng: seq[i].lng},
+                        {lat: seq[i+1].lat, lng: seq[i+1].lng}
+                    ],
+                    strokeColor: color,
+                    strokeOpacity: 0.8,
+                    strokeWeight: 4,
+                    map: map
+                });
+            }
+        });
+    }
+  }
 
   const miss = Object.entries(ROUTE.missing)
     .filter(([d]) => mapFilter === "all" || Number(d) === Number(mapFilter));
@@ -971,22 +1007,50 @@ function renderMap() {
     : "";
 }
 
-document.getElementById("daytabs").innerHTML =
-  [["all", "전체"], ...[1, 2, 3, 4].map(d => [String(d), `DAY ${d}`])]
-    .map(([f, label], i) =>
-      `<button class="chip${i === 0 ? " on" : ""}" data-day="${f}">${label}</button>`)
-    .join("");
-document.getElementById("daytabs").addEventListener("click", e => {
-  const b = e.target.closest(".chip");
-  if (!b) return;
-  document.querySelectorAll("#daytabs .chip").forEach(x => x.classList.remove("on"));
-  b.classList.add("on");
-  mapFilter = b.dataset.day;
-  renderMap();
-});
+/* ---------- 글로벌 네비게이션 & 벚꽃 애니메이션 ---------- */
+const ALL_DAYS = [["all", "전체"], ...[1, 2, 3, 4].map(d => [String(d), `DAY ${d}`])];
+function initNav() {
+  document.getElementById("globalnav").innerHTML = ALL_DAYS.map(([f, label], i) =>
+    `<button class="chip${i === 0 ? " on" : ""}" data-day="${f}">${label}</button>`
+  ).join("");
+  const oldDayTabs = document.getElementById("daytabs");
+  if (oldDayTabs) oldDayTabs.style.display = "none";
+  
+  document.getElementById("globalnav").addEventListener("click", e => {
+    const b = e.target.closest(".chip");
+    if (!b) return;
+    document.querySelectorAll("#globalnav .chip").forEach(x => x.classList.remove("on"));
+    b.classList.add("on");
+    const df = b.dataset.day;
+    mapFilter = df;
+    document.querySelectorAll("#days section.day").forEach(el => {
+      const dayNo = el.dataset.dayno;
+      el.classList.toggle("day-hidden", df !== "all" && df !== dayNo);
+    });
+    renderMap();
+  });
+}
 
-renderMap();
+function spawnBlossom() {
+  const p = document.createElement("div");
+  p.className = "cherry-blossom";
+  p.innerHTML = "🌸";
+  p.style.left = Math.random() * 100 + "vw";
+  p.style.animationDuration = (Math.random() * 4 + 4) + "s";
+  p.style.fontSize = (Math.random() * 10 + 10) + "px";
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), 9000);
+}
+setInterval(spawnBlossom, 800);
+
+try {
+  renderMap();
+} catch (e) {
+  console.error("Map rendering failed:", e);
+  document.getElementById("routemap").innerHTML = "<div style='padding:20px;text-align:center;'>지도 로딩 실패. 콘솔을 확인하세요.</div>";
+}
 renderDays();
+initNav();
 renderTips();
 renderGrid();
 renderItems();
@@ -995,6 +1059,17 @@ renderCmd();
 </body>
 </html>
 """
+
+
+def get_google_maps_key():
+    try:
+        with open('.env', 'r', encoding='utf-8') as f:
+            for line in f:
+                if line.startswith('GOOGLE_MAPS_API_KEY='):
+                    return line.strip().split('=', 1)[1]
+    except Exception:
+        pass
+    return ""
 
 
 def build_page(conn, generated="", fragment=False):
@@ -1012,6 +1087,7 @@ def build_page(conn, generated="", fragment=False):
             .replace("__TIPS__", json.dumps(collect_tips(conn), ensure_ascii=False))
             .replace("__LABELS__", json.dumps(STATUS_LABEL, ensure_ascii=False))
             .replace("__TOTAL__", str(len(places)))
+            .replace("__API_KEY__", get_google_maps_key())
             .replace("__GENERATED__", html.escape(generated)))
     if not fragment:
         return page
