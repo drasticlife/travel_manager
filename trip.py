@@ -300,8 +300,11 @@ def verify_places(conn, api_key, limit=50, search=None, ids=None):
             stats["failed"] += 1
             continue
         status, chosen = places_mod.judge(name, candidates)
+        # --ids 는 이미 확정된 행도 잡는다. ambiguous 후보를 덮어쓰면 사람이
+        # 확인해 둔 주소가 날아간다. 지정 조회에서는 matched 만 사실을 쓴다.
+        # (pending 경로는 잃을 게 없으므로 기존 동작 그대로 둔다.)
         try:
-            if chosen:
+            if chosen and (status == "matched" or not ids):
                 conn.execute(
                     "UPDATE place SET verify_status=?, place_id=?, name_verified=?, "
                     "address=?, lat=?, lng=?, maps_url=? WHERE id=?",

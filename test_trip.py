@@ -397,6 +397,32 @@ def test_verify_prefers_address_over_name():
     assert seen == ["후쿠오카 히가시구 사이토자키 18-25"], seen
 
 
+def test_verify_ids_ambiguous_keeps_existing_address():
+    """--ids 로 다시 조회했는데 모호하면 기존 주소를 지우면 안 된다.
+
+    judge 는 후보가 둘이면 ('ambiguous', 후보1) 을 준다. 그걸 그대로 쓰면
+    '이치란 나카스점' 자리에 '이치란 텐진점' 주소가 덮인다.
+    """
+    conn = trip.connect(":memory:")
+    conn.execute("INSERT INTO place (name, category, address, verify_status) "
+                 "VALUES ('마잉구', '쇼핑', '후쿠오카 하카타역 1-1', 'matched')")
+    conn.commit()
+
+    def two_candidates(query, api_key):
+        return [{"place_id": "P1", "name": "엉뚱한 몰", "address": "엉뚱한 주소",
+                 "lat": 1.0, "lng": 2.0},
+                {"place_id": "P2", "name": "다른 몰", "address": "다른 주소",
+                 "lat": 3.0, "lng": 4.0}]
+
+    r = trip.verify_places(conn, "KEY", search=two_candidates, ids=[1])
+    assert r["ambiguous"] == 1, r
+    row = conn.execute("SELECT verify_status, address, place_id, lat "
+                       "FROM place WHERE id=1").fetchone()
+    assert row[0] == "ambiguous", row
+    assert row[1] == "후쿠오카 하카타역 1-1", row
+    assert row[2] is None and row[3] is None, row
+
+
 def test_verify_without_ids_still_only_pending():
     """--ids 를 안 주면 기존 동작 그대로여야 한다."""
     conn = trip.connect(":memory:")
@@ -1073,6 +1099,23 @@ def test_page_embeds_items():
     page = maps_page.build_page(conn, "2026-09-09 12:00")
     assert "__ITEMS__" not in page, "치환 안 된 자리표시자"
     assert "모츠나베" in page, "아이템이 페이지에 없다"
+
+
+def test_page_embeds_tips_with_evidence():
+    """조사한 팁이 페이지에 실제로 실려야 한다. 근거 URL 도 같이 간다."""
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "x"},
+        "tips": [{"scope": "day", "day_no": 2, "category": "날씨",
+                  "text": "9/22 는 비 때때로 흐림, 우비를 챙긴다",
+                  "evidence_urls": "https://tenki.jp/forecast/x"}],
+    })
+    got = maps_page.collect_tips(conn)
+    assert got[0]["evidence_urls"] == ["https://tenki.jp/forecast/x"], got
+    page = maps_page.build_page(conn, "2026-09-09 12:00")
+    assert "__TIPS__" not in page, "치환 안 된 자리표시자"
+    assert "9/22 는 비 때때로 흐림, 우비를 챙긴다" in page, "팁 본문이 페이지에 없다"
+    assert "https://tenki.jp/forecast/x" in page, "근거 URL 이 페이지에 없다"
 
 
 def test_todoist_tasks_include_items():
