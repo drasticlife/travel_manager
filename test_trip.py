@@ -12,11 +12,12 @@ import trip
 
 # ---------- Task 1: 스키마 ----------
 
-def test_schema_creates_four_tables():
+def test_schema_creates_all_tables():
     conn = trip.connect(":memory:")
     names = {r[0] for r in conn.execute(
         "SELECT name FROM sqlite_master WHERE type='table'")}
-    assert names == {"source", "place", "itinerary", "packing"}, names
+    assert names == {"source", "place", "itinerary", "packing",
+                     "item", "item_place", "tip"}, names
 
 
 def test_category_check_constraint():
@@ -26,6 +27,38 @@ def test_category_check_constraint():
         assert False, "DB가 잘못된 category를 받아들였다"
     except sqlite3.IntegrityError:
         pass
+
+
+def test_item_category_check_constraint():
+    conn = trip.connect(":memory:")
+    try:
+        conn.execute("INSERT INTO item (name, category) VALUES ('명란', '기념품')")
+        assert False, "DB가 잘못된 item.category를 받아들였다"
+    except sqlite3.IntegrityError:
+        pass
+
+
+def test_tip_scope_check_constraint():
+    conn = trip.connect(":memory:")
+    try:
+        conn.execute(
+            "INSERT INTO tip (scope, category, text, evidence_urls) "
+            "VALUES ('hour', '날씨', 'x', 'http://a')")
+        assert False, "DB가 잘못된 tip.scope를 받아들였다"
+    except sqlite3.IntegrityError:
+        pass
+
+
+def test_item_place_links_one_item_to_many_places():
+    conn = trip.connect(":memory:")
+    conn.execute("INSERT INTO place (name, category) VALUES ('야마야', '쇼핑')")
+    conn.execute("INSERT INTO place (name, category) VALUES ('로피아', '쇼핑')")
+    conn.execute("INSERT INTO item (name, category) VALUES ('명란', '살거')")
+    conn.execute("INSERT INTO item_place (item_id, place_id) VALUES (1, 1), (1, 2)")
+    got = [r[0] for r in conn.execute(
+        "SELECT p.name FROM item_place ip JOIN place p ON p.id = ip.place_id "
+        "WHERE ip.item_id = 1 ORDER BY p.name")]
+    assert got == ["로피아", "야마야"], got
 
 
 # ---------- Task 2: LLM JSON 검증 ----------
