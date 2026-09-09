@@ -204,7 +204,7 @@ CREATE INDEX IF NOT EXISTS idx_tip_scope     ON tip(scope, day_no);
 - [ ] **Step 4: 통과를 확인한다**
 
 Run: `python test_trip.py 2>&1 | tail -2`
-Expected: `OK — 0 failure(s)`, PASS 개수 63
+Expected: `OK — 0 failure(s)`, PASS 개수 62
 
 - [ ] **Step 5: 기존 DB 에도 테이블을 만든다**
 
@@ -365,7 +365,7 @@ TIP_CATEGORY = {"날씨", "공휴일", "아기", "유모차", "요금",
 - [ ] **Step 5: 통과를 확인한다**
 
 Run: `python test_trip.py 2>&1 | tail -2`
-Expected: `OK — 0 failure(s)`, PASS 개수 70
+Expected: `OK — 0 failure(s)`, PASS 개수 69
 
 - [ ] **Step 6: 커밋**
 
@@ -505,7 +505,7 @@ Expected: `4`
 - [ ] **Step 4: 통과를 확인한다**
 
 Run: `python test_trip.py 2>&1 | tail -2`
-Expected: `OK — 0 failure(s)`, PASS 개수 74
+Expected: `OK — 0 failure(s)`, PASS 개수 73
 
 - [ ] **Step 5: 커밋**
 
@@ -677,7 +677,7 @@ def list_items(conn, category=None):
 - [ ] **Step 5: 통과를 확인한다**
 
 Run: `python test_trip.py 2>&1 | tail -2`
-Expected: `OK — 0 failure(s)`, PASS 개수 76
+Expected: `OK — 0 failure(s)`, PASS 개수 75
 
 Run: `python trip.py items`
 Expected: 아무것도 안 나오고 종료 코드 0 (아직 데이터 없음)
@@ -821,7 +821,7 @@ def verify_places(conn, api_key, limit=50, search=None, ids=None):
 - [ ] **Step 5: 통과를 확인한다**
 
 Run: `python test_trip.py 2>&1 | tail -2`
-Expected: `OK — 0 failure(s)`, PASS 개수 79
+Expected: `OK — 0 failure(s)`, PASS 개수 78
 
 - [ ] **Step 6: 커밋**
 
@@ -948,7 +948,7 @@ def project(points, width=720, height=460, pad=40):
 - [ ] **Step 4: 통과를 확인한다**
 
 Run: `python test_trip.py 2>&1 | tail -2`
-Expected: `OK — 0 failure(s)`, PASS 개수 83
+Expected: `OK — 0 failure(s)`, PASS 개수 82
 
 - [ ] **Step 5: 커밋**
 
@@ -1201,7 +1201,7 @@ renderCmd();
 - [ ] **Step 7: 통과를 확인한다**
 
 Run: `python test_trip.py 2>&1 | tail -2`
-Expected: `OK — 0 failure(s)`, PASS 개수 86
+Expected: `OK — 0 failure(s)`, PASS 개수 85
 
 Run: `python export.py maps-page && python export.py maps-page --out index.html`
 Expected: 두 파일 모두 생성
@@ -1420,7 +1420,7 @@ document.getElementById("itemtabs").addEventListener("click", e => {
 - [ ] **Step 6: 통과를 확인한다**
 
 Run: `python test_trip.py 2>&1 | tail -2`
-Expected: `OK — 0 failure(s)`, PASS 개수 88
+Expected: `OK — 0 failure(s)`, PASS 개수 87
 
 - [ ] **Step 7: 실제 아이템을 넣는다**
 
@@ -1559,7 +1559,7 @@ Expected: `3`
 - [ ] **Step 4: 통과를 확인한다**
 
 Run: `python test_trip.py 2>&1 | tail -2`
-Expected: `OK — 0 failure(s)`, PASS 개수 91
+Expected: `OK — 0 failure(s)`, PASS 개수 90
 
 - [ ] **Step 5: 미리보기로 확인한다 (푸시하지 않는다)**
 
