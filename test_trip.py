@@ -18,7 +18,7 @@ def test_schema_creates_all_tables():
     names = {r[0] for r in conn.execute(
         "SELECT name FROM sqlite_master WHERE type='table'")}
     assert names == {"source", "place", "itinerary", "packing",
-                     "item", "item_place", "tip"}, names
+                     "item", "item_place", "tip", "timetable"}, names
 
 
 def test_category_check_constraint():
@@ -1225,6 +1225,111 @@ def test_todoist_content_has_no_at_sign():
     assert "@" not in t["content"], t["content"]
     assert "한큐 하카타" in t["content"], t["content"]
     assert t["labels"] == ["살거"], t["labels"]
+
+
+def test_timetable_service_kind_check_constraint():
+    conn = trip.connect(":memory:")
+    try:
+        conn.execute(
+            "INSERT INTO timetable (line, from_stop, to_stop, service_kind, "
+            "dep_time, arr_time) VALUES ('공항선','博多','天神','명절','09:00','09:05')")
+        assert False, "DB가 잘못된 service_kind를 받아들였다"
+    except sqlite3.IntegrityError:
+        pass
+
+
+def test_collect_timetable_compacts_and_covers_trip_days():
+    """시각표는 여행일에 쓰는 다이어만, 압축된 형태로 실린다."""
+    conn = trip.connect(":memory:")
+    # 일정에 있는 구간만 실리므로 목적지를 먼저 넣는다
+    conn.execute("INSERT INTO place (name, category) VALUES ('텐진 지하상가','쇼핑')")
+    conn.execute("INSERT INTO itinerary (day_no, date, slot, seq, place_id) "
+                 "VALUES (3, '2026-09-23', '오후', 0, 1)")
+    conn.execute(
+        "INSERT INTO timetable (line, from_stop, to_stop, service_kind, "
+        "dep_time, arr_time, headsign) VALUES "
+        "('空港線','하카타','텐진','휴일','09:00','09:06','姪浜'),"
+        "('空港線','하카타','텐진','평일','09:02','09:08','姪浜'),"
+        "('空港線','하카타','텐진','토요','09:04','09:10','姪浜')")
+    conn.commit()
+    tt = maps_page.collect_timetable(conn)
+    # 토요 다이어는 여행일에 안 쓰이므로 빠진다
+    assert "하카타>텐진|휴일" in tt["legs"], tt["legs"].keys()
+    assert "하카타>텐진|평일" in tt["legs"], tt["legs"].keys()
+    assert "하카타>텐진|토요" not in tt["legs"], tt["legs"].keys()
+    # [발차(분), 소요(분), 방면 인덱스]
+    dep, dur, hidx = tt["legs"]["하카타>텐진|휴일"][0]
+    assert dep == 9 * 60, dep
+    assert dur == 6, dur
+    assert tt["h"][hidx] == "姪浜", tt["h"]
+
+
+def test_collect_timetable_empty_when_no_rows():
+    conn = trip.connect(":memory:")
+    tt = maps_page.collect_timetable(conn)
+    assert tt == {"h": [], "legs": {}}, tt
+
+
+def test_page_embeds_timetable_and_transit_links():
+    conn = trip.connect(":memory:")
+    conn.execute("INSERT INTO place (name, category) VALUES ('텐진 지하상가','쇼핑')")
+    conn.execute("INSERT INTO itinerary (day_no, date, slot, seq, place_id) "
+                 "VALUES (3, '2026-09-23', '오후', 0, 1)")
+    conn.execute(
+        "INSERT INTO timetable (line, from_stop, to_stop, service_kind, "
+        "dep_time, arr_time, headsign) VALUES "
+        "('空港線','하카타','텐진','휴일','09:00','09:06','姪浜')")
+    conn.commit()
+    page = maps_page.build_page(conn, "2026-09-10 12:00")
+    assert "__TIMETABLE__" not in page, "치환 안 된 자리표시자"
+    assert "하카타>텐진|휴일" in page, "시각표가 페이지에 없다"
+    # 실시간이 아니라는 사실을 페이지가 밝혀야 한다
+    assert "지연" in page, "지연 미반영 안내가 없다"
+    # 구글지도 경로 링크
+    assert "google.com/maps/dir" in page, "구글지도 경로 링크가 없다"
+
+
+def test_transit_links_shown_even_without_subway_leg():
+    """지하철이 없는 곳(JR·버스 구간)도 구글지도 경로는 나와야 한다.
+
+    라라포트는 JR 다케시타역이라 지하철 시각표가 없다. 그렇다고 링크까지
+    빠지면 사용자가 아무 안내도 못 받는다.
+    """
+    conn = trip.connect(":memory:")
+    page = maps_page.build_page(conn, "2026-09-10 12:00")
+    # 지하철 역 매핑이 없는 장소명을 넘겨도 링크 블록이 나오도록
+    # nextTrains 는 항상 문자열을 만든다 — 템플릿에 대체 경로가 있어야 한다
+    assert "지하철 직통 시각표가 없는 구간" in page, "대체 안내 문구가 없다"
+
+
+def test_collect_timetable_only_keeps_legs_the_trip_uses():
+    """44개 구간을 다 실으면 78KB 다. 일정이 지나는 구간만 남기면 7KB 로 준다."""
+    conn = trip.connect(":memory:")
+    conn.execute("INSERT INTO place (name, category) VALUES ('텐진 지하상가','쇼핑')")
+    conn.execute("INSERT INTO itinerary (day_no, date, slot, seq, place_id) "
+                 "VALUES (3, '2026-09-23', '오후', 0, 1)")
+    conn.execute(
+        "INSERT INTO timetable (line, from_stop, to_stop, service_kind, "
+        "dep_time, arr_time, headsign) VALUES "
+        "('空港線','하카타','텐진','휴일','09:00','09:06','姪浜'),"
+        "('空港線','하카타','기온','휴일','09:00','09:03','姪浜')")
+    conn.commit()
+    tt = maps_page.collect_timetable(conn)
+    assert "하카타>텐진|휴일" in tt["legs"], tt["legs"].keys()
+    # 기온은 일정에 없다 -> 싣지 않는다
+    assert "하카타>기온|휴일" not in tt["legs"], tt["legs"].keys()
+
+
+def test_collect_timetable_always_keeps_airport_leg():
+    """귀국일 공항 구간은 일정이 택시로 잡혀 있어도 대안으로 남긴다."""
+    conn = trip.connect(":memory:")
+    conn.execute(
+        "INSERT INTO timetable (line, from_stop, to_stop, service_kind, "
+        "dep_time, arr_time, headsign) VALUES "
+        "('空港線','하카타','후쿠오카공항','평일','14:05','14:10','福岡空港')")
+    conn.commit()
+    tt = maps_page.collect_timetable(conn)
+    assert "하카타>후쿠오카공항|평일" in tt["legs"], tt["legs"].keys()
 
 # 러너는 반드시 파일 맨 끝에 있어야 한다. 중간에 두면 그 아래 정의된
 # test_ 함수가 globals() 에 없는 채로 수집되어 조용히 건너뛴다.

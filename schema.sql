@@ -97,3 +97,22 @@ CREATE TABLE IF NOT EXISTS tip (
 
 CREATE INDEX IF NOT EXISTS idx_item_category ON item(category);
 CREATE INDEX IF NOT EXISTS idx_tip_scope     ON tip(scope, day_no);
+
+-- 지하철 시각표. GTFS-JP 에서 일정에 쓰는 구간만 뽑아 넣는다.
+-- 실시간이 아니다 — 지연은 반영되지 않으며, 페이지가 그 사실을 표시한다.
+-- service_kind 는 GTFS calendar 를 접은 값이다. 실버위크(9/21~23)는
+-- calendar_dates 예외로 평일 다이어가 꺼지고 휴일 다이어가 켜진다.
+CREATE TABLE IF NOT EXISTS timetable (
+  id            INTEGER PRIMARY KEY,
+  line          TEXT NOT NULL,
+  from_stop     TEXT NOT NULL,
+  to_stop       TEXT NOT NULL,
+  service_kind  TEXT NOT NULL CHECK (service_kind IN ('평일','토요','휴일')),
+  dep_time      TEXT NOT NULL,
+  arr_time      TEXT NOT NULL,
+  headsign      TEXT,
+  source_id     INTEGER REFERENCES source(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_timetable_leg
+  ON timetable(from_stop, to_stop, service_kind, dep_time);

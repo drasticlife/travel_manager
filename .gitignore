@@ -3,5 +3,7 @@ __pycache__/
 *.pyc
 Takeout/
 *.zip
+# GTFS 원본은 예외다. 시각표를 재현하려면 이 파일이 있어야 한다.
+!data/gtfs/*.zip
 maps.html
 .superpowers/

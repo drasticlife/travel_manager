@@ -195,6 +195,8 @@ def collect_days(conn):
                 subtitle = ""
             items.append({
                 "id": r["id"], "slot": r["slot"], "place_id": r["place_id"],
+                # 날짜가 있어야 그날의 다이어(휴일/평일)를 고를 수 있다
+                "date": r["date"],
                 "title": title, "subtitle": subtitle, "hours": hours or "–",
                 "star": any(w in hours for w in STAR_WORDS),
                 "memo": r["memo"] or "",
@@ -271,6 +273,75 @@ def collect_route(conn):
             "icon": icon_for(r["name"], r["category"]),
         })
     return {"points": project(points), "missing": missing}
+
+
+# 일정 장소 -> 지하철 역. 여기 없는 장소는 지하철로 못 가는 곳이라
+# 시각표 대신 구글지도 경로 링크만 보여준다(JR·버스·도보 구간).
+PLACE_STATION = {
+    "호텔 포르자 하카타역 치쿠시구치Ⅱ": "하카타",
+    "마잉구 (하카타 1번가)": "하카타",
+    "한큐 하카타": "하카타",
+    "아뮤플라자 하카타 (AMU)": "하카타",
+    "텐진 지하상가": "텐진",
+    "캐널시티 하카타": "나카스카와바타",
+    "후쿠오카 호빵맨 어린이 박물관 in 쇼핑몰": "나카스카와바타",
+}
+
+# 여행 4일에 실제로 쓰이는 다이어만 싣는다. 토요일이 없는 일정이다.
+TRIP_SERVICE_KINDS = ("휴일", "평일")
+
+# 숙소가 하카타역 옆이라 모든 이동의 기점이다. JS 쪽 HOME_STATION 과 같은 값.
+HOME_STATION = "하카타"
+
+
+def collect_timetable(conn):
+    """시각표를 페이지에 실을 만큼 압축한다.
+
+    원본은 37,892행짜리 GTFS 다. 그대로 실으면 페이지가 수 MB 가 된다.
+    방면 문자열은 사전으로 빼고, 시각은 자정 기준 분으로, 도착은 소요분으로
+    줄이면 76KB 로 떨어진다.
+    """
+    conn.row_factory = sqlite3.Row
+    holes = ",".join("?" * len(TRIP_SERVICE_KINDS))
+    rows = conn.execute(
+        f"SELECT from_stop, to_stop, service_kind, dep_time, arr_time, headsign "
+        f"FROM timetable WHERE service_kind IN ({holes}) "
+        f"ORDER BY from_stop, to_stop, service_kind, dep_time",
+        TRIP_SERVICE_KINDS).fetchall()
+    if not rows:
+        return {"h": [], "legs": {}}
+
+    heads = sorted({r["headsign"] or "" for r in rows})
+    hidx = {h: i for i, h in enumerate(heads)}
+
+    def mins(t):
+        hh, mm = t.split(":")[:2]
+        return int(hh) * 60 + int(mm)
+
+    # 44개 구간을 다 실으면 78KB 다. 일정이 실제로 지나는 구간만 남기면 7KB.
+    wanted = _wanted_legs(conn)
+    legs = {}
+    for r in rows:
+        leg = f"{r['from_stop']}>{r['to_stop']}"
+        if leg not in wanted:
+            continue
+        d = mins(r["dep_time"])
+        legs.setdefault(f"{leg}|{r['service_kind']}", []).append(
+            [d, mins(r["arr_time"]) - d, hidx[r["headsign"] or ""]])
+    # 실린 구간에 쓰인 방면만 남겨 사전도 줄인다
+    used = {h for v in legs.values() for _, _, h in v}
+    return {"h": [h if i in used else "" for i, h in enumerate(heads)], "legs": legs}
+
+
+def _wanted_legs(conn):
+    """일정에 등장하는 목적지 + 귀국일 공항. 그 밖은 페이지에 실을 이유가 없다."""
+    wanted = {f"{HOME_STATION}>후쿠오카공항"}   # 택시 예정이어도 대안으로 남긴다
+    for r in conn.execute(
+            "SELECT p.name FROM itinerary i JOIN place p ON p.id = i.place_id"):
+        st = PLACE_STATION.get(r["name"])
+        if st and st != HOME_STATION:
+            wanted.add(f"{HOME_STATION}>{st}")
+    return wanted
 
 
 def collect_items(conn):
@@ -462,6 +533,19 @@ dialog::backdrop{background:rgba(74,69,80,.45)}
 .pop dl{margin:13px 0 0;display:grid;grid-template-columns:74px 1fr;
   gap:6px 12px;font-size:13px}
 .pop dt{color:var(--muted)} .pop dd{margin:0;word-break:break-word}
+.tt{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
+.tt h5{margin:0 0 3px;font-size:13.5px;font-weight:800;color:var(--v-ink)}
+.tt .leg{font-size:12px;color:var(--muted);margin-bottom:7px}
+.tt table{width:100%;border-collapse:collapse;font-size:13px;
+  font-variant-numeric:tabular-nums}
+.tt td{padding:3px 0}
+.tt td.t{font-weight:700;color:var(--v-ink);white-space:nowrap}
+.tt td.d{color:var(--muted);font-size:12px;padding-left:8px}
+.tt .soon{color:var(--pink)}
+.tt .warn{margin-top:7px;font-size:11.5px;color:var(--muted);line-height:1.45}
+.tt .links{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.tt .links a{font-size:12px;border:1px solid var(--line);border-radius:8px;
+  padding:5px 10px;text-decoration:none;color:var(--v-ink);background:var(--bg)}
 .pop .acts{display:flex;gap:8px;align-items:center;margin-top:15px;flex-wrap:wrap}
 .btn{border:1px solid var(--line);background:var(--card);border-radius:10px;
   padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit;
@@ -608,6 +692,12 @@ const DAYS = __DAYS__;
 const LABEL = __LABELS__;
 const ROUTE = __ROUTE__;
 const ITEMS = __ITEMS__;
+const TIMETABLE = __TIMETABLE__;
+const PLACE_STATION = __STATIONS__;
+/* 여행 4일의 다이어. 9/21~23 은 공휴일이라 평일 다이어가 꺼지고 휴일 다이어가
+   돌아간다 — GTFS calendar_dates 예외에 그렇게 들어 있다. */
+const TRIP_KIND = {"2026-09-21":"휴일","2026-09-22":"휴일",
+                   "2026-09-23":"휴일","2026-09-24":"평일"};
 const TIPS = __TIPS__;
 const KEY = "trip.mymaps.checked";
 const byId = Object.fromEntries(PLACES.map(p => [p.id, p]));
@@ -849,6 +939,75 @@ document.getElementById("itemtabs").addEventListener("click", e => {
   renderItems();
 });
 
+/* ---------- 다음 열차 (시각표 조회) ---------- */
+const HOME_STATION = "하카타";   // 숙소가 하카타역 옆이라 기본 출발지
+
+function pad2(n) { return String(n).padStart(2, "0"); }
+function hhmm(m) { return pad2(Math.floor(m / 60) % 24) + ":" + pad2(m % 60); }
+
+function mapsDirUrl(from, to) {
+  return "https://www.google.com/maps/dir/?api=1&travelmode=transit"
+    + "&origin=" + encodeURIComponent(from + " 駅 福岡")
+    + "&destination=" + encodeURIComponent(to + " 駅 福岡");
+}
+
+/* 일정 날짜의 다이어를 고른다. 여행일 밖이면 요일로 떨어뜨린다. */
+function serviceKind(dateStr) {
+  if (TRIP_KIND[dateStr]) return TRIP_KIND[dateStr];
+  const d = dateStr ? new Date(dateStr + "T00:00:00") : new Date();
+  const w = d.getDay();
+  return w === 0 ? "휴일" : w === 6 ? "토요" : "평일";
+}
+
+function nextTrains(placeName, dateStr) {
+  const to = PLACE_STATION[placeName];
+  /* 지하철 역이 없는 곳(JR·버스·도보 구간)도 구글지도 경로는 보여준다.
+     링크까지 빼면 사용자가 아무 안내도 못 받는다. */
+  const dest = to || placeName;
+  if (!placeName || to === HOME_STATION) return "";
+  const kind = serviceKind(dateStr);
+  const rows = to
+    ? (TIMETABLE.legs || {})[HOME_STATION + ">" + to + "|" + kind] : null;
+
+  const links = `<div class="links">
+    <a href="${mapsDirUrl(HOME_STATION, dest)}" target="_blank" rel="noopener">구글지도 경로</a>
+    <a href="https://www.jrkyushu.co.jp/trains/info/fukhok.html" target="_blank" rel="noopener">JR 운행정보</a>
+    <a href="https://subway.city.fukuoka.lg.jp/" target="_blank" rel="noopener">지하철 공식</a>
+  </div>`;
+
+  if (!rows || !rows.length) {
+    return `<div class="tt"><h5>가는 길</h5>
+      <div class="leg">${esc(HOME_STATION)} → ${esc(dest)}</div>
+      <div class="warn">지하철 직통 시각표가 없는 구간이다. JR·버스·도보가 섞여 있어
+        구글지도에서 확인하는 게 정확하다.</div>${links}</div>`;
+  }
+
+  /* 지금 시각 기준 다음 편. 여행일이 아직 안 왔으면 첫차부터 보여준다. */
+  const now = new Date();
+  const today = now.getFullYear() + "-" + pad2(now.getMonth() + 1) + "-" + pad2(now.getDate());
+  const cur = (dateStr && dateStr === today)
+    ? now.getHours() * 60 + now.getMinutes() : -1;
+  let list = rows.filter(r => r[0] >= cur).slice(0, 3);
+  const upcoming = cur >= 0 && list.length > 0;
+  if (!list.length) list = rows.slice(0, 3);
+
+  const body = list.map((r, i) => {
+    const wait = upcoming ? r[0] - cur : null;
+    const soon = i === 0 && wait !== null && wait <= 10;
+    return `<tr>
+      <td class="t${soon ? " soon" : ""}">${hhmm(r[0])} 발 → ${hhmm(r[0] + r[1])} 착</td>
+      <td class="d">${esc(TIMETABLE.h[r[2]] || "")} 방면 · ${r[1]}분
+        ${wait !== null ? `· ${wait}분 뒤` : ""}</td></tr>`;
+  }).join("");
+
+  return `<div class="tt"><h5>가는 길 — 다음 열차</h5>
+    <div class="leg">${esc(HOME_STATION)} → ${esc(to)} (지하철)
+      ${upcoming ? "" : "· 첫차부터 표시"}</div>
+    <table>${body}</table>
+    <div class="warn">시각표 기준이라 <b>지연은 반영되지 않는다</b>.
+      실제 운행 상황은 아래 링크에서 확인할 것.</div>${links}</div>`;
+}
+
 /* ---------- 팝업 ---------- */
 const pop = document.getElementById("pop");
 
@@ -889,6 +1048,7 @@ function openPlace(id, itin) {
       </div>
     </div>
     <dl>${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
+    ${nextTrains(p ? p.name : (itin ? itin.title : ""), itin ? itin.date : null)}
     <div class="acts">
       ${p && p.maps_url
         ? `<a class="btn go" href="${esc(p.maps_url)}" target="_blank"
@@ -1150,6 +1310,10 @@ def build_page(conn, generated="", fragment=False):
             .replace("__DAYS__", json.dumps(collect_days(conn), ensure_ascii=False))
             .replace("__ROUTE__", json.dumps(collect_route(conn), ensure_ascii=False))
             .replace("__ITEMS__", json.dumps(collect_items(conn), ensure_ascii=False))
+            .replace("__TIMETABLE__", json.dumps(collect_timetable(conn),
+                                                 ensure_ascii=False,
+                                                 separators=(",", ":")))
+            .replace("__STATIONS__", json.dumps(PLACE_STATION, ensure_ascii=False))
             .replace("__TIPS__", json.dumps(collect_tips(conn), ensure_ascii=False))
             .replace("__LABELS__", json.dumps(STATUS_LABEL, ensure_ascii=False))
             .replace("__TOTAL__", str(len(places)))
