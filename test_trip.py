@@ -1451,6 +1451,34 @@ def test_todoist_task_carries_tag_in_content():
     assert "아침밥" in t["content"], t["content"]
     assert "@" not in t["content"], t["content"]
 
+
+def test_page_has_search_ui():
+    conn = trip.connect(":memory:")
+    page = maps_page.build_page(conn, "2026-09-10 12:00")
+    assert 'id="q"' in page, "검색 입력이 없다"
+    assert 'id="results"' in page, "검색 결과 영역이 없다"
+    assert "searchIndex" in page, "검색 인덱스 함수가 없다"
+
+
+def test_page_embeds_everything_search_needs():
+    """검색은 네 갈래를 모두 훑는다 — 하나라도 안 실리면 그건 못 찾는다."""
+    conn = trip.connect(":memory:")
+    conn.execute("INSERT INTO place (name, category, note) "
+                 "VALUES ('야마야 다이묘점','쇼핑','면세 10%')")
+    conn.execute("INSERT INTO itinerary (day_no, date, slot, seq, place_id, memo) "
+                 "VALUES (1,'2026-09-21','오후',0,1,'체크인')")
+    conn.commit()   # insert_payload 가 자기 트랜잭션을 연다
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "x"},
+        "items": [{"name": "명란", "category": "살거", "tag": "선물",
+                   "note": "위탁수화물만"}],
+        "tips": [{"scope": "trip", "category": "아기", "text": "수유실 2층",
+                  "evidence_urls": "http://a"}],
+    })
+    page = maps_page.build_page(conn, "2026-09-10 12:00")
+    for kw in ("야마야 다이묘점", "면세 10%", "명란", "위탁수화물만", "수유실 2층"):
+        assert kw in page, f"{kw!r} 가 페이지에 없어 검색으로 못 찾는다"
+
 # 러너는 반드시 파일 맨 끝에 있어야 한다. 중간에 두면 그 아래 정의된
 # test_ 함수가 globals() 에 없는 채로 수집되어 조용히 건너뛴다.
 # 실제로 그래서 4개(체인점 오염·커서 페이징 회귀 테스트 포함)가 안 돌았다.

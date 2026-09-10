@@ -469,6 +469,35 @@ a{color:var(--v-ink);text-decoration:underline;text-underline-offset:3px}
 .day-hidden { display: none !important; }
 .section-hidden { display: none !important; }
 
+/* ---- 검색 ---- */
+.searchbar{position:sticky;top:0;z-index:6;background:var(--bg);
+  padding:10px 0 8px;margin-bottom:2px}
+.searchbar .box{display:flex;gap:8px;align-items:center;background:var(--card);
+  border:1px solid var(--line);border-radius:14px;padding:9px 13px}
+.searchbar input{flex:1;border:0;outline:0;background:transparent;font-size:15px;
+  font-family:inherit;color:var(--ink);min-width:0}
+.searchbar input::placeholder{color:var(--muted)}
+.searchbar .ico{font-size:15px;flex:none}
+.searchbar button{border:0;background:transparent;font-size:15px;cursor:pointer;
+  color:var(--muted);font-family:inherit;padding:0 2px}
+.searchbar .cnt{font-size:12px;color:var(--muted);white-space:nowrap}
+#results{margin-top:8px;display:none;flex-direction:column;gap:7px}
+#results.on{display:flex}
+.hit{background:var(--card);border:1px solid var(--line);border-radius:13px;
+  padding:10px 12px;text-align:left;font-family:inherit;font-size:14px;
+  color:var(--ink);width:100%;cursor:default}
+.hit.can{cursor:pointer}
+.hit.can:hover{box-shadow:0 4px 12px rgba(123,94,167,.16)}
+.hit .top{display:flex;gap:7px;align-items:baseline;flex-wrap:wrap}
+.hit b{font-weight:700}
+.hit .kind{font-size:10.5px;border-radius:999px;padding:1px 8px;
+  background:var(--v-soft);color:var(--v-ink);flex:none}
+.hit .snip{display:block;margin-top:4px;font-size:12.5px;color:var(--muted);
+  line-height:1.5}
+.hit mark{background:var(--pink-soft);color:var(--pink);border-radius:3px;
+  padding:0 2px}
+.nohit{color:var(--muted);font-size:13px;padding:12px 2px}
+
 /* ---- 일차 카드 ---- */
 .day{margin:16px 0;border-radius:20px;border:1px solid var(--line);
   background:var(--card);display:grid;grid-template-columns:132px 1fr;
@@ -703,7 +732,19 @@ footer{color:var(--muted);font-size:11.5px;padding:24px 0 6px;text-align:center}
 <nav class="global-nav" id="globalnav"></nav>
 
 <div id="section-days">
-  <div id="days"></div>
+  <div class="searchbar">
+  <div class="box">
+    <span class="ico">🔎</span>
+    <input id="q" type="search" autocomplete="off"
+      placeholder="장소·일정·살거·먹을거·팁 전체 검색 (예: 명란, 수유실, 쿠폰)"
+      aria-label="전체 검색">
+    <span class="cnt" id="qcnt"></span>
+    <button id="qclear" type="button" aria-label="검색어 지우기">✕</button>
+  </div>
+  <div id="results"></div>
+</div>
+
+<div id="days"></div>
 
   <section class="mapwrap">
     <div class="maphead">
@@ -1165,6 +1206,114 @@ pop.addEventListener("change", e => {
   store.write([...checked]);
   renderGrid();
   renderCmd();
+});
+
+/* ---------- 전체 검색 ---------- */
+/* 데이터는 이미 페이지에 다 실려 있다. 인덱스는 그걸 평탄하게 편 것뿐이라
+   추가 전송이 없고 오프라인에서도 돈다. */
+function searchIndex() {
+  const idx = [];
+  for (const p of PLACES) {
+    idx.push({
+      kind: p.category || "장소", title: p.name,
+      body: [p.name_verified, p.address, p.note, (p.evidence || []).join(" ")]
+        .filter(Boolean).join(" \u00b7 "),
+      open: () => openPlace(p.id, null),
+    });
+  }
+  for (const d of DAYS) {
+    for (const it of d.items) {
+      idx.push({
+        kind: `${d.day_no}일차 ${it.slot}`, title: it.title,
+        body: [it.subtitle, it.hours === "–" ? "" : it.hours, it.memo]
+          .filter(Boolean).join(" \u00b7 "),
+        open: () => openPlace(it.place_id, { ...it, day_no: d.day_no }),
+      });
+    }
+  }
+  for (const i of ITEMS) {
+    idx.push({
+      kind: i.category + (i.tag ? ` #${i.tag}` : ""), title: i.name,
+      body: [i.places, i.note].filter(Boolean).join(" \u00b7 "),
+      open: null,
+    });
+  }
+  for (const t of (typeof TIPS !== "undefined" ? TIPS : [])) {
+    const where = t.day_no ? `${t.day_no}일차` : (t.place_name || "여행 전체");
+    idx.push({
+      kind: `팁 ${t.category}`, title: `${where} · ${t.category}`,
+      body: [t.text, t.evidence_urls].filter(Boolean).join(" "),
+      open: null,
+    });
+  }
+  return idx;
+}
+
+let INDEX = null;
+
+/* 검색어 앞뒤를 잘라 보여주고, 매칭 부분만 <mark> 로 감싼다.
+   반드시 esc() 로 이스케이프한 뒤에 마크업을 넣는다 — 순서가 바뀌면 XSS 다. */
+function snippet(text, q) {
+  const t = String(text || "");
+  const i = t.toLowerCase().indexOf(q);
+  if (i < 0) return esc(t.slice(0, 90));
+  const from = Math.max(0, i - 34);
+  const cut = t.slice(from, i + q.length + 66);
+  const rel = i - from;
+  return (from > 0 ? "…" : "")
+    + esc(cut.slice(0, rel))
+    + "<mark>" + esc(cut.slice(rel, rel + q.length)) + "</mark>"
+    + esc(cut.slice(rel + q.length))
+    + (from + cut.length < t.length ? "…" : "");
+}
+
+function runSearch() {
+  const raw = document.getElementById("q").value.trim();
+  const box = document.getElementById("results");
+  const cnt = document.getElementById("qcnt");
+  if (!raw) {
+    box.classList.remove("on");
+    box.innerHTML = "";
+    cnt.textContent = "";
+    return;
+  }
+  if (!INDEX) INDEX = searchIndex();
+  const q = raw.toLowerCase();
+  const hits = INDEX.filter(
+    r => (r.title + " " + r.body).toLowerCase().includes(q)).slice(0, 40);
+
+  cnt.textContent = `${hits.length}건`;
+  box.classList.add("on");
+  if (!hits.length) {
+    box.innerHTML = `<div class="nohit">'${esc(raw)}' 에 맞는 게 없다.
+      장소·일정·살거·먹을거·놀거·팁을 모두 뒤졌다.</div>`;
+    return;
+  }
+  box.innerHTML = hits.map((r, n) => {
+    const inTitle = r.title.toLowerCase().includes(q);
+    return `<button class="hit${r.open ? " can" : ""}" data-n="${n}">
+      <span class="top"><span class="kind">${esc(r.kind)}</span>
+        <b>${inTitle ? snippet(r.title, q) : esc(r.title)}</b></span>
+      ${r.body ? `<span class="snip">${snippet(r.body, q)}</span>` : ""}
+    </button>`;
+  }).join("");
+  box._hits = hits;
+}
+
+document.getElementById("q").addEventListener("input", runSearch);
+document.getElementById("q").addEventListener("keydown", e => {
+  if (e.key === "Escape") { e.target.value = ""; runSearch(); }
+});
+document.getElementById("qclear").addEventListener("click", () => {
+  const q = document.getElementById("q");
+  q.value = ""; runSearch(); q.focus();
+});
+document.getElementById("results").addEventListener("click", e => {
+  const b = e.target.closest(".hit");
+  if (!b) return;
+  const hits = document.getElementById("results")._hits || [];
+  const r = hits[Number(b.dataset.n)];
+  if (r && r.open) r.open();
 });
 
 /* ---------- 하단 명령 ---------- */
