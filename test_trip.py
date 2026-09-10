@@ -1,4 +1,5 @@
 """travel manager 전체 테스트. 프레임워크 없음. 실행: python test_trip.py"""
+import json
 import sqlite3
 import sys
 
@@ -1128,7 +1129,8 @@ def test_todoist_tasks_include_items():
     tasks = export.build_todoist_tasks(conn)
     item_tasks = [t for t in tasks if t["table"] == "item"]
     assert len(item_tasks) == 1, tasks
-    assert item_tasks[0]["content"] == "[살거] 명란 @야마야", item_tasks[0]
+    # 구분자는 '·' 다. '@' 는 Todoist 가 라벨로 파싱해 제목을 잘라먹는다.
+    assert item_tasks[0]["content"] == "[살거] 명란 · 야마야", item_tasks[0]
     assert item_tasks[0]["labels"] == ["살거"], item_tasks[0]
 
 
@@ -1157,6 +1159,72 @@ def test_todoist_skipped_count_includes_items():
     r = export.push_todoist(conn, "TOK", "P1", dry_run=True)
     assert r["skipped"] == 1, r
 
+
+
+def test_todoist_item_task_carries_note_as_description():
+    """조사한 층수·쿠폰·오픈런 정보는 note 에 있다. 제목만 보내면 폰에서 못 본다."""
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "x"},
+        "places": [{"name": "한큐 하카타", "category": "쇼핑"}],
+        "items": [{"name": "바오바오 백", "category": "살거",
+                   "note": "1층 10번 출입구 옆. 게스트쿠폰 5%",
+                   "place_names": ["한큐 하카타"]}],
+    })
+    t = [t for t in export.build_todoist_tasks(conn) if t["table"] == "item"][0]
+    assert t["description"] == "1층 10번 출입구 옆. 게스트쿠폰 5%", t
+
+
+def test_todoist_task_without_note_has_empty_description():
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "x"},
+        "items": [{"name": "우동", "category": "먹을거"}],
+    })
+    t = [t for t in export.build_todoist_tasks(conn) if t["table"] == "item"][0]
+    assert t["description"] == "", t
+
+
+def test_todoist_post_body_includes_description():
+    """_real_post 가 description 을 실어야 실제로 전송된다."""
+    seen = {}
+
+    def fake_urlopen(req, timeout=None):
+        seen["body"] = json.loads(req.data.decode("utf-8"))
+        class R:
+            def read(self): return b'{"id":"T1"}'
+            def __enter__(self): return self
+            def __exit__(self, *a): return False
+        return R()
+
+    import urllib.request as u
+    orig = u.urlopen
+    u.urlopen = fake_urlopen
+    try:
+        export._real_post("TOK", "P1", {
+            "content": "[살거] 명란", "labels": ["살거"], "description": "위탁수화물만"})
+    finally:
+        u.urlopen = orig
+    assert seen["body"]["description"] == "위탁수화물만", seen["body"]
+
+
+def test_todoist_content_has_no_at_sign():
+    """'@' 는 Todoist 가 라벨 문법으로 파싱해 제목을 잘라먹는다.
+
+    실제로 33건 중 29건의 제목이 '[살거] 바오바오 백 @한큐 하카타' ->
+    '[살거] 바오바오 백 하카타' 로 깨지고 '한큐' 라벨이 멋대로 생겼다.
+    """
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "x"},
+        "places": [{"name": "한큐 하카타", "category": "쇼핑"}],
+        "items": [{"name": "바오바오 백", "category": "살거",
+                   "place_names": ["한큐 하카타"]}],
+    })
+    t = [t for t in export.build_todoist_tasks(conn) if t["table"] == "item"][0]
+    assert "@" not in t["content"], t["content"]
+    assert "한큐 하카타" in t["content"], t["content"]
+    assert t["labels"] == ["살거"], t["labels"]
 
 # 러너는 반드시 파일 맨 끝에 있어야 한다. 중간에 두면 그 아래 정의된
 # test_ 함수가 globals() 에 없는 채로 수집되어 조용히 건너뛴다.

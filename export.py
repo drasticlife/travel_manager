@@ -70,22 +70,30 @@ def build_todoist_tasks(conn):
                       "content": f"{r['day_no']}일차 [{r['slot']}] {label}",
                       "labels": [f"{r['day_no']}일차"]})
     for r in conn.execute(
-            "SELECT i.id, i.name, i.category, "
+            "SELECT i.id, i.name, i.category, i.note, "
             "(SELECT GROUP_CONCAT(x.name, ', ') FROM ("
             "   SELECT p.name FROM item_place ip "
             "   JOIN place p ON p.id = ip.place_id "
             "   WHERE ip.item_id = i.id ORDER BY p.name) x) AS places "
             "FROM item i WHERE i.todoist_task_id IS NULL"):
-        where = f" @{r['places']}" if r["places"] else ""
+        # '@' 를 쓰면 Todoist 가 라벨 문법으로 파싱해 제목을 잘라먹는다.
+        # 실제로 33건 중 29건이 '바오바오 백 @한큐 하카타' -> '바오바오 백 하카타'
+        # 로 깨지고 '한큐' 라벨이 멋대로 생겼다. 구분자는 중점을 쓴다.
+        where = f" · {r['places']}" if r["places"] else ""
+        # note 에 층수·쿠폰·오픈런 같은 실전 정보가 들어 있다. 제목만 보내면
+        # 폰에서 그걸 못 본다 — description 으로 함께 실어 보낸다.
         tasks.append({"table": "item", "row_id": r["id"],
                       "content": f"[{r['category']}] {r['name']}{where}",
-                      "labels": [r["category"]]})
+                      "labels": [r["category"]],
+                      "description": r["note"] or ""})
     return tasks
 
 
 def _real_post(token, project_id, task):
     body = {"content": task["content"], "project_id": project_id,
             "labels": task["labels"]}
+    if task.get("description"):
+        body["description"] = task["description"]
     req = urllib.request.Request(
         TODOIST_URL, data=json.dumps(body).encode("utf-8"),
         headers={"Content-Type": "application/json",
