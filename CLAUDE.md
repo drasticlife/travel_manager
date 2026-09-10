@@ -41,14 +41,17 @@ python export.py todoist --push              # 실제 푸시
 
 ## 구조
 
-| 파일 | 책임 |
-| --- | --- |
-| `schema.sql` | DDL. enum은 CHECK 제약으로 DB가 강제한다 |
-| `trip.py` | 검증 + DB 쓰기 + 조회 CLI |
-| `youtube.py` | 자막 3단 폴백 (출처: `C:\GIT\Moons_Company\agents\scrap_agent.py`) |
-| `places.py` | Places API 조회 + 이름 대조 |
-| `export.py` | 읽기 전용 출력. `todoist_task_id` 외 쓰기 금지 |
-| `.claude/commands/trip.md` | LLM 추출 계약 |
+```mermaid
+flowchart LR
+    A[schema.sql<br/>DDL/CHECK 제약] --> B[(trip.db)]
+    C[trip.py<br/>CLI/DB 쓰기] --> B
+    D[youtube.py<br/>자막 폴백] --> C
+    E[places.py<br/>Places API] --> C
+    F[export.py<br/>읽기 전용 출력] -.-> B
+    G[maps_page.py<br/>지도 UI 렌더링] -.-> B
+    G --> H[index.html / maps.html<br/>프론트엔드 뷰]
+    I[.claude/commands/trip.md<br/>LLM 추출 계약] -.-> C
+```
 
 ## 함정 (실제로 밟은 것)
 
