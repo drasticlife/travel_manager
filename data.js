@@ -10,6 +10,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "제과점 · ¥1~1,000 · 평점 4.2 (1,701)",
+      "tag": null,
       "evidence": [
         "https://tabelog.com/en/fukuoka/A4001/A400101/40005043/",
         "https://shadowneo.net/2324",
@@ -28,6 +29,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "고기(함바그) · ¥2,000~3,000 · 평점 4.3 (3,314)",
+      "tag": "함바그·스테이크",
       "evidence": [
         "https://triple.guide/restaurants/5cfa5017-102c-4035-b159-2a75ee6fc508",
         "https://www.kyushurent.com/restaurants/Kiwamiya",
@@ -46,6 +48,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "일본 스테이크 전문점 · ¥2,000~3,000 · 평점 4.7 (764)",
+      "tag": null,
       "evidence": [
         "https://tabelog.com/en/fukuoka/A4001/A400101/40066543/",
         "https://triple.guide/restaurants/9f2f6a1e-0f50-4dee-844f-b8b14ea2d120",
@@ -64,6 +67,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "민물장어 요리 전문식당 · ¥3,000~5,000 · 평점 4.2 (1,145)",
+      "tag": "장어덮밥",
       "evidence": [
         "https://kr.savorjapan.com/0006116904/menus"
       ],
@@ -80,6 +84,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "편의점 · 평점 3.1 (11) — 목록에 편의점이 3곳 있어 어느 지점인지 확인 필요",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -94,6 +99,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "편의점 · 평점 4.2 (10)",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -108,6 +114,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "백화점 · 평점 4.0 (233)",
+      "tag": null,
       "evidence": [
         "https://www.iwataya-mitsukoshi.mistore.jp.k.kq.hp.transer.com/iwataya/access.html",
         "https://ko.wikipedia.org/wiki/%EC%9D%B4%EC%99%80%ED%83%80%EC%95%BC",
@@ -126,6 +133,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "실내 놀이터 · 평점 4.3 (4,177)\n가이드 확정안(초록판) 일정에서 제외 — 시간 남으면 들를 후보",
+      "tag": null,
       "evidence": [
         "https://www.fukuoka-anpanman.jp/kr/",
         "https://www.crossroadfukuoka.jp/kr/spot/11346",
@@ -144,6 +152,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "우동 · ¥1~1,000 · 평점 4.2 (3,141)",
+      "tag": "우동",
       "evidence": [
         "https://ko.h-bt.jp/floor/shop62.html",
         "https://www.tripstore.kr/blog/%ED%95%98%EC%B9%B4%ED%83%80-%EC%9A%B0%EB%8F%99-%EB%A7%9B%EC%A7%91-%ED%98%BC%ED%96%89-%EC%8B%AC%EC%95%BC-%EC%95%84%EC%B9%A8-%EC%83%81%ED%99%A9%EB%B3%84-%EA%B3%B5%EB%9E%B5"
@@ -160,12 +169,14 @@ window.APP_DATA = {
       "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0801%20Fukuoka%2C%20Hakata%20Ward%2C%20Nakasu%202-8-27%20%E5%8D%9A%E5%A4%9A%E5%90%8D%E4%BB%A3%20%E5%90%89%E5%A1%9A%E3%81%86%E3%81%AA%E3%81%8E%E5%B1%8B%20%28%EC%9A%94%EC%8B%9C%EC%A6%88%EC%B9%B4%20%EC%9A%B0%EB%82%98%EA%B8%B0%EC%95%BC%29",
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
-      "note": "민물장어 요리 전문식당 · ¥3,000~5,000 · 평점 4.4 (9,312)",
+      "note": "민물장어 요리 전문식당 · ¥3,000~5,000 · 평점 4.4 (9,312)\n[리뷰] 1873년 창업한 150년 전통 장어덮밥 명가. 쫀득하면서도 부드러운 장어구이 식감과 특제 타레 소스가 일품. 나카스 강변 쾌적한 건물, 한국어 메뉴 구비되어 우나쥬/우나기동 주문 편리.",
+      "tag": "장어덮밥",
       "evidence": [
         "https://triple.guide/restaurants/1239f853-d0b3-40e3-9c96-1ae7bb0c24ef",
         "https://www.siksinhot.com/P/342641",
         "https://boborifood.com/14",
-        "https://fuk-info.com/fukuoka_food_yoshizukaunagiya/"
+        "https://fuk-info.com/fukuoka_food_yoshizukaunagiya/",
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=910s"
       ],
       "days": [],
       "icon": "🍜"
@@ -180,6 +191,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "해산물 요리 · ¥10,000 이상 · 평점 4.3 (3,738)",
+      "tag": null,
       "evidence": [
         "https://www.tablecheck.com/en/chikae",
         "https://www.siksinhot.com/P/342648",
@@ -199,6 +211,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "슈퍼마켓 · 평점 4.2 (1,833)\n요도바시 4F. 산토리 올드 특가. 현금만, 면세 불가\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보",
+      "tag": null,
       "evidence": [
         "https://triple.guide/attractions/0e47a43e-fba8-49ae-8cee-020211d091c9",
         "https://map.yahoo.co.jp/v3/place/R3OMPnOE-Gc",
@@ -217,6 +230,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "전자제품 판매점 · 평점 3.8 (2,998)\n면세 10% + 주류 3% 추가쿠폰. 위스키·사케 코너 정돈 우수\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보\n산토리·닛카 스탠다드 라인업(로얄·요이치·미야기쿄·프론티어 등) 보유 가능성 높음. 프리미엄(야마자키·하쿠슈·히비키)은 매장별 재고 변동 큼",
+      "tag": null,
       "evidence": [
         "https://kr.trip.com/moments/detail/fukuoka-576-124841257/"
       ],
@@ -233,6 +247,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "몬자야키 전문점 · ¥2,000~3,000 · 평점 4.6 (32)",
+      "tag": null,
       "evidence": [
         "https://tabelog.com/fukuoka/A4001/A400104/40064737/",
         "https://www.hotpepper.jp/strJ004169173/",
@@ -251,6 +266,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "일식 내장 냄비 요리(미즈타키·모츠나베) · ¥2,000~7,000 · 평점 4.2 (130)",
+      "tag": "모츠나베",
       "evidence": [
         "https://www.tablecheck.com/en/hakatarou-nishinakasu",
         "https://tabelog.com/en/fukuoka/A4001/A400103/40066852/",
@@ -269,6 +285,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "신발 판매점 · 평점 4.8 (33) — 팝업이라 여행 시점에 영업 여부 확인 필요",
+      "tag": null,
       "evidence": [
         "https://jpn.mizuno.com/shop/mizunosportstyle_fukuokaparco",
         "https://en.fukuoka.parco.jp/shop/detail/?cd=030872",
@@ -287,6 +304,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "야키니쿠 · ¥3,000~9,000 · 평점 4.4 (1,127)",
+      "tag": null,
       "evidence": [
         "https://tabelog.com/en/fukuoka/A4001/A400101/40045144/",
         "https://map.yahoo.co.jp/v3/place/DuPsUxeEU_E",
@@ -306,6 +324,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "민물장어 요리 전문식당 · ¥5,000~6,000 · 평점 4.7 (325)",
+      "tag": "장어덮밥",
       "evidence": [
         "https://ohoriunagi.com/",
         "https://www.tablecheck.com/en/ohoriunagi"
@@ -323,6 +342,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "야외스포츠용품점 · 평점 4.1 (379)\n러닝화 1차 피팅·트랙 테스트\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보",
+      "tag": null,
       "evidence": [
         "https://store.alpen-group.jp/Form/RealShop/ShopDetail.aspx?rsid=5402",
         "https://map.yahoo.co.jp/v3/place/sxyUK0ZxDDY",
@@ -341,6 +361,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "카페 · 07:00~22:00 · 호텔 0.55km / 도보 7~9분",
+      "tag": "아침밥",
       "evidence": [],
       "days": [],
       "icon": "🍜"
@@ -355,6 +376,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "카페 · 07:00~22:00 · 호텔 0.25km / 도보 3~5분\n지점 정정(2026-09-09): 저장돼 있던 것은 カフェ・ベローチェ 福岡薬院店(주오구 야쿠인, 호텔에서 2km+)이었다. 첨부 조식 가이드 기준 정확한 지점은 하카타역 치쿠시구치점(도보 3~5분, 250m). 좌표는 야쿠인점 값이라 삭제했다 — 재검증 필요",
+      "tag": "아침밥",
       "evidence": [],
       "days": [],
       "icon": "🍜"
@@ -369,6 +391,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "카페 · 07:00~22:00 · 호텔 0.35km / 도보 4~6분",
+      "tag": "아침밥",
       "evidence": [],
       "days": [],
       "icon": "🍜"
@@ -382,8 +405,11 @@ window.APP_DATA = {
       "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJBVmI6seRQTURgAbIe1HmjfQ",
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
-      "note": "베이커리 · 06:30~22:30 (아침 일찍 여는 곳) · 호텔 0.30km / 도보 4~6분",
-      "evidence": [],
+      "note": "베이커리 · 06:30~22:30 (아침 일찍 여는 곳) · 호텔 0.30km / 도보 4~6분\n[리뷰] 하카타역 지하 베이커리 맛집. 가격이 저렴하고 현지인 인기 높음. 반숙 계란 카레빵은 필수 메뉴(맛있는 카레와 촉촉한 반숙의 조화, 식사 대용으로 훌륭). 멘타이코 바게트도 유명.",
+      "tag": "아침밥",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=307s"
+      ],
       "days": [],
       "icon": "🍜"
     },
@@ -397,6 +423,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "우동 · 07:00~22:00 · 호텔 0.35km / 도보 5~7분\n지점 정정(2026-09-09): 저장돼 있던 것은 다이후쿠우동 덴키빌딩점(주오구 와타나베도리, 텐진 쪽)이었다. 첨부 조식 가이드 기준 정확한 지점은 JR 하카타역 B1F 하카타 1번가점(도보 5~7분, 350m). 좌표는 덴키빌딩점 값이라 삭제했다 — 재검증 필요",
+      "tag": "우동",
       "evidence": [],
       "days": [],
       "icon": "🍜"
@@ -411,6 +438,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "계란밥·정식 · 08:00~22:00 · 호텔 0.35km / 도보 5~7분",
+      "tag": "아침밥",
       "evidence": [],
       "days": [],
       "icon": "🍜"
@@ -425,6 +453,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "가전·장난감 · 09:30~22:00 · 호텔 0.2km / 도보 2~3분 · 4F에 로피아, 가샤폰 코너 있음\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -439,6 +468,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "게임센터 · 10:00~21:00 · 호텔 0.2km / 도보 2~3분\n요도바시 어뮤즈먼트 플로어 09:30~23:00(매장별 상이), GiGO 자체는 10:00~21:00",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🎡"
@@ -453,6 +483,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "전망·산책 · 10:00~22:00 · 호텔 0.4km / 도보 5~7분 · 하카타역 옥상",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🎡"
@@ -467,6 +498,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "쇼핑·식당 · 쇼핑 10:00~21:00 / 식당 11:00~23:00 · 호텔 0.5km / 도보 6~8분",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -481,6 +513,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "하카타역 역내 식당·기념품 · 일부 ~23:00 · 호텔 0.3km / 도보 3~5분",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -495,6 +528,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "기념품·명과 · 09:00~21:00 · 호텔 0.4km / 도보 4~6분 · DAY 4 귀국일 기념 과자 매입처",
+      "tag": null,
       "evidence": [],
       "days": [
         {
@@ -517,6 +551,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "점프 공식 굿즈 · 평점 3.9 (298) · 10:00~21:00 · 캐널시티 B1 · 호텔 1.12km / 도보 15분\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🏬"
@@ -531,6 +566,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "트레카 · 평점 3.9 (7) · 14:00~20:30 (금~일 12:00 오픈) · 호텔 2.36km · 오픈 늦으니 주의",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -545,6 +581,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "크레인·경품 · 평점 3.3 (649) · 10:00~23:30 · 호텔 2.47km · 프라이즈 피규어",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🎡"
@@ -559,6 +596,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "중고 피규어 · 평점 4.2 (3,347) · 12:00~20:00 · 호텔 2.74km · 피규어 쇼핑 핵심. 12시 오픈이라 오전엔 못 감 → DAY 3 텐진은 점심 이후 출발\n다이묘 3점(만다라케·스텝스포츠·야마야)이 한 블록 안 → 텐진역→다이묘→파르코 순이 최단\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -573,6 +611,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "복합몰 · 쇼핑 10:00~21:00 / 식당 ~22:00 · 실물크기 건담 νガンダム 전시 · 4F 에 Moff animal cafe · 호텔에서 JR 하카타역→다케시타역 약 5분, 역에서 도보 약 9분(0.6km) · 주소는 같은 건물인 Moff animal cafe(place 6) 에서 가져왔다. 좌표는 없음 — 재검증 대상",
+      "tag": null,
       "evidence": [],
       "days": [
         {
@@ -586,6 +625,465 @@ window.APP_DATA = {
       "icon": "🤖"
     },
     {
+      "id": 55,
+      "name": "멘야 카네토라",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/jwPinEfxtxmLnP3i9",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "하카타에서 유명한 곱창 츠케멘 맛집으로 현지인과 관광객 모두에게 인기가 많음. 파르코점은 카드 결제 가능, 면 양(200g/250g) 추가 비용 없음. 매운맛 선택 시 마일드 단계 추천(적당히 매콤 짭짤한 소스). 테이블 육수로 간 조절 가능하며 탱글한 면발과 차슈가 일품.",
+      "tag": "라멘·츠케멘",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=54s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 56,
+      "name": "텐푸라 타카오",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/TTwJT9XbsA6oyDPx5",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "튀김 전문점으로 텐푸라 정식과 텐동 판매. 텐푸라 정식은 먹는 속도에 맞춰 튀김이 순차적으로 제공되어 항상 따뜻하게 즐길 수 있음. 튀김옷이 얇고 바삭하며 15시 전 주문 시 밥 무료 사이즈업. 새우튀김 텐동은 새우튀김 양이 넉넉하고 구성이 좋음.",
+      "tag": "튀김·텐동",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=131s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 57,
+      "name": "다이치노 우동",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/C8JwNFzoXj7WsHZs8",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "하카타역 지하 가성비 우동 맛집(7,000원대). 자판기 주문. 넘버원 '고기 우엉튀김 우동'과 넘버투 '고기 새우 야채 튀김 우동' 추천(넉넉한 튀김과 감칠맛 국물). 면발이 더 탱글하길 원하면 붓카케 우동 추천. 점심 피크 피하면 웨이팅 적음.",
+      "tag": "우동",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=178s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 58,
+      "name": "죠스이안 하카타 에키마에 본점",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/B1f1ANokri9dJCQV6",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "딸기 모찌의 진수. 가격대는 다소 높지만 쫀득한 모찌와 신선한 딸기 과즙의 조화가 강렬해 한번 맛보면 납득하게 됨. 선물용보다 매장에서 바로 먹는 것을 추천.",
+      "tag": "디저트·간식",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=243s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 59,
+      "name": "테무진 교자",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/xfZE1EwGAUBQHdWL9",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "후쿠오카 히토쿠치 교자(한입 만두)의 명가. 군만두는 겉바속촉의 정석이며, 물만두는 딘타이펑을 연상시키는 뛰어난 국물 맛을 자랑함.",
+      "tag": "교자·만두",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=348s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 60,
+      "name": "온카 커피",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/1cQVQxoMgDrTEbLg7",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "미나텐진 1층에 위치한 아늑한 분위기의 스페셜티 카페. 신선한 원두의 풍부한 맛과 향. 대표 메뉴는 쿠로(드립 커피)와 로(라떼). 라떼 끝맛의 미세한 단맛이 독특하고 매력적.",
+      "tag": "카페·커피",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=399s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 61,
+      "name": "베이크 치즈타르트 텐진지하점",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/av51rjTmCJrtioEk8",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "도쿄 시작 명품 치즈 타르트. 홋카이도산 치즈와 우유를 사용해 풍미가 뛰어남. 오리지널 치즈 타르트가 가장 인기 있으며 매장 취식 및 테이크아웃 가능.",
+      "tag": "디저트·간식",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=442s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 62,
+      "name": "효탄스시",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/Tej4gZarDRHQXtUP7",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "후쿠오카 대표 가성비 스시 명가. 솔라리아점은 실내 웨이팅이 가능하고 원하는 스시만 골라 주문 가능. 밥 양 조절 가능하며 보리새우 스시와 참치 대뱃살이 일품.",
+      "tag": "스시·해산물",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=486s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 63,
+      "name": "다코멧카",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/BaYiC5iJPaCRJmuG8",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "하카타 유명 베이커리 카페. 직화로 구운 소시지가 들어간 소시지빵이 시그니처. 커피 맛도 훌륭하며 빵 애호가라면 꼭 가볼 만한 곳.",
+      "tag": "베이커리·빵",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=578s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 64,
+      "name": "하카타 카와바타 도산코",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/HTyNabjeWk9W63mSA",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "현지인들이 즐겨 찾는 라멘 맛집. 된장(미소) 라멘이 가장 유명하며 부담 없는 국물과 차슈 퀄리티가 만족스러움. 중식 스타일의 볶음밥 세트 조합이 강력 추천 메뉴.",
+      "tag": "라멘·츠케멘",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=619s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 65,
+      "name": "하카타 모쯔나베 오오야마 킷테하카타점",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/54hrq95DcSgxdt7w9",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "후쿠오카 대표 모츠나베 맛집. 냄새 없는 부드러운 대창과 채소에서 우러나오는 진하고 깔끔한 국물이 일품. 마무리는 짬뽕면 사리 추천. KITTE 지하에 있어 접근성 우수.",
+      "tag": "모츠나베",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=658s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 66,
+      "name": "멘야 호리노",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/saPqQfU1Dcyqv2657",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "가성비 좋은 텐동과 우동을 함께 즐길 수 있는 곳(11:30~14:00 런치, 저녁은 이자카야). 텐동 세트 주문 시 미니 우동 제공. 하카타 닭고기 튀김(토리텐) 덮밥이 인기.",
+      "tag": "튀김·텐동",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=696s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 67,
+      "name": "오이시이 코오리야 텐진미나미점",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/FtBaqRRVFh3WJBiz5",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "천연 얼음 수제 빙수 전문점. 1인 1메뉴 주문 원칙. 휘핑크림 딸기 빙수와 망고 빙수가 인기이며, 너무 달지 않고 부드러운 우유 맛이 특징.",
+      "tag": "디저트·간식",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=763s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 68,
+      "name": "블랑제",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/GrMZEy1TLwBkbc1q8",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "텐진 지하상가에 위치한 인기 베이커리. 크루아상, 크루아상 코르네, 퀸아망 등 페이스트리류가 특히 맛있으며 도넛도 추천.",
+      "tag": "베이커리·빵",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=811s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 69,
+      "name": "이모야 킨지로",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/f2nRK1kg3ZqPXrGc8",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "고구마 튀김(이모켄피) 맛집. 바삭하고 중독성 강한 단짠의 매력. 시식이 가능하며 오리지널 켄피가 가장 인기. 진공 포장 제품은 여행 선물용으로도 최적.",
+      "tag": "디저트·간식",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=850s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 70,
+      "name": "이토킹",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/jFfdQevE7hxqKQuT8",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "후쿠오카 명물 아마오우 딸기 디저트 전문점. 생딸기 도라야키가 시그니처로 부드러운 빵 안에 딸기, 크림, 팥 앙금이 어우러진 고급스러운 풍미.",
+      "tag": "디저트·간식",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=876s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 71,
+      "name": "멘야가가 텐진점",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/GWC8RSoSwwPLtGaP6",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "이치란 창업자의 손주가 운영하는 라멘집. 면 익힘과 매운맛 단계 조절 가능. 이치란과 결이 비슷하나 돈코츠 육수가 조금 더 담백하고 덜 자극적. 토치로 구운 차슈 라멘 추천.",
+      "tag": "라멘·츠케멘",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=973s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 72,
+      "name": "후글렌",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/KHZMiJSnS8YX7Z4r9",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "도쿄/노르웨이 유명 카페의 후쿠오카 지점. 여유로운 북유럽 감성 인테리어. 진하고 고소한 플랫화이트/라떼가 일품이며, 기분 좋은 산미와 밸런스의 드립 커피 추천.",
+      "tag": "카페·커피",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1035s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 73,
+      "name": "우오츄",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/ThfHgGmANAUAynYr7",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "해산물 중심의 정갈한 일본 가정식 전문점. 우오츄 정식(사시미 선택)이 인기이며 고등어 소금구이, 카이센동, 도미 차즈케 등 모든 메뉴가 기본 이상으로 만족스러움.",
+      "tag": "일본가정식",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1062s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 74,
+      "name": "에비스야 우동",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/PsLb8VoJJfQ1G4jw9",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "갈비 우동으로 유명한 하카타 우동 명가. 달짝지근 짭조름한 갈비와 쫄깃한 면발의 조화. 냉우동(갈비 붓카케)을 특히 추천하며 우엉튀김 토핑 추가도 별미.",
+      "tag": "우동",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1113s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 75,
+      "name": "야키니쿠 코우시",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/GVJ1NmG9g3t1TeXG8",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "가성비 좋은 스키야키와 야키니쿠를 즐길 수 있는 식당. 직원분이 직접 구워주는 달콤 부드러운 고기가 특징.",
+      "tag": "야키니쿠·스키야키",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1183s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 76,
+      "name": "텐야스",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/oHDbAxkqFmoSF24G9",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "텐동 및 덴푸라 정식 전문점. 친절한 서비스와 다양한 튀김. 텐동은 부드럽고 촉촉한 식감, 덴푸라 정식은 바삭한 식감이 특징.",
+      "tag": "튀김·텐동",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1294s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 77,
+      "name": "아베키",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/a4Gdk3BQBHdv7NhF6",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "조용하고 차분한 분위기에서 사색하기 좋은 카페. 공간은 협소하지만 아늑함. 시그니처인 진한 치즈케이크와 깊은 맛의 핸드드립 커피가 명품 (이용시간 제한 있음).",
+      "tag": "카페·커피",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1335s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 78,
+      "name": "베레비안",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/GcZqyReBD8Mgv8ZLA",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "텐진 지하상가 가성비 베이커리. 저렴하고 맛있어 현지인들에게 인기. 크림치즈와 카레의 조화가 훌륭한 카레빵과 담백하고 고소한 소금빵 추천.",
+      "tag": "베이커리·빵",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1386s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 79,
+      "name": "시나리",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/C2jhirAEFWwUFyCQ7",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "2019년 미슐랭 가이드에 소개된 사누키 우동 명가. 웨이팅이 길어 오픈런 추천. 탱글하고 쫄깃한 면발과 깔끔한 쯔유 소스의 붓카케 우동, 바삭한 튀김, 명란 모찌가 일품.",
+      "tag": "우동",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1422s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 80,
+      "name": "키르훼봉",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/Jj1oePSZ2pxTdhC67",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "계절 생과일을 아낌없이 얹은 프리미엄 타르트 케이크 명가. 종합 과일 타르트와 제철 딸기 타르트가 대표 메뉴. 과하게 달지 않고 재료 본연의 맛을 살린 고급스러운 맛.",
+      "tag": "디저트·간식",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1512s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 81,
+      "name": "니쿠이치 야쿠인",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/X8oY5xnD1R4WKufY8",
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "후쿠오카 1티어 프리미엄 흑우 야키니쿠 전문점. 특선 7종 모둠으로 시작해 선호 부위를 추가하는 방식 추천. 특히 부드럽고 육향 좋은 뒷다리살(우치모모)과 흰쌀밥 조합이 최고.",
+      "tag": "야키니쿠·스키야키",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1566s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
       "id": 10,
       "name": "한큐 하카타",
       "name_verified": "하카타 한큐 (阪急百貨店 博多店)",
@@ -595,6 +1093,7 @@ window.APP_DATA = {
       "verify_status": "pending",
       "saved_to_mymaps": 0,
       "note": "백화점 · 평점 4.1 (9,051)\n좌표 정리(2026-09-10): 출처 불명의 저정밀 좌표(소수 4자리, place_id 없음)가 들어와 있어 삭제했다. #10 한큐 하카타와 #12 호텔 포르자가 같은 값이라 최소 하나는 틀린 값이었다. 정식 확보는 trip.py verify --ids 로 한다",
+      "tag": null,
       "evidence": [
         "https://website.hankyu-dept.co.jp/hakata/fl/korean/access.html",
         "https://triple.guide/attractions/cc6e04af-987a-4373-8604-4c7296bf2a4c",
@@ -621,6 +1120,7 @@ window.APP_DATA = {
       "verify_status": "pending",
       "saved_to_mymaps": 0,
       "note": "3성급 호텔 · 평점 4.3 (520)\n좌표 정리(2026-09-10): 출처 불명의 저정밀 좌표(소수 4자리, place_id 없음)가 들어와 있어 삭제했다. #10 한큐 하카타와 #12 호텔 포르자가 같은 값이라 최소 하나는 틀린 값이었다. 정식 확보는 trip.py verify --ids 로 한다",
+      "tag": "아침밥",
       "evidence": [
         "https://www.hotelforza.jp/hakata2/en/",
         "https://www.booking.com/hotel/jp/forza-hakataeki-chikushiguchi-ii.en-gb.html",
@@ -654,6 +1154,7 @@ window.APP_DATA = {
       "verify_status": "pending",
       "saved_to_mymaps": 0,
       "note": "동물원 · 평점 4.4 (1,165)\n가이드 표기명: 우미노나카미치 해변공원 · 09:30~17:30\n좌표 정리(2026-09-10): 출처 불명의 저정밀 좌표(소수 4자리, place_id 없음)가 들어와 있어 삭제했다. #10 한큐 하카타와 #12 호텔 포르자가 같은 값이라 최소 하나는 틀린 값이었다. 정식 확보는 trip.py verify --ids 로 한다",
+      "tag": null,
       "evidence": [
         "https://japantravel.navitime.com/ko/area/jp/spot/02301-1301579/",
         "https://uminaka-park.jp/mt-static/support/theme_static/original/pdf/Korean_guide_240311.pdf",
@@ -680,6 +1181,7 @@ window.APP_DATA = {
       "verify_status": "pending",
       "saved_to_mymaps": 0,
       "note": "와쇼쿠 조식 · 07:00~10:00 · KITTE 하카타 B1F, 하카타역 직결 · 호텔 도보 6~8분 · 자가제 명란, 멘타이동 2,170엔 / 긴다라 미소정식 1,800엔",
+      "tag": "아침밥",
       "evidence": [],
       "days": [],
       "icon": "🍜"
@@ -694,6 +1196,7 @@ window.APP_DATA = {
       "verify_status": "pending",
       "saved_to_mymaps": 0,
       "note": "조식 정식 · 평일 한정 07:00~10:00(LO) · JR하카타시티 B1F 하카타1번가 · 호텔 도보 5~7분 · 부타아부리 조식정식 690엔, 밥 곱빼기·식후 커피 무료",
+      "tag": "아침밥",
       "evidence": [],
       "days": [],
       "icon": "🍜"
@@ -708,6 +1211,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "동물원 · 평점 4.2 (6,289)",
+      "tag": null,
       "evidence": [
         "https://zoo.city.fukuoka.lg.jp/general/index_en",
         "https://en.wikipedia.org/wiki/Fukuoka_Municipal_Zoo_and_Botanical_Garden",
@@ -726,6 +1230,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "동물카페 · 평점 4.0 (214)\n좌표 출처(2026-09-10): 같은 건물인 라라포트 후쿠오카(place 52)의 좌표에서 파생된 값이다. place_id 는 없다 — 건물 좌표라 카페 정확한 위치와는 다를 수 있다",
+      "tag": null,
       "evidence": [
         "https://mitsui-shopping-park.com/lalaport/fukuoka/shopguide/2098784.html",
         "https://tabelog.com/en/fukuoka/A4001/A400202/40060379/",
@@ -752,6 +1257,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "편의점 · 평점 3.1 (27)",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -766,6 +1272,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "수족관 · 평점 4.5 (13,758)",
+      "tag": null,
       "evidence": [
         "https://japantravel.navitime.com/en/area/jp/spot/02301-1301594/",
         "https://en.wikipedia.org/wiki/Marine_World_Uminonakamichi",
@@ -792,6 +1299,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "주류 판매점 · 평점 4.1 (387)\n면세 10% + 1만엔↑ 5% 추가쿠폰\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보\n위스키 라인업 교차검증(2026-09-10): 닛카 요이치·미야기쿄·타케츠루(각 7,700엔)·프롬더배럴(4천엔대)·프론티어(2,200엔), 산토리 로얄(4천엔대)도 취급 가능성 높음. 야마자키·하쿠슈·히비키 프리미엄 라인은 품귀라 재고·정가 여부를 매장에서 직접 확인해야 한다 — 특히 야마자키12년은 정가(17,600엔)보다 시중가가 1.5~2배 높은 게 정상이라 정가 기대 금지",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -806,6 +1314,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "컨트리 파크 · 평점 4.4 (2,781) · 09:00 오픈 · 호텔에서 12.15km, 버스+페리 1시간~1시간 20분",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🎡"
@@ -820,6 +1329,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "쇼핑몰 · 10:00~20:00 · 호텔 0.4km / 도보 5분",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -834,6 +1344,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "쇼핑몰 · 10:00~21:00 · 호텔 0.5km / 도보 6~8분 · KITTE 하카타와 같은 건물(옆 동)이라 묶어서 이동",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -848,6 +1359,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "복합몰 · 쇼핑 10:00~21:00 / 식당 ~23:00 · 호텔 1.3km / 도보 18분, 평지·유모차 가능",
+      "tag": null,
       "evidence": [],
       "days": [
         {
@@ -870,6 +1382,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "지하상가 · 10:00~20:00 (식당 일부 ~21:00) · 호텔 2.3km · DAY 3 오후 쇼핑 메인",
+      "tag": null,
       "evidence": [],
       "days": [
         {
@@ -892,6 +1405,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "종합·주류 · 평점 3.7 (7,669) · 24시간 영업 · 호텔 1.66km / 도보 22분\n24시간 영업이라 늦은 시간 구매 가능. 닛카 프론티어(2,200엔) 등 스탠다드 위스키 위주로 확인. 프리미엄 라인은 기대하지 않는 게 안전",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -906,6 +1420,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "애니 굿즈 · 평점 4.2 (2,889) · 10:00~20:30 · 파르코 8F · 호텔 2.27km · 가샤폰은 매장 앞 복도\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -920,6 +1435,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "러닝 전문 · 평점 4.3 (260) · 11:00~20:00 · 호텔 3.01km · 면세 10%, 마라톤 전문\n러닝화 2차 피팅\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보",
+      "tag": null,
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -1397,38 +1913,218 @@ window.APP_DATA = {
       "places": "후쿠오카 호빵맨 어린이 박물관 in 쇼핑몰"
     },
     {
+      "id": 47,
+      "name": "TRAINDOR 하카타역점",
+      "category": "먹을거",
+      "note": "하카타역 지하 베이커리 맛집. 가격이 저렴하고 현지인 인기 높음. 반숙 계란 카레빵은 필수 메뉴(맛있는 카레와 촉촉한 반숙의 조화, 식사 대용으로 훌륭). 멘타이코 바게트도 유명.",
+      "tag": "베이커리·빵",
+      "done": 0,
+      "places": "TRAINDOR 하카타역점"
+    },
+    {
+      "id": 71,
+      "name": "니쿠이치 야쿠인",
+      "category": "먹을거",
+      "note": "후쿠오카 1티어 프리미엄 흑우 야키니쿠 전문점. 특선 7종 모둠으로 시작해 선호 부위를 추가하는 방식 추천. 특히 부드럽고 육향 좋은 뒷다리살(우치모모)과 흰쌀밥 조합이 최고.",
+      "tag": "야키니쿠·스키야키",
+      "done": 0,
+      "places": "니쿠이치 야쿠인"
+    },
+    {
+      "id": 45,
+      "name": "다이치노 우동",
+      "category": "먹을거",
+      "note": "하카타역 지하 가성비 우동 맛집(7,000원대). 자판기 주문. 넘버원 '고기 우엉튀김 우동'과 넘버투 '고기 새우 야채 튀김 우동' 추천(넉넉한 튀김과 감칠맛 국물). 면발이 더 탱글하길 원하면 붓카케 우동 추천. 점심 피크 피하면 웨이팅 적음.",
+      "tag": "우동",
+      "done": 0,
+      "places": "다이치노 우동"
+    },
+    {
+      "id": 52,
+      "name": "다코멧카",
+      "category": "먹을거",
+      "note": "하카타 유명 베이커리 카페. 직화로 구운 소시지가 들어간 소시지빵이 시그니처. 커피 맛도 훌륭하며 빵 애호가라면 꼭 가볼 만한 곳.",
+      "tag": "베이커리·빵",
+      "done": 0,
+      "places": "다코멧카"
+    },
+    {
+      "id": 43,
+      "name": "멘야 카네토라",
+      "category": "먹을거",
+      "note": "하카타에서 유명한 곱창 츠케멘 맛집으로 현지인과 관광객 모두에게 인기가 많음. 파르코점은 카드 결제 가능, 면 양(200g/250g) 추가 비용 없음. 매운맛 선택 시 마일드 단계 추천(적당히 매콤 짭짤한 소스). 테이블 육수로 간 조절 가능하며 탱글한 면발과 차슈가 일품.",
+      "tag": "라멘·츠케멘",
+      "done": 0,
+      "places": "멘야 카네토라"
+    },
+    {
+      "id": 55,
+      "name": "멘야 호리노",
+      "category": "먹을거",
+      "note": "가성비 좋은 텐동과 우동을 함께 즐길 수 있는 곳(11:30~14:00 런치, 저녁은 이자카야). 텐동 세트 주문 시 미니 우동 제공. 하카타 닭고기 튀김(토리텐) 덮밥이 인기.",
+      "tag": "튀김·텐동",
+      "done": 0,
+      "places": "멘야 호리노"
+    },
+    {
+      "id": 61,
+      "name": "멘야가가 텐진점",
+      "category": "먹을거",
+      "note": "이치란 창업자의 손주가 운영하는 라멘집. 면 익힘과 매운맛 단계 조절 가능. 이치란과 결이 비슷하나 돈코츠 육수가 조금 더 담백하고 덜 자극적. 토치로 구운 차슈 라멘 추천.",
+      "tag": "라멘·츠케멘",
+      "done": 0,
+      "places": "멘야가가 텐진점"
+    },
+    {
       "id": 6,
       "name": "모츠나베",
       "category": "먹을거",
       "note": "아이 동반이면 개인실 예약 가능한 오오야마 KITTE 하카타점, 어린이 메뉴 있는 나가마사 치쿠시구치점이 낫다. 하카타역 아뮤플라자 9~10층 쿠우텐 식당가는 통로가 넓어 유모차 진입이 수월하다",
-      "tag": null,
+      "tag": "모츠나베",
       "done": 0,
       "places": "Mizutaki Motsunabe Hakataro Nishinakasu"
+    },
+    {
+      "id": 68,
+      "name": "베레비안",
+      "category": "먹을거",
+      "note": "텐진 지하상가 가성비 베이커리. 저렴하고 맛있어 현지인들에게 인기. 크림치즈와 카레의 조화가 훌륭한 카레빵과 담백하고 고소한 소금빵 추천.",
+      "tag": "베이커리·빵",
+      "done": 0,
+      "places": "베레비안"
+    },
+    {
+      "id": 50,
+      "name": "베이크 치즈타르트 텐진지하점",
+      "category": "먹을거",
+      "note": "도쿄 시작 명품 치즈 타르트. 홋카이도산 치즈와 우유를 사용해 풍미가 뛰어남. 오리지널 치즈 타르트가 가장 인기 있으며 매장 취식 및 테이크아웃 가능.",
+      "tag": "디저트·간식",
+      "done": 0,
+      "places": "베이크 치즈타르트 텐진지하점"
+    },
+    {
+      "id": 57,
+      "name": "블랑제",
+      "category": "먹을거",
+      "note": "텐진 지하상가에 위치한 인기 베이커리. 크루아상, 크루아상 코르네, 퀸아망 등 페이스트리류가 특히 맛있으며 도넛도 추천.",
+      "tag": "베이커리·빵",
+      "done": 0,
+      "places": "블랑제"
+    },
+    {
+      "id": 69,
+      "name": "시나리",
+      "category": "먹을거",
+      "note": "2019년 미슐랭 가이드에 소개된 사누키 우동 명가. 웨이팅이 길어 오픈런 추천. 탱글하고 쫄깃한 면발과 깔끔한 쯔유 소스의 붓카케 우동, 바삭한 튀김, 명란 모찌가 일품.",
+      "tag": "우동",
+      "done": 0,
+      "places": "시나리"
     },
     {
       "id": 10,
       "name": "아마오우 딸기 디저트",
       "category": "먹을거",
       "note": "9월 말은 딸기 제철이 아니다. 생딸기 디저트는 기대하기 어렵고 냉동·잼을 쓰는 카페만 가능 — 매장 미정",
-      "tag": null,
+      "tag": "디저트·간식",
       "done": 0,
       "places": null
+    },
+    {
+      "id": 67,
+      "name": "아베키",
+      "category": "먹을거",
+      "note": "조용하고 차분한 분위기에서 사색하기 좋은 카페. 공간은 협소하지만 아늑함. 시그니처인 진한 치즈케이크와 깊은 맛의 핸드드립 커피가 명품 (이용시간 제한 있음).",
+      "tag": "카페·커피",
+      "done": 0,
+      "places": "아베키"
+    },
+    {
+      "id": 65,
+      "name": "야키니쿠 코우시",
+      "category": "먹을거",
+      "note": "가성비 좋은 스키야키와 야키니쿠를 즐길 수 있는 식당. 직원분이 직접 구워주는 달콤 부드러운 고기가 특징.",
+      "tag": "야키니쿠·스키야키",
+      "done": 0,
+      "places": "야키니쿠 코우시"
+    },
+    {
+      "id": 64,
+      "name": "에비스야 우동",
+      "category": "먹을거",
+      "note": "갈비 우동으로 유명한 하카타 우동 명가. 달짝지근 짭조름한 갈비와 쫄깃한 면발의 조화. 냉우동(갈비 붓카케)을 특히 추천하며 우엉튀김 토핑 추가도 별미.",
+      "tag": "우동",
+      "done": 0,
+      "places": "에비스야 우동"
+    },
+    {
+      "id": 56,
+      "name": "오이시이 코오리야 텐진미나미점",
+      "category": "먹을거",
+      "note": "천연 얼음 수제 빙수 전문점. 1인 1메뉴 주문 원칙. 휘핑크림 딸기 빙수와 망고 빙수가 인기이며, 너무 달지 않고 부드러운 우유 맛이 특징.",
+      "tag": "디저트·간식",
+      "done": 0,
+      "places": "오이시이 코오리야 텐진미나미점"
+    },
+    {
+      "id": 49,
+      "name": "온카 커피",
+      "category": "먹을거",
+      "note": "미나텐진 1층에 위치한 아늑한 분위기의 스페셜티 카페. 신선한 원두의 풍부한 맛과 향. 대표 메뉴는 쿠로(드립 커피)와 로(라떼). 라떼 끝맛의 미세한 단맛이 독특하고 매력적.",
+      "tag": "카페·커피",
+      "done": 0,
+      "places": "온카 커피"
+    },
+    {
+      "id": 60,
+      "name": "요시즈카 우나기야",
+      "category": "먹을거",
+      "note": "1873년 창업한 150년 전통 장어덮밥 명가. 쫀득하면서도 부드러운 장어구이 식감과 특제 타레 소스가 일품. 나카스 강변 쾌적한 건물, 한국어 메뉴 구비되어 우나쥬/우나기동 주문 편리.",
+      "tag": "장어덮밥",
+      "done": 0,
+      "places": "요시즈카 우나기야"
     },
     {
       "id": 8,
       "name": "우동",
       "category": "먹을거",
       "note": null,
-      "tag": null,
+      "tag": "우동",
       "done": 0,
       "places": "다이후쿠 우동 (大福うどん), 마키노우동 하카타버스터미널점"
+    },
+    {
+      "id": 63,
+      "name": "우오츄",
+      "category": "먹을거",
+      "note": "해산물 중심의 정갈한 일본 가정식 전문점. 우오츄 정식(사시미 선택)이 인기이며 고등어 소금구이, 카이센동, 도미 차즈케 등 모든 메뉴가 기본 이상으로 만족스러움.",
+      "tag": "일본가정식",
+      "done": 0,
+      "places": "우오츄"
+    },
+    {
+      "id": 58,
+      "name": "이모야 킨지로",
+      "category": "먹을거",
+      "note": "고구마 튀김(이모켄피) 맛집. 바삭하고 중독성 강한 단짠의 매력. 시식이 가능하며 오리지널 켄피가 가장 인기. 진공 포장 제품은 여행 선물용으로도 최적.",
+      "tag": "디저트·간식",
+      "done": 0,
+      "places": "이모야 킨지로"
+    },
+    {
+      "id": 59,
+      "name": "이토킹",
+      "category": "먹을거",
+      "note": "후쿠오카 명물 아마오우 딸기 디저트 전문점. 생딸기 도라야키가 시그니처로 부드러운 빵 안에 딸기, 크림, 팥 앙금이 어우러진 고급스러운 풍미.",
+      "tag": "디저트·간식",
+      "done": 0,
+      "places": "이토킹"
     },
     {
       "id": 9,
       "name": "장어덮밥",
       "category": "먹을거",
       "note": null,
-      "tag": null,
+      "tag": "장어덮밥",
       "done": 0,
       "places": "오호리 우나기, 요시즈카 우나기야, 후지우나ㅡ장어덮밥"
     },
@@ -1514,22 +2210,103 @@ window.APP_DATA = {
       "places": "호텔 포르자 하카타역 치쿠시구치Ⅱ"
     },
     {
+      "id": 46,
+      "name": "죠스이안 하카타 에키마에 본점",
+      "category": "먹을거",
+      "note": "딸기 모찌의 진수. 가격대는 다소 높지만 쫀득한 모찌와 신선한 딸기 과즙의 조화가 강렬해 한번 맛보면 납득하게 됨. 선물용보다 매장에서 바로 먹는 것을 추천.",
+      "tag": "디저트·간식",
+      "done": 0,
+      "places": "죠스이안 하카타 에키마에 본점"
+    },
+    {
+      "id": 70,
+      "name": "키르훼봉",
+      "category": "먹을거",
+      "note": "계절 생과일을 아낌없이 얹은 프리미엄 타르트 케이크 명가. 종합 과일 타르트와 제철 딸기 타르트가 대표 메뉴. 과하게 달지 않고 재료 본연의 맛을 살린 고급스러운 맛.",
+      "tag": "디저트·간식",
+      "done": 0,
+      "places": "키르훼봉"
+    },
+    {
+      "id": 48,
+      "name": "테무진 교자",
+      "category": "먹을거",
+      "note": "후쿠오카 히토쿠치 교자(한입 만두)의 명가. 군만두는 겉바속촉의 정석이며, 물만두는 딘타이펑을 연상시키는 뛰어난 국물 맛을 자랑함.",
+      "tag": "교자·만두",
+      "done": 0,
+      "places": "테무진 교자"
+    },
+    {
+      "id": 66,
+      "name": "텐야스",
+      "category": "먹을거",
+      "note": "텐동 및 덴푸라 정식 전문점. 친절한 서비스와 다양한 튀김. 텐동은 부드럽고 촉촉한 식감, 덴푸라 정식은 바삭한 식감이 특징.",
+      "tag": "튀김·텐동",
+      "done": 0,
+      "places": "텐야스"
+    },
+    {
+      "id": 44,
+      "name": "텐푸라 타카오",
+      "category": "먹을거",
+      "note": "튀김 전문점으로 텐푸라 정식과 텐동 판매. 텐푸라 정식은 먹는 속도에 맞춰 튀김이 순차적으로 제공되어 항상 따뜻하게 즐길 수 있음. 튀김옷이 얇고 바삭하며 15시 전 주문 시 밥 무료 사이즈업. 새우튀김 텐동은 새우튀김 양이 넉넉하고 구성이 좋음.",
+      "tag": "튀김·텐동",
+      "done": 0,
+      "places": "텐푸라 타카오"
+    },
+    {
       "id": 7,
       "name": "하카타 돈코츠 라멘",
       "category": "먹을거",
       "note": "가게는 현지에서 정한다",
-      "tag": null,
+      "tag": "라멘·츠케멘",
       "done": 0,
       "places": null
+    },
+    {
+      "id": 54,
+      "name": "하카타 모쯔나베 오오야마 킷테하카타점",
+      "category": "먹을거",
+      "note": "후쿠오카 대표 모츠나베 맛집. 냄새 없는 부드러운 대창과 채소에서 우러나오는 진하고 깔끔한 국물이 일품. 마무리는 짬뽕면 사리 추천. KITTE 지하에 있어 접근성 우수.",
+      "tag": "모츠나베",
+      "done": 0,
+      "places": "하카타 모쯔나베 오오야마 킷테하카타점"
+    },
+    {
+      "id": 53,
+      "name": "하카타 카와바타 도산코",
+      "category": "먹을거",
+      "note": "현지인들이 즐겨 찾는 라멘 맛집. 된장(미소) 라멘이 가장 유명하며 부담 없는 국물과 차슈 퀄리티가 만족스러움. 중식 스타일의 볶음밥 세트 조합이 강력 추천 메뉴.",
+      "tag": "라멘·츠케멘",
+      "done": 0,
+      "places": "하카타 카와바타 도산코"
     },
     {
       "id": 11,
       "name": "함바그",
       "category": "먹을거",
       "note": "아이가 먹기 좋은 부드러운 메뉴\n키와미야 텐진 파르코점은 지하 1층. 예약 불가이고 일행 전원이 줄 서야 입장된다. 웨이팅 1시간 30분 후기 있음 — 3살 동반이면 오픈 30분 전 도착하거나 오후 3~4시 비는 시간대를 노릴 것",
-      "tag": null,
+      "tag": "함바그·스테이크",
       "done": 0,
       "places": "키와미야 함바그 파르코 후쿠오카점"
+    },
+    {
+      "id": 51,
+      "name": "효탄스시",
+      "category": "먹을거",
+      "note": "후쿠오카 대표 가성비 스시 명가. 솔라리아점은 실내 웨이팅이 가능하고 원하는 스시만 골라 주문 가능. 밥 양 조절 가능하며 보리새우 스시와 참치 대뱃살이 일품.",
+      "tag": "스시·해산물",
+      "done": 0,
+      "places": "효탄스시"
+    },
+    {
+      "id": 62,
+      "name": "후글렌",
+      "category": "먹을거",
+      "note": "도쿄/노르웨이 유명 카페의 후쿠오카 지점. 여유로운 북유럽 감성 인테리어. 진하고 고소한 플랫화이트/라떼가 일품이며, 기분 좋은 산미와 밸런스의 드립 커피 추천.",
+      "tag": "카페·커피",
+      "done": 0,
+      "places": "후글렌"
     },
     {
       "id": 21,
@@ -6880,6 +7657,6 @@ window.APP_DATA = {
     "pending": "미조사 — 주소가 아직 없다",
     "matched": "확인됨"
   },
-  "TOTAL": 54,
+  "TOTAL": 81,
   "API_KEY": "AIzaSyCUN-BFgGm3eFMKdDqalQerulX6nt5tEko"
 };

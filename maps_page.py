@@ -154,9 +154,11 @@ def collect(conn):
 
     out = []
     for r in conn.execute(
-            "SELECT id, name, name_verified, category, address, maps_url, "
-            "verify_status, saved_to_mymaps, note, evidence_urls FROM place "
-            "ORDER BY id"):
+            "SELECT p.id, p.name, p.name_verified, p.category, p.address, p.maps_url, "
+            "p.verify_status, p.saved_to_mymaps, p.note, p.evidence_urls, "
+            "(SELECT i.tag FROM item_place ip JOIN item i ON i.id = ip.item_id "
+            " WHERE ip.place_id = p.id AND i.tag IS NOT NULL LIMIT 1) AS tag "
+            "FROM place p ORDER BY p.id"):
         p = dict(r)
         p["evidence"] = [u.strip() for u in
                          (p.pop("evidence_urls") or "").split("\n") if u.strip()]
