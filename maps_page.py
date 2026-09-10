@@ -576,6 +576,8 @@ button.tile:hover{box-shadow:0 5px 14px rgba(123,94,167,.16)}
 .tile b{display:block;font-weight:700;line-height:1.3}
 .tile small{color:var(--muted)}
 .tile.done{background:var(--v-soft)}
+.tile .tg{display:inline-block;font-size:10.5px;background:var(--pink-soft);
+  color:var(--pink);border-radius:999px;padding:1px 7px;margin-right:5px}
 .dot{width:7px;height:7px;border-radius:50%;flex:none}
 .d-ambiguous{background:#e0a02a} .d-not_found{background:#d1594c}
 .d-pending{background:#a8a0ad} .d-matched{background:#79b58a}
@@ -982,7 +984,7 @@ function renderItems() {
       <span class="e">${i.category === "살거" ? "🛍️"
         : i.category === "먹을거" ? "🍜" : "🎡"}</span>
       <span style="display:flex; flex-direction:column; align-items:flex-start;">
-        <b>${esc(i.name)}</b>
+        <b>${i.tag ? `<span class="tg">${esc(i.tag)}</span>` : ""}${esc(i.name)}</b>
         ${placeHtml}
         ${i.note ? `<small style="margin-top:4px; color:var(--muted);">${esc(i.note)}</small>` : ""}
       </span></div>`;

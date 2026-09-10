@@ -25,7 +25,19 @@ def connect(db_path=DEFAULT_DB):
     conn.execute("PRAGMA foreign_keys = ON")
     with open(SCHEMA_PATH, encoding="utf-8") as f:
         conn.executescript(f.read())
+    _migrate(conn)
     return conn
+
+
+def _migrate(conn):
+    """CREATE TABLE IF NOT EXISTS 는 기존 테이블에 컬럼을 붙이지 않는다.
+
+    이미 만들어진 DB 를 열었을 때 빠진 컬럼을 채운다.
+    """
+    have = {d[1] for d in conn.execute("PRAGMA table_info(item)")}
+    if have and "tag" not in have:
+        conn.execute("ALTER TABLE item ADD COLUMN tag TEXT")
+        conn.commit()
 
 
 # --------------------------------------------------------------------------
@@ -208,9 +220,10 @@ def insert_payload(conn, payload, force=False):
 
         for i, it in enumerate(payload.get("items") or []):
             cur = conn.execute(
-                "INSERT INTO item (name, category, note, source_id) "
-                "VALUES (?,?,?,?)",
-                (it["name"], it["category"], it.get("note"), source_id))
+                "INSERT INTO item (name, category, note, tag, source_id) "
+                "VALUES (?,?,?,?,?)",
+                (it["name"], it["category"], it.get("note"), it.get("tag"),
+                 source_id))
             item_id = cur.lastrowid
             result["items"] += 1
             for pname in it.get("place_names") or []:
@@ -437,13 +450,13 @@ def list_plan(conn, day=None):
         f"{sql} ORDER BY i.day_no, {_SLOT_CASE}, i.seq", args).fetchall()
 
 
-def list_items(conn, category=None):
+def list_items(conn, category=None, tag=None):
     """아이템 목록. 연결된 장소 이름을 이름순으로 이어 붙여 함께 준다.
 
     GROUP_CONCAT 은 정렬을 보장하지 않는다. 서브쿼리에서 ORDER BY 로 고정한다.
     """
     conn.row_factory = sqlite3.Row
-    sql = ("SELECT i.id, i.name, i.category, i.note, i.done, "
+    sql = ("SELECT i.id, i.name, i.category, i.note, i.tag, i.done, "
            "(SELECT GROUP_CONCAT(x.name, ', ') FROM ("
            "   SELECT p.name FROM item_place ip "
            "   JOIN place p ON p.id = ip.place_id "
@@ -453,6 +466,9 @@ def list_items(conn, category=None):
     if category:
         sql += " AND i.category = ?"
         args.append(category)
+    if tag:
+        sql += " AND i.tag = ?"
+        args.append(tag)
     return conn.execute(sql + " ORDER BY i.category, i.name", args).fetchall()
 
 
@@ -558,6 +574,7 @@ def main(argv=None):
 
     p_items = sub.add_parser("items", help="아이템 조회 (살거/먹을거/놀거)")
     p_items.add_argument("--category")
+    p_items.add_argument("--tag", help="예: 아침밥")
 
     p_tips = sub.add_parser("tips", help="참고사항 조회")
     p_tips.add_argument("--day", type=int)
@@ -628,9 +645,10 @@ def main(argv=None):
         return 0
 
     if args.cmd == "items":
-        for r in list_items(conn, category=args.category):
+        for r in list_items(conn, category=args.category, tag=args.tag):
             mark = "[v]" if r["done"] else "[ ]"
-            print(f"{mark} [{r['id']:>3}] {r['category']:<4} {r['name']}")
+            tg = f" #{r['tag']}" if r["tag"] else ""
+            print(f"{mark} [{r['id']:>3}] {r['category']:<4} {r['name']}{tg}")
             if r["places"]:
                 print(f"        장소: {r['places']}")
             if r["note"]:

@@ -70,7 +70,7 @@ def build_todoist_tasks(conn):
                       "content": f"{r['day_no']}일차 [{r['slot']}] {label}",
                       "labels": [f"{r['day_no']}일차"]})
     for r in conn.execute(
-            "SELECT i.id, i.name, i.category, i.note, "
+            "SELECT i.id, i.name, i.category, i.note, i.tag, "
             "(SELECT GROUP_CONCAT(x.name, ', ') FROM ("
             "   SELECT p.name FROM item_place ip "
             "   JOIN place p ON p.id = ip.place_id "
@@ -82,8 +82,10 @@ def build_todoist_tasks(conn):
         where = f" · {r['places']}" if r["places"] else ""
         # note 에 층수·쿠폰·오픈런 같은 실전 정보가 들어 있다. 제목만 보내면
         # 폰에서 그걸 못 본다 — description 으로 함께 실어 보낸다.
+        # 태그가 있으면 제목에 넣는다 — 폰에서 '아침밥' 만 모아 보려면 필요하다.
+        tg = f"#{r['tag']} " if r["tag"] else ""
         tasks.append({"table": "item", "row_id": r["id"],
-                      "content": f"[{r['category']}] {r['name']}{where}",
+                      "content": f"[{r['category']}] {tg}{r['name']}{where}",
                       "labels": [r["category"]],
                       "description": r["note"] or ""})
     return tasks

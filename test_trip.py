@@ -1392,6 +1392,65 @@ def test_plan_time_deadline_beats_earlier_departure_word():
     got = maps_page.plan_time("오후", "–", memo)
     assert got is not None and got < 15 * 60, got
 
+
+def test_item_has_tag_column():
+    conn = trip.connect(":memory:")
+    cols = [d[1] for d in conn.execute("PRAGMA table_info(item)")]
+    assert "tag" in cols, cols
+
+
+def test_connect_migrates_existing_db_missing_tag(tmp_path=None):
+    """기존 DB 는 CREATE TABLE IF NOT EXISTS 로는 컬럼이 안 붙는다.
+
+    tag 없이 만들어진 item 테이블을 열었을 때 connect() 가 채워 넣어야 한다.
+    """
+    import os, tempfile
+    d = tempfile.mkdtemp()
+    path = os.path.join(d, "old.db")
+    old = sqlite3.connect(path)
+    old.execute("CREATE TABLE item (id INTEGER PRIMARY KEY, name TEXT NOT NULL, "
+                "category TEXT NOT NULL, note TEXT, done INTEGER NOT NULL DEFAULT 0, "
+                "source_id INTEGER, todoist_task_id TEXT, created_at TEXT)")
+    old.commit()
+    old.close()
+    conn = trip.connect(path)
+    cols = [d[1] for d in conn.execute("PRAGMA table_info(item)")]
+    assert "tag" in cols, cols
+
+
+def test_list_items_filters_by_tag():
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "x"},
+        "items": [{"name": "조식 A", "category": "먹을거", "tag": "아침밥"},
+                  {"name": "모츠나베", "category": "먹을거"}],
+    })
+    got = [r["name"] for r in trip.list_items(conn, tag="아침밥")]
+    assert got == ["조식 A"], got
+    assert len(trip.list_items(conn)) == 2
+
+
+def test_page_shows_item_tag():
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "x"},
+        "items": [{"name": "조식 A", "category": "먹을거", "tag": "아침밥"}],
+    })
+    page = maps_page.build_page(conn, "2026-09-10 12:00")
+    assert "아침밥" in page, "태그가 페이지에 없다"
+
+
+def test_todoist_task_carries_tag_in_content():
+    """폰에서 아침밥만 모아 보려면 제목에 태그가 있어야 한다."""
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, {
+        "source": {"kind": "text", "raw_text": "x"},
+        "items": [{"name": "조식 A", "category": "먹을거", "tag": "아침밥"}],
+    })
+    t = [t for t in export.build_todoist_tasks(conn) if t["table"] == "item"][0]
+    assert "아침밥" in t["content"], t["content"]
+    assert "@" not in t["content"], t["content"]
+
 # 러너는 반드시 파일 맨 끝에 있어야 한다. 중간에 두면 그 아래 정의된
 # test_ 함수가 globals() 에 없는 채로 수집되어 조용히 건너뛴다.
 # 실제로 그래서 4개(체인점 오염·커서 페이징 회귀 테스트 포함)가 안 돌았다.

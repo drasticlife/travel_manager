@@ -66,6 +66,8 @@ CREATE TABLE IF NOT EXISTS item (
   name            TEXT NOT NULL,
   category        TEXT NOT NULL CHECK (category IN ('살거','먹을거','놀거')),
   note            TEXT,
+  -- category(살거/먹을거/놀거)보다 잘게 묶는 자유 태그. 예: '아침밥'
+  tag             TEXT,
   done            INTEGER NOT NULL DEFAULT 0 CHECK (done IN (0,1)),
   source_id       INTEGER REFERENCES source(id),
   todoist_task_id TEXT,
