@@ -1331,6 +1331,67 @@ def test_collect_timetable_always_keeps_airport_leg():
     tt = maps_page.collect_timetable(conn)
     assert "하카타>후쿠오카공항|평일" in tt["legs"], tt["legs"].keys()
 
+
+def test_plan_time_uses_explicit_departure_clue():
+    """'체크아웃 11:00' 은 출발 단서다 — 그 시각을 쓴다."""
+    assert maps_page.plan_time("오전", "체크아웃 11:00",
+                               "체크아웃 11:00. 기념품 쇼핑") == 11 * 60
+
+
+def test_plan_time_ignores_opening_hours():
+    """'10:00~20:00' 은 영업시간이지 출발 시각이 아니다.
+
+    이걸 출발 시각으로 쓰면 오후 일정인데 오전 10시 열차를 안내하게 된다.
+    """
+    got = maps_page.plan_time("오후", "10:00~20:00(식당 일부 ~21:00)",
+                              "10:00~20:00(식당 일부 ~21:00). 텐진 시내 쇼핑")
+    assert got == maps_page.SLOT_DEFAULT_TIME["오후"], got
+
+
+def test_plan_time_backs_off_from_arrival_deadline():
+    """'15:00 공항 도착 권장' 은 도착 기한이다 — 이동시간만큼 앞당긴다."""
+    got = maps_page.plan_time("오후", "–",
+                              "비행기 3시간 전 도착 권장 → 15:00 공항 도착 권장")
+    assert got is not None and got < 15 * 60, got
+
+
+def test_plan_time_falls_back_to_slot():
+    assert maps_page.plan_time("저녁", "–", "") == maps_page.SLOT_DEFAULT_TIME["저녁"]
+    assert maps_page.plan_time("오전", "–", "") == maps_page.SLOT_DEFAULT_TIME["오전"]
+
+
+def test_collect_days_carries_plan_time():
+    conn = trip.connect(":memory:")
+    conn.execute("INSERT INTO place (name, category) VALUES ('텐진 지하상가','쇼핑')")
+    conn.execute("INSERT INTO itinerary (day_no, date, slot, seq, place_id, memo) "
+                 "VALUES (3,'2026-09-23','오후',0,1,'10:00~20:00. 텐진 시내 쇼핑')")
+    conn.commit()
+    it = maps_page.collect_days(conn)[2]["items"][0]
+    assert it["plan_time"] == maps_page.SLOT_DEFAULT_TIME["오후"], it
+
+
+def test_plan_time_opening_hours_beat_deadline_words():
+    """'09:30~21:00(입장마감 20:00)' 은 영업시간이다.
+
+    '마감' 이 들어 있다고 기한으로 보면 오전 일정인 마린월드가 19:30 이 된다.
+    영업시간 판정이 기한 판정보다 앞서야 한다.
+    """
+    memo = ("09:30~21:00(입장마감 20:00). 바다 생물을 만나는 시간. "
+            "연휴 특별운영이라 18:00부터 야간모드. 쇼 11:00/12:30/14:00/15:30")
+    got = maps_page.plan_time("오전", "09:30~21:00(입장마감 20:00)", memo)
+    assert got == maps_page.SLOT_DEFAULT_TIME["오전"], got
+
+
+def test_plan_time_deadline_beats_earlier_departure_word():
+    """공항행은 '출발 18:00'(비행기)보다 '15:00 도착 권장'(기한)이 우선이다.
+
+    앞 문장만 보고 18:00 을 쓰면 비행기 뜨는 시각에 공항 갈 열차를 안내한다.
+    """
+    memo = ("후쿠오카 출발 18:00, 한국으로 귀국. 하카타역→후쿠오카공항 택시 약 12~20분. "
+            "비행기 3시간 전 도착 권장 → 15:00 공항 도착 권장")
+    got = maps_page.plan_time("오후", "–", memo)
+    assert got is not None and got < 15 * 60, got
+
 # 러너는 반드시 파일 맨 끝에 있어야 한다. 중간에 두면 그 아래 정의된
 # test_ 함수가 globals() 에 없는 채로 수집되어 조용히 건너뛴다.
 # 실제로 그래서 4개(체인점 오염·커서 페이징 회귀 테스트 포함)가 안 돌았다.

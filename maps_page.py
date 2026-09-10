@@ -168,6 +168,67 @@ def collect(conn):
     return out
 
 
+# 슬롯별 기본 출발 시각(분). 명시된 단서가 없을 때만 쓴다.
+SLOT_DEFAULT_TIME = {
+    "오전": 9 * 60, "점심": 12 * 60, "오후": 14 * 60,
+    "저녁": 18 * 60, "밤": 20 * 60,
+}
+
+# 이 낱말 옆의 시각은 '우리가 움직이는 시각'이다.
+DEPART_WORDS = ("출발", "체크아웃", "체크인", "탑승", "복귀", "집합")
+# 이 낱말 옆의 시각은 '늦어도 그때까지'라는 기한이라 이동시간만큼 앞당긴다.
+DEADLINE_WORDS = ("도착 권장", "도착권장", "까지", "마감")
+# 영업시간은 우리 일정이 아니다. 이걸 출발 시각으로 쓰면 오후 일정에
+# 오전 열차를 안내하게 된다.
+HOURS_WORDS = ("영업", "쇼핑", "식당", "입장", "최종입장", "입장마감", "오픈")
+
+_HHMM = re.compile(r"(\d{1,2}):(\d{2})")
+
+
+def _clock(text):
+    """문장에서 첫 시각을 분으로. 없으면 None."""
+    m = _HHMM.search(text or "")
+    if not m:
+        return None
+    h, mi = int(m.group(1)), int(m.group(2))
+    return h * 60 + mi if 0 <= h < 24 and mi < 60 else None
+
+
+def plan_time(slot, hours, memo, travel_min=30):
+    """그 일정에 '우리가 움직일' 대략의 시각(분)을 추정한다.
+
+    memo 는 사용자가 만든 일정표에서 왔다. 거기 적힌 시각을 쓰되,
+    영업시간과 계획 시각을 구분한다 — '10:00~20:00' 은 가게가 여는
+    시간이지 우리가 나서는 시간이 아니다.
+    """
+    # 순서가 중요하다. 영업시간을 먼저 걸러내지 않으면
+    # '09:30~21:00(입장마감 20:00)' 이 '마감' 때문에 기한으로 잡혀
+    # 오전 일정인 마린월드가 19:30 이 된다.
+    sentences = [x for x in re.split(r"[.。]\s*", memo or "") if _HHMM.search(x)]
+    plan = [x for x in sentences if not any(w in x for w in HOURS_WORDS)]
+
+    # 기한이 출발 단서를 이긴다. 공항행 memo 는 '출발 18:00'(비행기)이 먼저
+    # 나오지만 우리가 맞춰야 하는 건 뒤에 오는 '15:00 도착 권장' 이다.
+    for sentence in plan:
+        if any(w in sentence for w in DEADLINE_WORDS):
+            t = None
+            for m in _HHMM.finditer(sentence):      # 기한은 보통 마지막 시각
+                t = int(m.group(1)) * 60 + int(m.group(2))
+            if t is not None:
+                return max(0, t - travel_min)
+    for sentence in plan:
+        if any(w in sentence for w in DEPART_WORDS):
+            t = _clock(sentence)
+            if t is not None:
+                return t
+    # hours 가 '체크아웃 11:00' 처럼 계획을 담고 있으면 그것도 본다
+    if hours and hours != "–" and any(w in hours for w in DEPART_WORDS):
+        t = _clock(hours)
+        if t is not None:
+            return t
+    return SLOT_DEFAULT_TIME.get(slot)
+
+
 def collect_days(conn):
     """일차별 일정. 정렬은 day_no → 슬롯순서 → seq 다. seq 만 쓰면 밤이 먼저 온다."""
     conn.row_factory = sqlite3.Row
@@ -199,6 +260,7 @@ def collect_days(conn):
                 "date": r["date"],
                 "title": title, "subtitle": subtitle, "hours": hours or "–",
                 "star": any(w in hours for w in STAR_WORDS),
+                "plan_time": plan_time(r["slot"], hours or "–", r["memo"] or ""),
                 "memo": r["memo"] or "",
                 "icon": icon_for(r["place_name"] or title, r["place_category"]),
                 **parse_move(move),
@@ -959,7 +1021,7 @@ function serviceKind(dateStr) {
   return w === 0 ? "휴일" : w === 6 ? "토요" : "평일";
 }
 
-function nextTrains(placeName, dateStr) {
+function nextTrains(placeName, dateStr, planMin) {
   const to = PLACE_STATION[placeName];
   /* 지하철 역이 없는 곳(JR·버스·도보 구간)도 구글지도 경로는 보여준다.
      링크까지 빼면 사용자가 아무 안내도 못 받는다. */
@@ -982,17 +1044,22 @@ function nextTrains(placeName, dateStr) {
         구글지도에서 확인하는 게 정확하다.</div>${links}</div>`;
   }
 
-  /* 지금 시각 기준 다음 편. 여행일이 아직 안 왔으면 첫차부터 보여준다. */
+  /* 기준 시각을 정한다.
+     여행 당일이면 '지금', 아니면 일정에서 추정한 출발 시각을 쓴다.
+     첫차부터 보여주면(예전 동작) 오후 일정인데 05:30 열차가 뜬다. */
   const now = new Date();
   const today = now.getFullYear() + "-" + pad2(now.getMonth() + 1) + "-" + pad2(now.getDate());
-  const cur = (dateStr && dateStr === today)
-    ? now.getHours() * 60 + now.getMinutes() : -1;
-  let list = rows.filter(r => r[0] >= cur).slice(0, 3);
-  const upcoming = cur >= 0 && list.length > 0;
+  const isToday = dateStr && dateStr === today;
+  const nowMin = now.getHours() * 60 + now.getMinutes();
+  const base = isToday ? nowMin
+    : (typeof planMin === "number" ? planMin : -1);
+
+  let list = base >= 0 ? rows.filter(r => r[0] >= base).slice(0, 3) : [];
+  const anchored = list.length > 0;
   if (!list.length) list = rows.slice(0, 3);
 
   const body = list.map((r, i) => {
-    const wait = upcoming ? r[0] - cur : null;
+    const wait = (isToday && anchored) ? r[0] - nowMin : null;
     const soon = i === 0 && wait !== null && wait <= 10;
     return `<tr>
       <td class="t${soon ? " soon" : ""}">${hhmm(r[0])} 발 → ${hhmm(r[0] + r[1])} 착</td>
@@ -1002,7 +1069,8 @@ function nextTrains(placeName, dateStr) {
 
   return `<div class="tt"><h5>가는 길 — 다음 열차</h5>
     <div class="leg">${esc(HOME_STATION)} → ${esc(to)} (지하철)
-      ${upcoming ? "" : "· 첫차부터 표시"}</div>
+      ${isToday ? "· 지금 시각 기준"
+        : anchored ? `· ${hhmm(base)} 출발 예정 기준(추정)` : "· 첫차부터"}</div>
     <table>${body}</table>
     <div class="warn">시각표 기준이라 <b>지연은 반영되지 않는다</b>.
       실제 운행 상황은 아래 링크에서 확인할 것.</div>${links}</div>`;
@@ -1048,7 +1116,8 @@ function openPlace(id, itin) {
       </div>
     </div>
     <dl>${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>
-    ${nextTrains(p ? p.name : (itin ? itin.title : ""), itin ? itin.date : null)}
+    ${nextTrains(p ? p.name : (itin ? itin.title : ""),
+                 itin ? itin.date : null, itin ? itin.plan_time : null)}
     <div class="acts">
       ${p && p.maps_url
         ? `<a class="btn go" href="${esc(p.maps_url)}" target="_blank"
