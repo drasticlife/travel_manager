@@ -133,7 +133,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "실내 놀이터 · 평점 4.3 (4,177)\n가이드 확정안(초록판) 일정에서 제외 — 시간 남으면 들를 후보",
-      "tag": null,
+      "tag": "키즈/테마파크",
       "evidence": [
         "https://www.fukuoka-anpanman.jp/kr/",
         "https://www.crossroadfukuoka.jp/kr/spot/11346",
@@ -211,7 +211,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "슈퍼마켓 · 평점 4.2 (1,833)\n요도바시 4F. 산토리 올드 특가. 현금만, 면세 불가\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보",
-      "tag": "위스키",
+      "tag": "특산물/식품",
       "evidence": [
         "https://triple.guide/attractions/0e47a43e-fba8-49ae-8cee-020211d091c9",
         "https://map.yahoo.co.jp/v3/place/R3OMPnOE-Gc",
@@ -611,7 +611,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "복합몰 · 쇼핑 10:00~21:00 / 식당 ~22:00 · 실물크기 건담 νガンダム 전시 · 4F 에 Moff animal cafe · 호텔에서 JR 하카타역→다케시타역 약 5분, 역에서 도보 약 9분(0.6km) · 주소는 같은 건물인 Moff animal cafe(place 6) 에서 가져왔다. 좌표는 없음 — 재검증 대상",
-      "tag": null,
+      "tag": "구경/전시",
       "evidence": [],
       "days": [
         {
@@ -1093,7 +1093,7 @@ window.APP_DATA = {
       "verify_status": "pending",
       "saved_to_mymaps": 0,
       "note": "백화점 · 평점 4.1 (9,051)\n좌표 정리(2026-09-10): 출처 불명의 저정밀 좌표(소수 4자리, place_id 없음)가 들어와 있어 삭제했다. #10 한큐 하카타와 #12 호텔 포르자가 같은 값이라 최소 하나는 틀린 값이었다. 정식 확보는 trip.py verify --ids 로 한다",
-      "tag": null,
+      "tag": "패션/잡화",
       "evidence": [
         "https://website.hankyu-dept.co.jp/hakata/fl/korean/access.html",
         "https://triple.guide/attractions/cc6e04af-987a-4373-8604-4c7296bf2a4c",
@@ -1154,7 +1154,7 @@ window.APP_DATA = {
       "verify_status": "pending",
       "saved_to_mymaps": 0,
       "note": "동물원 · 평점 4.4 (1,165)\n가이드 표기명: 우미노나카미치 해변공원 · 09:30~17:30\n좌표 정리(2026-09-10): 출처 불명의 저정밀 좌표(소수 4자리, place_id 없음)가 들어와 있어 삭제했다. #10 한큐 하카타와 #12 호텔 포르자가 같은 값이라 최소 하나는 틀린 값이었다. 정식 확보는 trip.py verify --ids 로 한다",
-      "tag": null,
+      "tag": "자연/동물",
       "evidence": [
         "https://japantravel.navitime.com/ko/area/jp/spot/02301-1301579/",
         "https://uminaka-park.jp/mt-static/support/theme_static/original/pdf/Korean_guide_240311.pdf",
@@ -1271,7 +1271,7 @@ window.APP_DATA = {
       "verify_status": "pending",
       "saved_to_mymaps": 0,
       "note": null,
-      "tag": null,
+      "tag": "베이커리·빵",
       "evidence": [],
       "days": [],
       "icon": "🍜"
@@ -1286,7 +1286,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "동물원 · 평점 4.2 (6,289)",
-      "tag": null,
+      "tag": "자연/동물",
       "evidence": [
         "https://zoo.city.fukuoka.lg.jp/general/index_en",
         "https://en.wikipedia.org/wiki/Fukuoka_Municipal_Zoo_and_Botanical_Garden",
@@ -1305,7 +1305,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "동물카페 · 평점 4.0 (214)\n좌표 출처(2026-09-10): 같은 건물인 라라포트 후쿠오카(place 52)의 좌표에서 파생된 값이다. place_id 는 없다 — 건물 좌표라 카페 정확한 위치와는 다를 수 있다",
-      "tag": null,
+      "tag": "자연/동물",
       "evidence": [
         "https://mitsui-shopping-park.com/lalaport/fukuoka/shopguide/2098784.html",
         "https://tabelog.com/en/fukuoka/A4001/A400202/40060379/",
@@ -1347,7 +1347,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "수족관 · 평점 4.5 (13,758)",
-      "tag": null,
+      "tag": "자연/동물",
       "evidence": [
         "https://japantravel.navitime.com/en/area/jp/spot/02301-1301594/",
         "https://en.wikipedia.org/wiki/Marine_World_Uminonakamichi",
@@ -1374,7 +1374,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "주류 판매점 · 평점 4.1 (387)\n면세 10% + 1만엔↑ 5% 추가쿠폰\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보\n위스키 라인업 교차검증(2026-09-10): 닛카 요이치·미야기쿄·타케츠루(각 7,700엔)·프롬더배럴(4천엔대)·프론티어(2,200엔), 산토리 로얄(4천엔대)도 취급 가능성 높음. 야마자키·하쿠슈·히비키 프리미엄 라인은 품귀라 재고·정가 여부를 매장에서 직접 확인해야 한다 — 특히 야마자키12년은 정가(17,600엔)보다 시중가가 1.5~2배 높은 게 정상이라 정가 기대 금지",
-      "tag": "위스키",
+      "tag": "특산물/식품",
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -1404,7 +1404,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "쇼핑몰 · 10:00~20:00 · 호텔 0.4km / 도보 5분",
-      "tag": null,
+      "tag": "기념품/과자",
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -1480,7 +1480,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "종합·주류 · 평점 3.7 (7,669) · 24시간 영업 · 호텔 1.66km / 도보 22분\n24시간 영업이라 늦은 시간 구매 가능. 닛카 프론티어(2,200엔) 등 스탠다드 위스키 위주로 확인. 프리미엄 라인은 기대하지 않는 게 안전",
-      "tag": "위스키",
+      "tag": "아기용품",
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -1938,7 +1938,7 @@ window.APP_DATA = {
       "name": "Moff animal cafe",
       "category": "놀거",
       "note": "아이가 동물과 교감\n라라포트 4층. 입장료 1,450엔 / 어린이 950엔, 시간 무제한 + 셀프 음료. 카피바라·나무늘보·부엉이 등 40종 이상 만지고 먹이주기 가능",
-      "tag": null,
+      "tag": "자연/동물",
       "done": 0,
       "places": "Moff animal cafe LaLaport Fukuoka"
     },
@@ -1947,7 +1947,7 @@ window.APP_DATA = {
       "name": "건담 구경",
       "category": "놀거",
       "note": "라라포트 실물크기 건담은 정각마다 움직인다 — 시간 맞춰 갈 것. 4층 건담파크에 프라모델·굿즈 매장",
-      "tag": null,
+      "tag": "구경/전시",
       "done": 0,
       "places": "라라포트 후쿠오카"
     },
@@ -1956,7 +1956,7 @@ window.APP_DATA = {
       "name": "동식물원",
       "category": "놀거",
       "note": "동물+식물원 겸용, 유모차 동선 좋음",
-      "tag": null,
+      "tag": "자연/동물",
       "done": 0,
       "places": "후쿠오카시 동식물원"
     },
@@ -1965,7 +1965,7 @@ window.APP_DATA = {
       "name": "마린월드",
       "category": "놀거",
       "note": "2층에 수유실·기저귀 교환대, 유모차 대여 가능(보증금 500엔). 돌고래쇼 하루 4회, 약 2시간 간격, 1회 30분. 계절마다 시간이 바뀌니 당일 홈페이지 확인. 25개월 아기도 집중해서 봤다는 후기",
-      "tag": null,
+      "tag": "자연/동물",
       "done": 0,
       "places": "마린월드 우미노나카미치 (Marine World Uminonakamichi)"
     },
@@ -1974,7 +1974,7 @@ window.APP_DATA = {
       "name": "우미노나카미치 해변공원 산책",
       "category": "놀거",
       "note": "잔디밭·꽃밭. 유모차로 돌기 좋음\n★자전거 오픈런★ 공원이 동서 6km·3.5㎢로 넓어 자전거 대여가 사실상 필수인데, 1,600대가 있어도 늦게 가면 전부 대여된다. 오전 일찍 자전거부터 확보할 것. 자전거로 2~3시간 코스. 안내센터에 한국어 가이드맵 있음",
-      "tag": null,
+      "tag": "자연/동물",
       "done": 0,
       "places": "동물의숲 우미노나카미치카이힌 공원"
     },
@@ -1983,7 +1983,7 @@ window.APP_DATA = {
       "name": "호빵맨 어린이 박물관",
       "category": "놀거",
       "note": "3세 다정이에게 최적\n하카타 리버레인 5~6층, 나카스카와바타역 직결. 10:00~19:00(최종입장 18:00). ★1세 이상 유료 2,000~2,200엔★ — 3세 미만 무료가 아니라 1세부터 받는다는 정보라 다정이도 유료. 현장 재확인 권장",
-      "tag": null,
+      "tag": "키즈/테마파크",
       "done": 0,
       "places": "후쿠오카 호빵맨 어린이 박물관 in 쇼핑몰"
     },
@@ -2334,7 +2334,7 @@ window.APP_DATA = {
       "name": "트란도르",
       "category": "먹을거",
       "note": null,
-      "tag": null,
+      "tag": "베이커리·빵",
       "done": 0,
       "places": "트란도르"
     },
@@ -2397,7 +2397,7 @@ window.APP_DATA = {
       "name": "닛카 미야기쿄",
       "category": "살거",
       "note": "정가 7,700엔. 사과·배 향, 화사하고 부드러움. 하이볼(토닉/탄산수)로 추천, 입문자용",
-      "tag": null,
+      "tag": "위스키",
       "done": 0,
       "places": "야마야 다이묘점"
     },
@@ -2406,7 +2406,7 @@ window.APP_DATA = {
       "name": "닛카 요이치",
       "category": "살거",
       "note": "정가 7,700엔(2024년 개정가). 석탄직화 증류, 짭짤한 피트+시트러스 향",
-      "tag": null,
+      "tag": "위스키",
       "done": 0,
       "places": "야마야 다이묘점"
     },
@@ -2415,7 +2415,7 @@ window.APP_DATA = {
       "name": "닛카 타케츠루 피유어몰트",
       "category": "살거",
       "note": "정가 7,700엔. 요이치+미야기쿄 블렌디드 몰트. 사과·꿀 향에 스모키함 더해짐",
-      "tag": null,
+      "tag": "위스키",
       "done": 0,
       "places": "야마야 다이묘점"
     },
@@ -2424,7 +2424,7 @@ window.APP_DATA = {
       "name": "닛카 프론티어",
       "category": "살거",
       "note": "48도, 정가 2,200엔(2024-10 발매 후 동일 — 원 출처의 '1천엔대 후반'은 오류). 산토리 가쿠빈 겨냥 제품, 도수 높아 입문자엔 셀 수 있음",
-      "tag": null,
+      "tag": "위스키",
       "done": 0,
       "places": "돈키호테 나카스점, 빅카메라 텐진2호점"
     },
@@ -2433,7 +2433,7 @@ window.APP_DATA = {
       "name": "닛카 프롬더배럴",
       "category": "살거",
       "note": "51.4도/500ml, 정가 3,520엔(실판 4,000~4,500엔). 캐러멜·오크 밸런스. 2병=1L라 한국 반입 면세 한도(2L) 채우기 효율적",
-      "tag": null,
+      "tag": "위스키",
       "done": 0,
       "places": "빅카메라 텐진2호점, 야마야 다이묘점"
     },
@@ -2442,7 +2442,7 @@ window.APP_DATA = {
       "name": "다정이 옷·장난감·생활용품",
       "category": "살거",
       "note": "물티슈·기저귀 등도 같이. 24시간이라 늦게 들러도 됨",
-      "tag": null,
+      "tag": "아기용품",
       "done": 0,
       "places": "돈키호테 나카스점"
     },
@@ -2451,7 +2451,7 @@ window.APP_DATA = {
       "name": "마르스 싱글몰트 츠누키 2026 에디션",
       "category": "살거",
       "note": "실존 확인. 가고시마 마르스 츠누키 증류소, 700ml/50도. 버번캐스크 위주+셰리캐스크 배합. 크래프트 위스키 전문매장에서 재고 확인 필요",
-      "tag": null,
+      "tag": "위스키",
       "done": 0,
       "places": null
     },
@@ -2460,7 +2460,7 @@ window.APP_DATA = {
       "name": "명란(멘타이코)",
       "category": "살거",
       "note": "위탁수화물로만 반입 가능 — 기내 반입 액체류 제한\n위탁수화물로만 반입 가능(기내 반입 불가). 야마야는 5,000엔 이상 구매 시 면세 적용되는 매장이 있고 회원카드로 추가 할인",
-      "tag": null,
+      "tag": "특산물/식품",
       "done": 0,
       "places": "로피아 하카타 요도바시, 야마야 다이묘점"
     },
@@ -2469,7 +2469,7 @@ window.APP_DATA = {
       "name": "바오바오 백",
       "category": "살거",
       "note": "이세이 미야케. Todoist 01.쇼핑 LIST 이월\n한큐 하카타 1층 10번 출입구 옆(이세이미야케). 서비스 데스크에서 게스트쿠폰 받으면 5% 할인 — 계산 전에 받아야 한다. 면세와 별개 혜택",
-      "tag": null,
+      "tag": "패션/잡화",
       "done": 0,
       "places": "한큐 하카타"
     },
@@ -2496,7 +2496,7 @@ window.APP_DATA = {
       "name": "야마자키 12년",
       "category": "살거",
       "note": "★가격 주의★ 정가 17,600엔(税込,2026-04~)이지만 시중가는 21,000~35,000엔(정가의 1.5~2배)이 정상 — 정가로 만나면 행운, 예산은 3만엔대로 잡을 것. 일본오크 숙성의 깊은 단맛",
-      "tag": null,
+      "tag": "위스키",
       "done": 0,
       "places": "야마야 다이묘점"
     },
@@ -2505,7 +2505,7 @@ window.APP_DATA = {
       "name": "야마자키 NAS",
       "category": "살거",
       "note": "정가 7,500엔(税別,2026-04~)=약 8,250엔(税込)이지만 품귀로 실거래 9,000~30,000엔대까지 변동. 정가 기대 금지, 매장 현장가 확인 필수. 꿀·시나몬 향",
-      "tag": null,
+      "tag": "위스키",
       "done": 0,
       "places": "야마야 다이묘점"
     },
@@ -2514,7 +2514,7 @@ window.APP_DATA = {
       "name": "야마자키 Story of the Distillery 2024",
       "category": "살거",
       "note": "정식명 확인(원 출처의 '야마자키 2024 에디션'과 동일 제품). 증류소 100주년 기념 한정판, 43도/700ml. 맛 평가(곶감·정향, 12년보다 낫다)는 영상 제작자 개인 의견 — 공식 검증 안 됨",
-      "tag": null,
+      "tag": "위스키",
       "done": 0,
       "places": "야마야 다이묘점"
     },
@@ -2523,7 +2523,7 @@ window.APP_DATA = {
       "name": "오키나와 크래프트 위스키 (이름 미확인)",
       "category": "살거",
       "note": "★확인 불가★ 원 출처의 '유카 유본 2025'라는 이름을 검색으로 못 찾았다. 오키나와산 크래프트 위스키로는 신리자酒造 '琉歌(류카)' 시리즈(2025판, 58도, 16,500엔)가 확인되나 동일 제품인지 불명 — 현지에서 정확한 이름 재확인 필요, 후쿠오카 매장 취급 여부도 불명",
-      "tag": null,
+      "tag": "위스키",
       "done": 0,
       "places": null
     },
@@ -2532,7 +2532,7 @@ window.APP_DATA = {
       "name": "플리츠",
       "category": "살거",
       "note": "이세이 미야케. Todoist 01.쇼핑 LIST 이월\n한큐 하카타 1층 10번 출입구 옆(이세이미야케). 게스트쿠폰 5% 할인은 서비스 데스크에서 계산 전 발급. 플리츠플리즈 정확한 매대 위치는 현장 확인",
-      "tag": null,
+      "tag": "패션/잡화",
       "done": 0,
       "places": "한큐 하카타"
     },
@@ -2541,7 +2541,7 @@ window.APP_DATA = {
       "name": "하카타 명과·기념 과자",
       "category": "살거",
       "note": null,
-      "tag": null,
+      "tag": "기념품/과자",
       "done": 0,
       "places": "아뮤플라자 하카타 (AMU)"
     },
@@ -2550,7 +2550,7 @@ window.APP_DATA = {
       "name": "하쿠슈 12년",
       "category": "살거",
       "note": "정가 16,000엔(税別,2026-04~)=약 17,600엔. 2018년 한 차례 판매휴지 후 2021년 수량한정 재개, 지금도 품귀. 솔잎·민트·배 향의 피트 위스키",
-      "tag": null,
+      "tag": "위스키",
       "done": 0,
       "places": "야마야 다이묘점"
     },
@@ -2559,7 +2559,7 @@ window.APP_DATA = {
       "name": "하쿠슈 NAS",
       "category": "살거",
       "note": "정가 확인 안 됨(가격 검색 미실시) — 매장에서 직접 확인. 허브 계열 민트향+스모키함, 병 디자인은 숲을 형상화",
-      "tag": null,
+      "tag": "위스키",
       "done": 0,
       "places": "야마야 다이묘점"
     },
@@ -2568,7 +2568,7 @@ window.APP_DATA = {
       "name": "히비키 블렌더스초이스",
       "category": "살거",
       "note": "정가 17,600엔(税込,2026-04~). 일반 소매 유통 안 됨(음식점 등 업소용 전용) — 실제로 구하기 매우 어려움, 발견하면 우선 구매",
-      "tag": null,
+      "tag": "위스키",
       "done": 0,
       "places": "야마야 다이묘점"
     },
@@ -2577,7 +2577,7 @@ window.APP_DATA = {
       "name": "히비키 재패니즈 하모니",
       "category": "살거",
       "note": "정가 약 8,250엔(税込,2026-04~), 실거래 8,500~12,000엔. 야마자키+하쿠슈+치타 블렌드, 소장·선물용",
-      "tag": null,
+      "tag": "위스키",
       "done": 0,
       "places": "빅카메라 텐진2호점, 야마야 다이묘점"
     }
