@@ -19,8 +19,29 @@
   --btn-hover: rgba(123, 94, 167, 0.16);
 }
 
+html[data-theme="dark"] {
+  --bg: #121212;
+  --card: #1e1e1e;
+  --ink: #e0e0e0;
+  --muted: #a0a0a0;
+  --line: #333333;
+  --v: #a58ac9;
+  --v-ink: #c6b2e0;
+  --v-soft: #2d243a;
+  --v-pill: #45355c;
+  --y: #e3b652;
+  --y-soft: #382c16;
+  --y-pill: #5c4a25;
+  --pink: #e27da9;
+  --pink-soft: #421c2d;
+  --heart: #f48fb1;
+  --star: #ff9b66;
+  --sky: #1e3a4f;
+  --btn-hover: rgba(200, 180, 255, 0.16);
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
+  html:not([data-theme="light"]) {
     --bg: #121212;
     --card: #1e1e1e;
     --ink: #e0e0e0;

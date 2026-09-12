@@ -7,8 +7,33 @@ function toggleAnimation() {
     document.body.classList.toggle('reduce-motion', reduceMotion);
 }
 
+// Theme Toggle
+function toggleTheme() {
+    const html = document.documentElement;
+    const currentTheme = html.getAttribute('data-theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    let newTheme;
+    if (currentTheme === 'dark') {
+        newTheme = 'light';
+    } else if (currentTheme === 'light') {
+        newTheme = 'dark';
+    } else {
+        newTheme = systemPrefersDark ? 'light' : 'dark';
+    }
+    
+    html.setAttribute('data-theme', newTheme);
+    try {
+        localStorage.setItem('theme', newTheme);
+    } catch(e) {}
+}
 
-
+try {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+} catch(e) {}
 const LABEL = LABELS;
 
 
