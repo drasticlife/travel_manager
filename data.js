@@ -1,357 +1,6 @@
 window.APP_DATA = {
   "PLACES": [
     {
-      "id": 1,
-      "name": "일 포르노 델 미뇽",
-      "name_verified": "il FORNO del MIGNON 하카타역점",
-      "category": "맛집",
-      "address": "〒812-0012 Fukuoka, Hakata Ward, Hakataekichuogai 1-1, JR 하카타역 구내",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0012%20Fukuoka%2C%20Hakata%20Ward%2C%20Hakataekichuogai%201-1%2C%20JR%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%AD%20%EA%B5%AC%EB%82%B4%20il%20FORNO%20del%20MIGNON%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%AD%EC%A0%90",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "제과점 · ¥1~1,000 · 평점 4.2 (1,701)",
-      "tag": null,
-      "evidence": [
-        "https://tabelog.com/en/fukuoka/A4001/A400101/40005043/",
-        "https://shadowneo.net/2324",
-        "https://triple.guide/regions/92ba56af-a93e-4877-a46a-3b84cf1af0cf/restaurants/9fca0767-f419-45f3-9464-bd55100c803a"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 2,
-      "name": "키와미야 함바그 파르코 후쿠오카점",
-      "name_verified": "키와미야 함바그 후쿠오카 파르코점",
-      "category": "맛집",
-      "address": "〒810-0001 Fukuoka, Chuo Ward, Tenjin 2-11-1, 후쿠오카 파르코 B1F",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0001%20Fukuoka%2C%20Chuo%20Ward%2C%20Tenjin%202-11-1%2C%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%20%ED%8C%8C%EB%A5%B4%EC%BD%94%20B1F%20%ED%82%A4%EC%99%80%EB%AF%B8%EC%95%BC%20%ED%95%A8%EB%B0%94%EA%B7%B8%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%20%ED%8C%8C%EB%A5%B4%EC%BD%94%EC%A0%90",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "고기(함바그) · ¥2,000~3,000 · 평점 4.3 (3,314)",
-      "tag": "함바그·스테이크",
-      "evidence": [
-        "https://triple.guide/restaurants/5cfa5017-102c-4035-b159-2a75ee6fc508",
-        "https://www.kyushurent.com/restaurants/Kiwamiya",
-        "https://kr.trip.com/moments/detail/fukuoka-576-125568060/"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 3,
-      "name": "하카타규마부시 무사시",
-      "name_verified": "黒毛和牛 博多牛まぶし 武蔵",
-      "category": "맛집",
-      "address": "〒812-0013 Fukuoka, Hakata Ward, Hakataekihigashi 1-12-1, 선라이프호텔 2·3 1F",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0013%20Fukuoka%2C%20Hakata%20Ward%2C%20Hakataekihigashi%201-12-1%2C%20%EC%84%A0%EB%9D%BC%EC%9D%B4%ED%94%84%ED%98%B8%ED%85%94%202%C2%B73%201F%20%E9%BB%92%E6%AF%9B%E5%92%8C%E7%89%9B%20%E5%8D%9A%E5%A4%9A%E7%89%9B%E3%81%BE%E3%81%B6%E3%81%97%20%E6%AD%A6%E8%94%B5",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "일본 스테이크 전문점 · ¥2,000~3,000 · 평점 4.7 (764)",
-      "tag": null,
-      "evidence": [
-        "https://tabelog.com/en/fukuoka/A4001/A400101/40066543/",
-        "https://triple.guide/restaurants/9f2f6a1e-0f50-4dee-844f-b8b14ea2d120",
-        "https://hakata-gyumabushi-musashi.owst.jp/"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 4,
-      "name": "후지우나ㅡ장어덮밥",
-      "name_verified": "하카타우나기야 후지우나",
-      "category": "맛집",
-      "address": "후쿠오카시 하카타구 하카타에키히가시 2-2-10 하카타사카나빌딩 2F",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%ED%95%98%EC%B9%B4%ED%83%80%EA%B5%AC%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%90%ED%82%A4%ED%9E%88%EA%B0%80%EC%8B%9C%202-2-10%20%ED%95%98%EC%B9%B4%ED%83%80%EC%82%AC%EC%B9%B4%EB%82%98%EB%B9%8C%EB%94%A9%202F%20%ED%95%98%EC%B9%B4%ED%83%80%EC%9A%B0%EB%82%98%EA%B8%B0%EC%95%BC%20%ED%9B%84%EC%A7%80%EC%9A%B0%EB%82%98",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "민물장어 요리 전문식당 · ¥3,000~5,000 · 평점 4.2 (1,145)",
-      "tag": "장어덮밥",
-      "evidence": [
-        "https://kr.savorjapan.com/0006116904/menus"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 7,
-      "name": "7-Eleven",
-      "name_verified": null,
-      "category": "쇼핑",
-      "address": null,
-      "maps_url": null,
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "편의점 · 평점 3.1 (11) — 목록에 편의점이 3곳 있어 어느 지점인지 확인 필요",
-      "tag": null,
-      "evidence": [],
-      "days": [],
-      "icon": "🛍️"
-    },
-    {
-      "id": 8,
-      "name": "세븐일레븐 키오스크 하카타 신칸센 13번승차장점",
-      "name_verified": null,
-      "category": "쇼핑",
-      "address": null,
-      "maps_url": null,
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "편의점 · 평점 4.2 (10)",
-      "tag": null,
-      "evidence": [],
-      "days": [],
-      "icon": "🛍️"
-    },
-    {
-      "id": 11,
-      "name": "이와타야 본점 신관",
-      "name_verified": "이와타야 본점 (岩田屋本店)",
-      "category": "쇼핑",
-      "address": "〒810-8680 Fukuoka, Chuo Ward, Tenjin 2-5-35",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-8680%20Fukuoka%2C%20Chuo%20Ward%2C%20Tenjin%202-5-35%20%EC%9D%B4%EC%99%80%ED%83%80%EC%95%BC%20%EB%B3%B8%EC%A0%90%20%28%E5%B2%A9%E7%94%B0%E5%B1%8B%E6%9C%AC%E5%BA%97%29",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "백화점 · 평점 4.0 (233)",
-      "tag": null,
-      "evidence": [
-        "https://www.iwataya-mitsukoshi.mistore.jp.k.kq.hp.transer.com/iwataya/access.html",
-        "https://ko.wikipedia.org/wiki/%EC%9D%B4%EC%99%80%ED%83%80%EC%95%BC",
-        "https://japantravel.navitime.com/en/area/jp/spot/02301-1600026/"
-      ],
-      "days": [],
-      "icon": "🛍️"
-    },
-    {
-      "id": 13,
-      "name": "후쿠오카 호빵맨 어린이 박물관 in 쇼핑몰",
-      "name_verified": "후쿠오카 호빵맨 어린이 박물관 in 쇼핑몰",
-      "category": "관광",
-      "address": "〒812-0027 Fukuoka, Hakata Ward, Shimokawabatacho 3-1, 하카타 리버레인 몰 5F·6F",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0027%20Fukuoka%2C%20Hakata%20Ward%2C%20Shimokawabatacho%203-1%2C%20%ED%95%98%EC%B9%B4%ED%83%80%20%EB%A6%AC%EB%B2%84%EB%A0%88%EC%9D%B8%20%EB%AA%B0%205F%C2%B76F%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%20%ED%98%B8%EB%B9%B5%EB%A7%A8%20%EC%96%B4%EB%A6%B0%EC%9D%B4%20%EB%B0%95%EB%AC%BC%EA%B4%80%20in%20%EC%87%BC%ED%95%91%EB%AA%B0",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "실내 놀이터 · 평점 4.3 (4,177)\n가이드 확정안(초록판) 일정에서 제외 — 시간 남으면 들를 후보",
-      "tag": "키즈/테마파크",
-      "evidence": [
-        "https://www.fukuoka-anpanman.jp/kr/",
-        "https://www.crossroadfukuoka.jp/kr/spot/11346",
-        "https://www.gltjp.com/en/directory/item/16603/"
-      ],
-      "days": [],
-      "icon": "🍞"
-    },
-    {
-      "id": 16,
-      "name": "마키노우동 하카타버스터미널점",
-      "name_verified": "마키노우동 하카타버스터미널점 (牧のうどん)",
-      "category": "맛집",
-      "address": "후쿠오카현 후쿠오카시 하카타구 하카타에키추오가이 2-1, 하카타버스터미널 B1F",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%ED%98%84%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%ED%95%98%EC%B9%B4%ED%83%80%EA%B5%AC%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%90%ED%82%A4%EC%B6%94%EC%98%A4%EA%B0%80%EC%9D%B4%202-1%2C%20%ED%95%98%EC%B9%B4%ED%83%80%EB%B2%84%EC%8A%A4%ED%84%B0%EB%AF%B8%EB%84%90%20B1F%20%EB%A7%88%ED%82%A4%EB%85%B8%EC%9A%B0%EB%8F%99%20%ED%95%98%EC%B9%B4%ED%83%80%EB%B2%84%EC%8A%A4%ED%84%B0%EB%AF%B8%EB%84%90%EC%A0%90%20%28%E7%89%A7%E3%81%AE%E3%81%86%E3%81%A9%E3%82%93%29",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "우동 · ¥1~1,000 · 평점 4.2 (3,141)",
-      "tag": "우동",
-      "evidence": [
-        "https://ko.h-bt.jp/floor/shop62.html",
-        "https://www.tripstore.kr/blog/%ED%95%98%EC%B9%B4%ED%83%80-%EC%9A%B0%EB%8F%99-%EB%A7%9B%EC%A7%91-%ED%98%BC%ED%96%89-%EC%8B%AC%EC%95%BC-%EC%95%84%EC%B9%A8-%EC%83%81%ED%99%A9%EB%B3%84-%EA%B3%B5%EB%9E%B5"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 17,
-      "name": "요시즈카 우나기야",
-      "name_verified": "博多名代 吉塚うなぎ屋 (요시즈카 우나기야)",
-      "category": "맛집",
-      "address": "〒810-0801 Fukuoka, Hakata Ward, Nakasu 2-8-27",
-      "maps_url": "https://maps.app.goo.gl/LrsFN6R8oppkR7E17",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "민물장어 요리 전문식당 · ¥3,000~5,000 · 평점 4.4 (9,312)\n[리뷰] 1873년 창업한 150년 전통 장어덮밥 명가. 쫀득하면서도 부드러운 장어구이 식감과 특제 타레 소스가 일품. 나카스 강변 쾌적한 건물, 한국어 메뉴 구비되어 우나쥬/우나기동 주문 편리.",
-      "tag": "장어덮밥",
-      "evidence": [
-        "https://triple.guide/restaurants/1239f853-d0b3-40e3-9c96-1ae7bb0c24ef",
-        "https://www.siksinhot.com/P/342641",
-        "https://boborifood.com/14",
-        "https://fuk-info.com/fukuoka_food_yoshizukaunagiya/",
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=910s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 18,
-      "name": "치카에",
-      "name_verified": "稚加榮 (치카에)",
-      "category": "맛집",
-      "address": "〒810-0041 Fukuoka, Chuo Ward, Daimyo 2-2-17",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0041%20Fukuoka%2C%20Chuo%20Ward%2C%20Daimyo%202-2-17%20%E7%A8%9A%E5%8A%A0%E6%A6%AE%20%28%EC%B9%98%EC%B9%B4%EC%97%90%29",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "해산물 요리 · ¥10,000 이상 · 평점 4.3 (3,738)",
-      "tag": null,
-      "evidence": [
-        "https://www.tablecheck.com/en/chikae",
-        "https://www.siksinhot.com/P/342648",
-        "https://autoreserve.com/ko/restaurants/PLmMXUnTcarAwKBG5fFx",
-        "https://triple.guide/restaurants/b338d5d8-4565-4c86-94ce-e95152a6ecd7"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 20,
-      "name": "로피아 하카타 요도바시",
-      "name_verified": "ロピア ヨドバシ博多店 (로피아 하카타 요도바시점)",
-      "category": "쇼핑",
-      "address": "〒812-0012 Fukuoka, Hakata Ward, Hakataekichuogai 6-12",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0012%20Fukuoka%2C%20Hakata%20Ward%2C%20Hakataekichuogai%206-12%20%E3%83%AD%E3%83%94%E3%82%A2%20%E3%83%A8%E3%83%89%E3%83%90%E3%82%B7%E5%8D%9A%E5%A4%9A%E5%BA%97%20%28%EB%A1%9C%ED%94%BC%EC%95%84%20%ED%95%98%EC%B9%B4%ED%83%80%20%EC%9A%94%EB%8F%84%EB%B0%94%EC%8B%9C%EC%A0%90%29",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "슈퍼마켓 · 평점 4.2 (1,833)\n요도바시 4F. 산토리 올드 특가. 현금만, 면세 불가\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보",
-      "tag": "특산물/식품",
-      "evidence": [
-        "https://triple.guide/attractions/0e47a43e-fba8-49ae-8cee-020211d091c9",
-        "https://map.yahoo.co.jp/v3/place/R3OMPnOE-Gc",
-        "https://lopia.jp/shops/hakatayodobashi"
-      ],
-      "days": [],
-      "icon": "🛍️"
-    },
-    {
-      "id": 21,
-      "name": "빅카메라 텐진2호점",
-      "name_verified": "ビックカメラ 天神2号館 (빅카메라 텐진2호점)",
-      "category": "쇼핑",
-      "address": "〒810-0001 Fukuoka, Chuo Ward, Tenjin 2-4-5",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0001%20Fukuoka%2C%20Chuo%20Ward%2C%20Tenjin%202-4-5%20%E3%83%93%E3%83%83%E3%82%AF%E3%82%AB%E3%83%A1%E3%83%A9%20%E5%A4%A9%E7%A5%9E2%E5%8F%B7%E9%A4%A8%20%28%EB%B9%85%EC%B9%B4%EB%A9%94%EB%9D%BC%20%ED%85%90%EC%A7%842%ED%98%B8%EC%A0%90%29",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "전자제품 판매점 · 평점 3.8 (2,998)\n면세 10% + 주류 3% 추가쿠폰. 위스키·사케 코너 정돈 우수\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보\n산토리·닛카 스탠다드 라인업(로얄·요이치·미야기쿄·프론티어 등) 보유 가능성 높음. 프리미엄(야마자키·하쿠슈·히비키)은 매장별 재고 변동 큼",
-      "tag": "위스키",
-      "evidence": [
-        "https://kr.trip.com/moments/detail/fukuoka-576-124841257/"
-      ],
-      "days": [],
-      "icon": "🛍️"
-    },
-    {
-      "id": 22,
-      "name": "鉄板焼きもんじゃココきよ大名店",
-      "name_verified": "鉄板焼きもんじゃ ココきよ 大名店",
-      "category": "맛집",
-      "address": "후쿠오카시 주오구 다이묘 1-9-14 시티맨션 다이묘 별관",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%EC%A3%BC%EC%98%A4%EA%B5%AC%20%EB%8B%A4%EC%9D%B4%EB%AC%98%201-9-14%20%EC%8B%9C%ED%8B%B0%EB%A7%A8%EC%85%98%20%EB%8B%A4%EC%9D%B4%EB%AC%98%20%EB%B3%84%EA%B4%80%20%E9%89%84%E6%9D%BF%E7%84%BC%E3%81%8D%E3%82%82%E3%82%93%E3%81%98%E3%82%83%20%E3%82%B3%E3%82%B3%E3%81%8D%E3%82%88%20%E5%A4%A7%E5%90%8D%E5%BA%97",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "몬자야키 전문점 · ¥2,000~3,000 · 평점 4.6 (32)",
-      "tag": null,
-      "evidence": [
-        "https://tabelog.com/fukuoka/A4001/A400104/40064737/",
-        "https://www.hotpepper.jp/strJ004169173/",
-        "https://r.gnavi.co.jp/1uppfkde0000/"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 23,
-      "name": "Mizutaki Motsunabe Hakataro Nishinakasu",
-      "name_verified": "水炊き もつ鍋 博多流 西中洲 (Mizutaki Motsunabe Hakataro Nishinakasu)",
-      "category": "맛집",
-      "address": "후쿠오카현 후쿠오카시 주오구 니시나카스 13-1 SHIP'S GARDEN 2F",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%ED%98%84%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%EC%A3%BC%EC%98%A4%EA%B5%AC%20%EB%8B%88%EC%8B%9C%EB%82%98%EC%B9%B4%EC%8A%A4%2013-1%20SHIP%27S%20GARDEN%202F%20%E6%B0%B4%E7%82%8A%E3%81%8D%20%E3%82%82%E3%81%A4%E9%8D%8B%20%E5%8D%9A%E5%A4%9A%E6%B5%81%20%E8%A5%BF%E4%B8%AD%E6%B4%B2%20%28Mizutaki%20Motsunabe%20Hakataro%20Nishinakasu%29",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "일식 내장 냄비 요리(미즈타키·모츠나베) · ¥2,000~7,000 · 평점 4.2 (130)",
-      "tag": "모츠나베",
-      "evidence": [
-        "https://www.tablecheck.com/en/hakatarou-nishinakasu",
-        "https://tabelog.com/en/fukuoka/A4001/A400103/40066852/",
-        "https://arne.media/en/gourmet/511418/"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 24,
-      "name": "MIZUNO SPORTSTYLE FUKUOKA PARCO POP-UP",
-      "name_verified": "MIZUNO SPORTSTYLE FUKUOKA PARCO POP-UP",
-      "category": "쇼핑",
-      "address": "〒810-0001 후쿠오카시 주오구 텐진 2-11-1 후쿠오카 PARCO 본관",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0001%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%EC%A3%BC%EC%98%A4%EA%B5%AC%20%ED%85%90%EC%A7%84%202-11-1%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%20PARCO%20%EB%B3%B8%EA%B4%80%20MIZUNO%20SPORTSTYLE%20FUKUOKA%20PARCO%20POP-UP",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "신발 판매점 · 평점 4.8 (33) — 팝업이라 여행 시점에 영업 여부 확인 필요",
-      "tag": null,
-      "evidence": [
-        "https://jpn.mizuno.com/shop/mizunosportstyle_fukuokaparco",
-        "https://en.fukuoka.parco.jp/shop/detail/?cd=030872",
-        "https://tenjin.keizai.biz/headline/8335/"
-      ],
-      "days": [],
-      "icon": "🛍️"
-    },
-    {
-      "id": 25,
-      "name": "야키니쿠 바쿠로 하카타점",
-      "name_verified": "やきにくのバクロ 博多店",
-      "category": "맛집",
-      "address": "후쿠오카현 후쿠오카시 하카타구 스미요시 1-1-9 RJR하카타빌딩 2F",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%ED%98%84%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%ED%95%98%EC%B9%B4%ED%83%80%EA%B5%AC%20%EC%8A%A4%EB%AF%B8%EC%9A%94%EC%8B%9C%201-1-9%20RJR%ED%95%98%EC%B9%B4%ED%83%80%EB%B9%8C%EB%94%A9%202F%20%E3%82%84%E3%81%8D%E3%81%AB%E3%81%8F%E3%81%AE%E3%83%90%E3%82%AF%E3%83%AD%20%E5%8D%9A%E5%A4%9A%E5%BA%97",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "야키니쿠 · ¥3,000~9,000 · 평점 4.4 (1,127)",
-      "tag": null,
-      "evidence": [
-        "https://tabelog.com/en/fukuoka/A4001/A400101/40045144/",
-        "https://map.yahoo.co.jp/v3/place/DuPsUxeEU_E",
-        "https://www.bakuro09.com/shop/hakata/",
-        "https://hitosara.com/0031454747/"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 26,
-      "name": "오호리 우나기",
-      "name_verified": "大濠うなぎ (오호리 우나기)",
-      "category": "맛집",
-      "address": "〒810-0042 후쿠오카시 주오구 아카사카 1-15-1 아카사카코가빌딩 1F",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0042%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%EC%A3%BC%EC%98%A4%EA%B5%AC%20%EC%95%84%EC%B9%B4%EC%82%AC%EC%B9%B4%201-15-1%20%EC%95%84%EC%B9%B4%EC%82%AC%EC%B9%B4%EC%BD%94%EA%B0%80%EB%B9%8C%EB%94%A9%201F%20%E5%A4%A7%E6%BF%A0%E3%81%86%E3%81%AA%E3%81%8E%20%28%EC%98%A4%ED%98%B8%EB%A6%AC%20%EC%9A%B0%EB%82%98%EA%B8%B0%29",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "민물장어 요리 전문식당 · ¥5,000~6,000 · 평점 4.7 (325)",
-      "tag": "장어덮밥",
-      "evidence": [
-        "https://ohoriunagi.com/",
-        "https://www.tablecheck.com/en/ohoriunagi"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 27,
-      "name": "알펜 후쿠오카",
-      "name_verified": "Alpen FUKUOKA (스포츠데포 플래그십스토어 캐널시티 하카타점)",
-      "category": "쇼핑",
-      "address": "〒812-0018 후쿠오카시 하카타구 스미요시 1-2, 캐널시티 하카타 사우스빌딩",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0018%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%ED%95%98%EC%B9%B4%ED%83%80%EA%B5%AC%20%EC%8A%A4%EB%AF%B8%EC%9A%94%EC%8B%9C%201-2%2C%20%EC%BA%90%EB%84%90%EC%8B%9C%ED%8B%B0%20%ED%95%98%EC%B9%B4%ED%83%80%20%EC%82%AC%EC%9A%B0%EC%8A%A4%EB%B9%8C%EB%94%A9%20Alpen%20FUKUOKA%20%28%EC%8A%A4%ED%8F%AC%EC%B8%A0%EB%8D%B0%ED%8F%AC%20%ED%94%8C%EB%9E%98%EA%B7%B8%EC%8B%AD%EC%8A%A4%ED%86%A0%EC%96%B4%20%EC%BA%90%EB%84%90%EC%8B%9C%ED%8B%B0%20%ED%95%98%EC%B9%B4%ED%83%80%EC%A0%90%29",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "야외스포츠용품점 · 평점 4.1 (379)\n러닝화 1차 피팅·트랙 테스트\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보",
-      "tag": "패션/잡화",
-      "evidence": [
-        "https://store.alpen-group.jp/Form/RealShop/ShopDetail.aspx?rsid=5402",
-        "https://map.yahoo.co.jp/v3/place/sxyUK0ZxDDY",
-        "https://triple.guide/attractions/e65bba26-9e72-4b92-8cc3-7fda17b9ca12"
-      ],
-      "days": [],
-      "icon": "🛍️"
-    },
-    {
       "id": 29,
       "name": "코메다커피 하카타역 히가시",
       "name_verified": "코메다 커피 하카타역 히가시점",
@@ -361,21 +10,6 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "카페 · 07:00~22:00 · 호텔 0.55km / 도보 7~9분",
-      "tag": "아침밥",
-      "evidence": [],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 30,
-      "name": "카페 베로체 치쿠시구치",
-      "name_verified": "カフェ・ベローチェ 福岡薬院店",
-      "category": "맛집",
-      "address": "일본 후쿠오카시 하카타구 하카타역 치쿠시구치 1-11-1 (博多駅筑紫口 1-11-1)",
-      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ57CBxKiRQTURFyz3l4Di9TA",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "카페 · 07:00~22:00 · 호텔 0.25km / 도보 3~5분\n지점 정정(2026-09-09): 저장돼 있던 것은 カフェ・ベローチェ 福岡薬院店(주오구 야쿠인, 호텔에서 2km+)이었다. 첨부 조식 가이드 기준 정확한 지점은 하카타역 치쿠시구치점(도보 3~5분, 250m). 좌표는 야쿠인점 값이라 삭제했다 — 재검증 필요",
       "tag": "아침밥",
       "evidence": [],
       "days": [],
@@ -410,21 +44,6 @@ window.APP_DATA = {
       "evidence": [
         "https://www.youtube.com/watch?v=CC7wauCIJEM&t=307s"
       ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 33,
-      "name": "다이후쿠 우동 (大福うどん)",
-      "name_verified": "다이후쿠우동 딘키비루점",
-      "category": "맛집",
-      "address": "일본 후쿠오카시 하카타구 JR 하카타역 B1F 하카타 1번가",
-      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJgx_py5uRQTUR-ZvopWyAj28",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "우동 · 07:00~22:00 · 호텔 0.35km / 도보 5~7분\n지점 정정(2026-09-09): 저장돼 있던 것은 다이후쿠우동 덴키빌딩점(주오구 와타나베도리, 텐진 쪽)이었다. 첨부 조식 가이드 기준 정확한 지점은 JR 하카타역 B1F 하카타 1번가점(도보 5~7분, 350m). 좌표는 덴키빌딩점 값이라 삭제했다 — 재검증 필요",
-      "tag": "우동",
-      "evidence": [],
       "days": [],
       "icon": "🍜"
     },
@@ -625,671 +244,78 @@ window.APP_DATA = {
       "icon": "🤖"
     },
     {
-      "id": 55,
-      "name": "멘야 카네토라",
-      "name_verified": null,
+      "id": 1,
+      "name": "일 포르노 델 미뇽",
+      "name_verified": "il FORNO del MIGNON 하카타역점",
       "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/jwPinEfxtxmLnP3i9",
-      "verify_status": "ambiguous",
+      "address": "〒812-0012 Fukuoka, Hakata Ward, Hakataekichuogai 1-1, JR 하카타역 구내",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0012%20Fukuoka%2C%20Hakata%20Ward%2C%20Hakataekichuogai%201-1%2C%20JR%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%AD%20%EA%B5%AC%EB%82%B4%20il%20FORNO%20del%20MIGNON%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%AD%EC%A0%90",
+      "verify_status": "matched",
       "saved_to_mymaps": 0,
-      "note": "하카타에서 유명한 곱창 츠케멘 맛집으로 현지인과 관광객 모두에게 인기가 많음. 파르코점은 카드 결제 가능, 면 양(200g/250g) 추가 비용 없음. 매운맛 선택 시 마일드 단계 추천(적당히 매콤 짭짤한 소스). 테이블 육수로 간 조절 가능하며 탱글한 면발과 차슈가 일품.",
-      "tag": "라멘·츠케멘",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=54s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 56,
-      "name": "텐푸라 타카오",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/TTwJT9XbsA6oyDPx5",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "튀김 전문점으로 텐푸라 정식과 텐동 판매. 텐푸라 정식은 먹는 속도에 맞춰 튀김이 순차적으로 제공되어 항상 따뜻하게 즐길 수 있음. 튀김옷이 얇고 바삭하며 15시 전 주문 시 밥 무료 사이즈업. 새우튀김 텐동은 새우튀김 양이 넉넉하고 구성이 좋음.",
-      "tag": "튀김·텐동",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=131s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 57,
-      "name": "다이치노 우동",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/C8JwNFzoXj7WsHZs8",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "하카타역 지하 가성비 우동 맛집(7,000원대). 자판기 주문. 넘버원 '고기 우엉튀김 우동'과 넘버투 '고기 새우 야채 튀김 우동' 추천(넉넉한 튀김과 감칠맛 국물). 면발이 더 탱글하길 원하면 붓카케 우동 추천. 점심 피크 피하면 웨이팅 적음.",
-      "tag": "우동",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=178s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 58,
-      "name": "죠스이안 하카타 에키마에 본점",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/B1f1ANokri9dJCQV6",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "딸기 모찌의 진수. 가격대는 다소 높지만 쫀득한 모찌와 신선한 딸기 과즙의 조화가 강렬해 한번 맛보면 납득하게 됨. 선물용보다 매장에서 바로 먹는 것을 추천.",
-      "tag": "디저트·간식",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=243s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 59,
-      "name": "테무진 교자",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/xfZE1EwGAUBQHdWL9",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "후쿠오카 히토쿠치 교자(한입 만두)의 명가. 군만두는 겉바속촉의 정석이며, 물만두는 딘타이펑을 연상시키는 뛰어난 국물 맛을 자랑함.",
-      "tag": "교자·만두",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=348s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 60,
-      "name": "온카 커피",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/1cQVQxoMgDrTEbLg7",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "미나텐진 1층에 위치한 아늑한 분위기의 스페셜티 카페. 신선한 원두의 풍부한 맛과 향. 대표 메뉴는 쿠로(드립 커피)와 로(라떼). 라떼 끝맛의 미세한 단맛이 독특하고 매력적.",
-      "tag": "카페·커피",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=399s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 61,
-      "name": "베이크 치즈타르트 텐진지하점",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/av51rjTmCJrtioEk8",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "도쿄 시작 명품 치즈 타르트. 홋카이도산 치즈와 우유를 사용해 풍미가 뛰어남. 오리지널 치즈 타르트가 가장 인기 있으며 매장 취식 및 테이크아웃 가능.",
-      "tag": "디저트·간식",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=442s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 62,
-      "name": "효탄스시",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/Tej4gZarDRHQXtUP7",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "후쿠오카 대표 가성비 스시 명가. 솔라리아점은 실내 웨이팅이 가능하고 원하는 스시만 골라 주문 가능. 밥 양 조절 가능하며 보리새우 스시와 참치 대뱃살이 일품.",
-      "tag": "스시·해산물",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=486s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 63,
-      "name": "다코멧카",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/BaYiC5iJPaCRJmuG8",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "하카타 유명 베이커리 카페. 직화로 구운 소시지가 들어간 소시지빵이 시그니처. 커피 맛도 훌륭하며 빵 애호가라면 꼭 가볼 만한 곳.",
-      "tag": "베이커리·빵",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=578s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 64,
-      "name": "하카타 카와바타 도산코",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/HTyNabjeWk9W63mSA",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "현지인들이 즐겨 찾는 라멘 맛집. 된장(미소) 라멘이 가장 유명하며 부담 없는 국물과 차슈 퀄리티가 만족스러움. 중식 스타일의 볶음밥 세트 조합이 강력 추천 메뉴.",
-      "tag": "라멘·츠케멘",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=619s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 65,
-      "name": "하카타 모쯔나베 오오야마 킷테하카타점",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/54hrq95DcSgxdt7w9",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "후쿠오카 대표 모츠나베 맛집. 냄새 없는 부드러운 대창과 채소에서 우러나오는 진하고 깔끔한 국물이 일품. 마무리는 짬뽕면 사리 추천. KITTE 지하에 있어 접근성 우수.",
-      "tag": "모츠나베",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=658s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 66,
-      "name": "멘야 호리노",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/saPqQfU1Dcyqv2657",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "가성비 좋은 텐동과 우동을 함께 즐길 수 있는 곳(11:30~14:00 런치, 저녁은 이자카야). 텐동 세트 주문 시 미니 우동 제공. 하카타 닭고기 튀김(토리텐) 덮밥이 인기.",
-      "tag": "튀김·텐동",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=696s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 67,
-      "name": "오이시이 코오리야 텐진미나미점",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/FtBaqRRVFh3WJBiz5",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "천연 얼음 수제 빙수 전문점. 1인 1메뉴 주문 원칙. 휘핑크림 딸기 빙수와 망고 빙수가 인기이며, 너무 달지 않고 부드러운 우유 맛이 특징.",
-      "tag": "디저트·간식",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=763s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 68,
-      "name": "블랑제",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/GrMZEy1TLwBkbc1q8",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "텐진 지하상가에 위치한 인기 베이커리. 크루아상, 크루아상 코르네, 퀸아망 등 페이스트리류가 특히 맛있으며 도넛도 추천.",
-      "tag": "베이커리·빵",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=811s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 69,
-      "name": "이모야 킨지로",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/f2nRK1kg3ZqPXrGc8",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "고구마 튀김(이모켄피) 맛집. 바삭하고 중독성 강한 단짠의 매력. 시식이 가능하며 오리지널 켄피가 가장 인기. 진공 포장 제품은 여행 선물용으로도 최적.",
-      "tag": "디저트·간식",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=850s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 70,
-      "name": "이토킹",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/jFfdQevE7hxqKQuT8",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "후쿠오카 명물 아마오우 딸기 디저트 전문점. 생딸기 도라야키가 시그니처로 부드러운 빵 안에 딸기, 크림, 팥 앙금이 어우러진 고급스러운 풍미.",
-      "tag": "디저트·간식",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=876s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 71,
-      "name": "멘야가가 텐진점",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/GWC8RSoSwwPLtGaP6",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "이치란 창업자의 손주가 운영하는 라멘집. 면 익힘과 매운맛 단계 조절 가능. 이치란과 결이 비슷하나 돈코츠 육수가 조금 더 담백하고 덜 자극적. 토치로 구운 차슈 라멘 추천.",
-      "tag": "라멘·츠케멘",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=973s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 72,
-      "name": "후글렌",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/KHZMiJSnS8YX7Z4r9",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "도쿄/노르웨이 유명 카페의 후쿠오카 지점. 여유로운 북유럽 감성 인테리어. 진하고 고소한 플랫화이트/라떼가 일품이며, 기분 좋은 산미와 밸런스의 드립 커피 추천.",
-      "tag": "카페·커피",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1035s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 73,
-      "name": "우오츄",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/ThfHgGmANAUAynYr7",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "해산물 중심의 정갈한 일본 가정식 전문점. 우오츄 정식(사시미 선택)이 인기이며 고등어 소금구이, 카이센동, 도미 차즈케 등 모든 메뉴가 기본 이상으로 만족스러움.",
-      "tag": "일본가정식",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1062s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 74,
-      "name": "에비스야 우동",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/PsLb8VoJJfQ1G4jw9",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "갈비 우동으로 유명한 하카타 우동 명가. 달짝지근 짭조름한 갈비와 쫄깃한 면발의 조화. 냉우동(갈비 붓카케)을 특히 추천하며 우엉튀김 토핑 추가도 별미.",
-      "tag": "우동",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1113s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 75,
-      "name": "야키니쿠 코우시",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/GVJ1NmG9g3t1TeXG8",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "가성비 좋은 스키야키와 야키니쿠를 즐길 수 있는 식당. 직원분이 직접 구워주는 달콤 부드러운 고기가 특징.",
-      "tag": "야키니쿠·스키야키",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1183s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 76,
-      "name": "텐야스",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/oHDbAxkqFmoSF24G9",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "텐동 및 덴푸라 정식 전문점. 친절한 서비스와 다양한 튀김. 텐동은 부드럽고 촉촉한 식감, 덴푸라 정식은 바삭한 식감이 특징.",
-      "tag": "튀김·텐동",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1294s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 77,
-      "name": "아베키",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/a4Gdk3BQBHdv7NhF6",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "조용하고 차분한 분위기에서 사색하기 좋은 카페. 공간은 협소하지만 아늑함. 시그니처인 진한 치즈케이크와 깊은 맛의 핸드드립 커피가 명품 (이용시간 제한 있음).",
-      "tag": "카페·커피",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1335s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 78,
-      "name": "베레비안",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/GcZqyReBD8Mgv8ZLA",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "텐진 지하상가 가성비 베이커리. 저렴하고 맛있어 현지인들에게 인기. 크림치즈와 카레의 조화가 훌륭한 카레빵과 담백하고 고소한 소금빵 추천.",
-      "tag": "베이커리·빵",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1386s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 79,
-      "name": "시나리",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/C2jhirAEFWwUFyCQ7",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "2019년 미슐랭 가이드에 소개된 사누키 우동 명가. 웨이팅이 길어 오픈런 추천. 탱글하고 쫄깃한 면발과 깔끔한 쯔유 소스의 붓카케 우동, 바삭한 튀김, 명란 모찌가 일품.",
-      "tag": "우동",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1422s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 80,
-      "name": "키르훼봉",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/Jj1oePSZ2pxTdhC67",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "계절 생과일을 아낌없이 얹은 프리미엄 타르트 케이크 명가. 종합 과일 타르트와 제철 딸기 타르트가 대표 메뉴. 과하게 달지 않고 재료 본연의 맛을 살린 고급스러운 맛.",
-      "tag": "디저트·간식",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1512s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 81,
-      "name": "니쿠이치 야쿠인",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/X8oY5xnD1R4WKufY8",
-      "verify_status": "ambiguous",
-      "saved_to_mymaps": 0,
-      "note": "후쿠오카 1티어 프리미엄 흑우 야키니쿠 전문점. 특선 7종 모둠으로 시작해 선호 부위를 추가하는 방식 추천. 특히 부드럽고 육향 좋은 뒷다리살(우치모모)과 흰쌀밥 조합이 최고.",
-      "tag": "야키니쿠·스키야키",
-      "evidence": [
-        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1566s"
-      ],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 10,
-      "name": "한큐 하카타",
-      "name_verified": "하카타 한큐 (阪急百貨店 博多店)",
-      "category": "쇼핑",
-      "address": "〒812-0012 Fukuoka, Hakata Ward, Hakataekichuogai 1-1",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0012%20Fukuoka%2C%20Hakata%20Ward%2C%20Hakataekichuogai%201-1%20%ED%95%98%EC%B9%B4%ED%83%80%20%ED%95%9C%ED%81%90%20%28%E9%98%AA%E6%80%A5%E7%99%BE%E8%B2%A8%E5%BA%97%20%E5%8D%9A%E5%A4%9A%E5%BA%97%29",
-      "verify_status": "pending",
-      "saved_to_mymaps": 0,
-      "note": "백화점 · 평점 4.1 (9,051)\n좌표 정리(2026-09-10): 출처 불명의 저정밀 좌표(소수 4자리, place_id 없음)가 들어와 있어 삭제했다. #10 한큐 하카타와 #12 호텔 포르자가 같은 값이라 최소 하나는 틀린 값이었다. 정식 확보는 trip.py verify --ids 로 한다",
-      "tag": "패션/잡화",
-      "evidence": [
-        "https://website.hankyu-dept.co.jp/hakata/fl/korean/access.html",
-        "https://triple.guide/attractions/cc6e04af-987a-4373-8604-4c7296bf2a4c",
-        "https://japanshopping.org/ko/search/shops/detail/107"
-      ],
-      "days": [
-        {
-          "place_id": 10,
-          "day_no": 4,
-          "slot": "오전",
-          "seq": 1,
-          "memo": "지하 식품관 기념품"
-        }
-      ],
-      "icon": "🎁"
-    },
-    {
-      "id": 12,
-      "name": "호텔 포르자 하카타역 치쿠시구치Ⅱ",
-      "name_verified": "HOTEL FORZA HAKATAEKI CHIKUSHI-GUCHI II",
-      "category": "숙소",
-      "address": "〒812-0013 Fukuoka, Hakata Ward, Hakataekihigashi 1-13-3",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0013%20Fukuoka%2C%20Hakata%20Ward%2C%20Hakataekihigashi%201-13-3%20HOTEL%20FORZA%20HAKATAEKI%20CHIKUSHI-GUCHI%20II",
-      "verify_status": "pending",
-      "saved_to_mymaps": 0,
-      "note": "3성급 호텔 · 평점 4.3 (520)\n좌표 정리(2026-09-10): 출처 불명의 저정밀 좌표(소수 4자리, place_id 없음)가 들어와 있어 삭제했다. #10 한큐 하카타와 #12 호텔 포르자가 같은 값이라 최소 하나는 틀린 값이었다. 정식 확보는 trip.py verify --ids 로 한다",
-      "tag": "아침밥",
-      "evidence": [
-        "https://www.hotelforza.jp/hakata2/en/",
-        "https://www.booking.com/hotel/jp/forza-hakataeki-chikushiguchi-ii.en-gb.html",
-        "https://www.agoda.com/hotel-forza-hakataeki-chikushiguchi/hotel/fukuoka-jp.html"
-      ],
-      "days": [
-        {
-          "place_id": 12,
-          "day_no": 1,
-          "slot": "오후",
-          "seq": 0,
-          "memo": "14:00~15:00 체크인. 호텔 포르자 하카타에키 치쿠시구치Ⅱ"
-        },
-        {
-          "place_id": 12,
-          "day_no": 2,
-          "slot": "오후",
-          "seq": 0,
-          "memo": "하카타 호텔 복귀 & 휴식. 숙소에서 잠시 쉬어요. 복귀: 우미노나카미치역 → 가시이역 → 하카타역 약 40~50분"
-        }
-      ],
-      "icon": "🏨"
-    },
-    {
-      "id": 15,
-      "name": "동물의숲 우미노나카미치카이힌 공원",
-      "name_verified": "海の中道海浜公園 動物の森",
-      "category": "관광",
-      "address": "〒811-0321 Fukuoka, Higashi-ku, Saitozaki 18-25, 우미노나카미치 해변공원 내 동물의숲",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92811-0321%20Fukuoka%2C%20Higashi-ku%2C%20Saitozaki%2018-25%2C%20%EC%9A%B0%EB%AF%B8%EB%85%B8%EB%82%98%EC%B9%B4%EB%AF%B8%EC%B9%98%20%ED%95%B4%EB%B3%80%EA%B3%B5%EC%9B%90%20%EB%82%B4%20%EB%8F%99%EB%AC%BC%EC%9D%98%EC%88%B2%20%E6%B5%B7%E3%81%AE%E4%B8%AD%E9%81%93%E6%B5%B7%E6%B5%9C%E5%85%AC%E5%9C%92%20%E5%8B%95%E7%89%A9%E3%81%AE%E6%A3%AE",
-      "verify_status": "pending",
-      "saved_to_mymaps": 0,
-      "note": "동물원 · 평점 4.4 (1,165)\n가이드 표기명: 우미노나카미치 해변공원 · 09:30~17:30\n좌표 정리(2026-09-10): 출처 불명의 저정밀 좌표(소수 4자리, place_id 없음)가 들어와 있어 삭제했다. #10 한큐 하카타와 #12 호텔 포르자가 같은 값이라 최소 하나는 틀린 값이었다. 정식 확보는 trip.py verify --ids 로 한다",
-      "tag": "자연/동물",
-      "evidence": [
-        "https://japantravel.navitime.com/ko/area/jp/spot/02301-1301579/",
-        "https://uminaka-park.jp/mt-static/support/theme_static/original/pdf/Korean_guide_240311.pdf",
-        "https://www.crossroadfukuoka.jp/kr/spot/12408"
-      ],
-      "days": [
-        {
-          "place_id": 15,
-          "day_no": 2,
-          "slot": "오전",
-          "seq": 0,
-          "memo": "09:30~17:30. 자연 속에서 즐기는 피크닉. 경로: 호텔 도보 3분(0.2km) → 하카타역 JR 가고시마본선(상행·고쿠라 방면) 약 11분 → 가시이역 JR 가시이선(사이토자키행) 환승 약 20분 → 우미노나카미치역 도보 약 5분(공원 입구까지)"
-        }
-      ],
-      "icon": "🌳"
-    },
-    {
-      "id": 53,
-      "name": "하카타 아마노 KITTE 하카타점",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": null,
-      "verify_status": "pending",
-      "saved_to_mymaps": 0,
-      "note": "와쇼쿠 조식 · 07:00~10:00 · KITTE 하카타 B1F, 하카타역 직결 · 호텔 도보 6~8분 · 자가제 명란, 멘타이동 2,170엔 / 긴다라 미소정식 1,800엔",
-      "tag": "아침밥",
-      "evidence": [],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 54,
-      "name": "타냐HAKATA 하카타1번가",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": null,
-      "verify_status": "pending",
-      "saved_to_mymaps": 0,
-      "note": "조식 정식 · 평일 한정 07:00~10:00(LO) · JR하카타시티 B1F 하카타1번가 · 호텔 도보 5~7분 · 부타아부리 조식정식 690엔, 밥 곱빼기·식후 커피 무료",
-      "tag": "아침밥",
-      "evidence": [],
-      "days": [],
-      "icon": "🍜"
-    },
-    {
-      "id": 82,
-      "name": "이온 쇼퍼즈 후쿠오카점",
-      "name_verified": null,
-      "category": "쇼핑",
-      "address": null,
-      "maps_url": null,
-      "verify_status": "pending",
-      "saved_to_mymaps": 0,
-      "note": "대형마트 · 09:00~22:00(3~4F 21:00) · 텐진 4-4-11, 092-721-5411 · 현지인 장보기 정찰제라 프로모션 없이도 단가가 낮다 · 산토리 올드·로얄 같은 스탠다드 라인업 재고가 안정적(사용자 제공, 주류 코너 규모·면세 데스크는 현장 확인 필요)",
-      "tag": "위스키",
-      "evidence": [],
-      "days": [],
-      "icon": "🛍️"
-    },
-    {
-      "id": 83,
-      "name": "리쿼마운틴 나카스 국체도로점",
-      "name_verified": null,
-      "category": "쇼핑",
-      "address": null,
-      "maps_url": null,
-      "verify_status": "pending",
-      "saved_to_mymaps": 0,
-      "note": "주류 전문점 · 나카스 2-2-2 · 교토 기반 전국 체인, 면세점 운영 · 기성품 재고가 많아 올드·로얄 확보에 유리 · 영업시간 미확인",
-      "tag": "위스키",
-      "evidence": [],
-      "days": [],
-      "icon": "🛍️"
-    },
-    {
-      "id": 84,
-      "name": "빅카메라 텐진1호관",
-      "name_verified": null,
-      "category": "쇼핑",
-      "address": null,
-      "maps_url": null,
-      "verify_status": "pending",
-      "saved_to_mymaps": 0,
-      "note": "가전양판점 · 연중무휴 10:00~21:00 · 이마이즈미 1-25-1, 092-732-1112 · 면세 대응 매장 · 주류 취급 여부는 미확인(2호관은 주류 코너 확인됨) · 여행 플랫폼 주류 추가쿠폰(3~5%)이 일본 위스키에 적용되는지는 결제 시 확인 필요",
+      "note": "제과점 · ¥1~1,000 · 평점 4.2 (1,701)",
       "tag": null,
-      "evidence": [],
-      "days": [],
-      "icon": "🛍️"
-    },
-    {
-      "id": 85,
-      "name": "돈키호테 후쿠오카 텐진 본점",
-      "name_verified": null,
-      "category": "쇼핑",
-      "address": null,
-      "maps_url": null,
-      "verify_status": "pending",
-      "saved_to_mymaps": 0,
-      "note": "종합·주류 · 24시간 연중무휴 · 이마이즈미 1-20-17 · 니시테츠 후쿠오카역 남쪽 출구 도보 4분 · 일정 마치고 밤늦게 들르기 좋다 · 단 마트·주류전문점보다 단가가 100~200엔 높을 때가 있다",
-      "tag": null,
-      "evidence": [],
-      "days": [],
-      "icon": "🛍️"
-    },
-    {
-      "id": 86,
-      "name": "트란도르",
-      "name_verified": null,
-      "category": "맛집",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/tXAZTAMmgXLLarU79",
-      "verify_status": "pending",
-      "saved_to_mymaps": 0,
-      "note": null,
-      "tag": "베이커리·빵",
-      "evidence": [],
+      "evidence": [
+        "https://tabelog.com/en/fukuoka/A4001/A400101/40005043/",
+        "https://shadowneo.net/2324",
+        "https://triple.guide/regions/92ba56af-a93e-4877-a46a-3b84cf1af0cf/restaurants/9fca0767-f419-45f3-9464-bd55100c803a"
+      ],
       "days": [],
       "icon": "🍜"
     },
     {
-      "id": 87,
-      "name": "스텝스포츠 후쿠오카점",
-      "name_verified": null,
-      "category": "쇼핑",
-      "address": null,
-      "maps_url": "https://maps.app.goo.gl/e7xP6B3SjAzzpPz39",
-      "verify_status": "pending",
+      "id": 2,
+      "name": "키와미야 함바그 파르코 후쿠오카점",
+      "name_verified": "키와미야 함바그 후쿠오카 파르코점",
+      "category": "맛집",
+      "address": "〒810-0001 Fukuoka, Chuo Ward, Tenjin 2-11-1, 후쿠오카 파르코 B1F",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0001%20Fukuoka%2C%20Chuo%20Ward%2C%20Tenjin%202-11-1%2C%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%20%ED%8C%8C%EB%A5%B4%EC%BD%94%20B1F%20%ED%82%A4%EC%99%80%EB%AF%B8%EC%95%BC%20%ED%95%A8%EB%B0%94%EA%B7%B8%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%20%ED%8C%8C%EB%A5%B4%EC%BD%94%EC%A0%90",
+      "verify_status": "matched",
       "saved_to_mymaps": 0,
-      "note": null,
-      "tag": "패션/잡화",
-      "evidence": [],
+      "note": "고기(함바그) · ¥2,000~3,000 · 평점 4.3 (3,314)",
+      "tag": "함바그·스테이크",
+      "evidence": [
+        "https://triple.guide/restaurants/5cfa5017-102c-4035-b159-2a75ee6fc508",
+        "https://www.kyushurent.com/restaurants/Kiwamiya",
+        "https://kr.trip.com/moments/detail/fukuoka-576-125568060/"
+      ],
       "days": [],
-      "icon": "🛍️"
+      "icon": "🍜"
+    },
+    {
+      "id": 3,
+      "name": "하카타규마부시 무사시",
+      "name_verified": "黒毛和牛 博多牛まぶし 武蔵",
+      "category": "맛집",
+      "address": "〒812-0013 Fukuoka, Hakata Ward, Hakataekihigashi 1-12-1, 선라이프호텔 2·3 1F",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0013%20Fukuoka%2C%20Hakata%20Ward%2C%20Hakataekihigashi%201-12-1%2C%20%EC%84%A0%EB%9D%BC%EC%9D%B4%ED%94%84%ED%98%B8%ED%85%94%202%C2%B73%201F%20%E9%BB%92%E6%AF%9B%E5%92%8C%E7%89%9B%20%E5%8D%9A%E5%A4%9A%E7%89%9B%E3%81%BE%E3%81%B6%E3%81%97%20%E6%AD%A6%E8%94%B5",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "일본 스테이크 전문점 · ¥2,000~3,000 · 평점 4.7 (764)",
+      "tag": null,
+      "evidence": [
+        "https://tabelog.com/en/fukuoka/A4001/A400101/40066543/",
+        "https://triple.guide/restaurants/9f2f6a1e-0f50-4dee-844f-b8b14ea2d120",
+        "https://hakata-gyumabushi-musashi.owst.jp/"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 4,
+      "name": "후지우나ㅡ장어덮밥",
+      "name_verified": "하카타우나기야 후지우나",
+      "category": "맛집",
+      "address": "후쿠오카시 하카타구 하카타에키히가시 2-2-10 하카타사카나빌딩 2F",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%ED%95%98%EC%B9%B4%ED%83%80%EA%B5%AC%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%90%ED%82%A4%ED%9E%88%EA%B0%80%EC%8B%9C%202-2-10%20%ED%95%98%EC%B9%B4%ED%83%80%EC%82%AC%EC%B9%B4%EB%82%98%EB%B9%8C%EB%94%A9%202F%20%ED%95%98%EC%B9%B4%ED%83%80%EC%9A%B0%EB%82%98%EA%B8%B0%EC%95%BC%20%ED%9B%84%EC%A7%80%EC%9A%B0%EB%82%98",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "민물장어 요리 전문식당 · ¥3,000~5,000 · 평점 4.2 (1,145)",
+      "tag": "장어덮밥",
+      "evidence": [
+        "https://kr.savorjapan.com/0006116904/menus"
+      ],
+      "days": [],
+      "icon": "🍜"
     },
     {
       "id": 5,
@@ -1338,6 +364,36 @@ window.APP_DATA = {
       "icon": "🐹"
     },
     {
+      "id": 7,
+      "name": "7-Eleven",
+      "name_verified": null,
+      "category": "쇼핑",
+      "address": null,
+      "maps_url": null,
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "편의점 · 평점 3.1 (11) — 목록에 편의점이 3곳 있어 어느 지점인지 확인 필요",
+      "tag": null,
+      "evidence": [],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 8,
+      "name": "세븐일레븐 키오스크 하카타 신칸센 13번승차장점",
+      "name_verified": null,
+      "category": "쇼핑",
+      "address": null,
+      "maps_url": null,
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "편의점 · 평점 4.2 (10)",
+      "tag": null,
+      "evidence": [],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
       "id": 9,
       "name": "7-Eleven+Heart-in Hakata St. Shinkansen lounge",
       "name_verified": "7-Eleven+Heart-in Hakata St. Shinkansen lounge",
@@ -1351,6 +407,105 @@ window.APP_DATA = {
       "evidence": [],
       "days": [],
       "icon": "🛍️"
+    },
+    {
+      "id": 10,
+      "name": "한큐 하카타",
+      "name_verified": "하카타 한큐 (阪急百貨店 博多店)",
+      "category": "쇼핑",
+      "address": "〒812-0012 Fukuoka, Hakata Ward, Hakataekichuogai 1-1",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0012%20Fukuoka%2C%20Hakata%20Ward%2C%20Hakataekichuogai%201-1%20%ED%95%98%EC%B9%B4%ED%83%80%20%ED%95%9C%ED%81%90%20%28%E9%98%AA%E6%80%A5%E7%99%BE%E8%B2%A8%E5%BA%97%20%E5%8D%9A%E5%A4%9A%E5%BA%97%29",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "백화점 · 평점 4.1 (9,051)\n좌표 정리(2026-09-10): 출처 불명의 저정밀 좌표(소수 4자리, place_id 없음)가 들어와 있어 삭제했다. #10 한큐 하카타와 #12 호텔 포르자가 같은 값이라 최소 하나는 틀린 값이었다. 정식 확보는 trip.py verify --ids 로 한다",
+      "tag": "패션/잡화",
+      "evidence": [
+        "https://website.hankyu-dept.co.jp/hakata/fl/korean/access.html",
+        "https://triple.guide/attractions/cc6e04af-987a-4373-8604-4c7296bf2a4c",
+        "https://japanshopping.org/ko/search/shops/detail/107"
+      ],
+      "days": [
+        {
+          "place_id": 10,
+          "day_no": 4,
+          "slot": "오전",
+          "seq": 1,
+          "memo": "지하 식품관 기념품"
+        }
+      ],
+      "icon": "🎁"
+    },
+    {
+      "id": 11,
+      "name": "이와타야 본점 신관",
+      "name_verified": "이와타야 본점 (岩田屋本店)",
+      "category": "쇼핑",
+      "address": "〒810-8680 Fukuoka, Chuo Ward, Tenjin 2-5-35",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-8680%20Fukuoka%2C%20Chuo%20Ward%2C%20Tenjin%202-5-35%20%EC%9D%B4%EC%99%80%ED%83%80%EC%95%BC%20%EB%B3%B8%EC%A0%90%20%28%E5%B2%A9%E7%94%B0%E5%B1%8B%E6%9C%AC%E5%BA%97%29",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "백화점 · 평점 4.0 (233)",
+      "tag": null,
+      "evidence": [
+        "https://www.iwataya-mitsukoshi.mistore.jp.k.kq.hp.transer.com/iwataya/access.html",
+        "https://ko.wikipedia.org/wiki/%EC%9D%B4%EC%99%80%ED%83%80%EC%95%BC",
+        "https://japantravel.navitime.com/en/area/jp/spot/02301-1600026/"
+      ],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 12,
+      "name": "호텔 포르자 하카타역 치쿠시구치Ⅱ",
+      "name_verified": "HOTEL FORZA HAKATAEKI CHIKUSHI-GUCHI II",
+      "category": "숙소",
+      "address": "〒812-0013 Fukuoka, Hakata Ward, Hakataekihigashi 1-13-3",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0013%20Fukuoka%2C%20Hakata%20Ward%2C%20Hakataekihigashi%201-13-3%20HOTEL%20FORZA%20HAKATAEKI%20CHIKUSHI-GUCHI%20II",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "3성급 호텔 · 평점 4.3 (520)\n좌표 정리(2026-09-10): 출처 불명의 저정밀 좌표(소수 4자리, place_id 없음)가 들어와 있어 삭제했다. #10 한큐 하카타와 #12 호텔 포르자가 같은 값이라 최소 하나는 틀린 값이었다. 정식 확보는 trip.py verify --ids 로 한다",
+      "tag": "아침밥",
+      "evidence": [
+        "https://www.hotelforza.jp/hakata2/en/",
+        "https://www.booking.com/hotel/jp/forza-hakataeki-chikushiguchi-ii.en-gb.html",
+        "https://www.agoda.com/hotel-forza-hakataeki-chikushiguchi/hotel/fukuoka-jp.html"
+      ],
+      "days": [
+        {
+          "place_id": 12,
+          "day_no": 1,
+          "slot": "오후",
+          "seq": 0,
+          "memo": "14:00~15:00 체크인. 호텔 포르자 하카타에키 치쿠시구치Ⅱ"
+        },
+        {
+          "place_id": 12,
+          "day_no": 2,
+          "slot": "오후",
+          "seq": 0,
+          "memo": "하카타 호텔 복귀 & 휴식. 숙소에서 잠시 쉬어요. 복귀: 우미노나카미치역 → 가시이역 → 하카타역 약 40~50분"
+        }
+      ],
+      "icon": "🏨"
+    },
+    {
+      "id": 13,
+      "name": "후쿠오카 호빵맨 어린이 박물관 in 쇼핑몰",
+      "name_verified": "후쿠오카 호빵맨 어린이 박물관 in 쇼핑몰",
+      "category": "관광",
+      "address": "〒812-0027 Fukuoka, Hakata Ward, Shimokawabatacho 3-1, 하카타 리버레인 몰 5F·6F",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0027%20Fukuoka%2C%20Hakata%20Ward%2C%20Shimokawabatacho%203-1%2C%20%ED%95%98%EC%B9%B4%ED%83%80%20%EB%A6%AC%EB%B2%84%EB%A0%88%EC%9D%B8%20%EB%AA%B0%205F%C2%B76F%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%20%ED%98%B8%EB%B9%B5%EB%A7%A8%20%EC%96%B4%EB%A6%B0%EC%9D%B4%20%EB%B0%95%EB%AC%BC%EA%B4%80%20in%20%EC%87%BC%ED%95%91%EB%AA%B0",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "실내 놀이터 · 평점 4.3 (4,177)\n가이드 확정안(초록판) 일정에서 제외 — 시간 남으면 들를 후보",
+      "tag": "키즈/테마파크",
+      "evidence": [
+        "https://www.fukuoka-anpanman.jp/kr/",
+        "https://www.crossroadfukuoka.jp/kr/spot/11346",
+        "https://www.gltjp.com/en/directory/item/16603/"
+      ],
+      "days": [],
+      "icon": "🍞"
     },
     {
       "id": 14,
@@ -1380,6 +535,92 @@ window.APP_DATA = {
       "icon": "🐬"
     },
     {
+      "id": 15,
+      "name": "동물의숲 우미노나카미치카이힌 공원",
+      "name_verified": "海の中道海浜公園 動物の森",
+      "category": "관광",
+      "address": "〒811-0321 Fukuoka, Higashi-ku, Saitozaki 18-25, 우미노나카미치 해변공원 내 동물의숲",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92811-0321%20Fukuoka%2C%20Higashi-ku%2C%20Saitozaki%2018-25%2C%20%EC%9A%B0%EB%AF%B8%EB%85%B8%EB%82%98%EC%B9%B4%EB%AF%B8%EC%B9%98%20%ED%95%B4%EB%B3%80%EA%B3%B5%EC%9B%90%20%EB%82%B4%20%EB%8F%99%EB%AC%BC%EC%9D%98%EC%88%B2%20%E6%B5%B7%E3%81%AE%E4%B8%AD%E9%81%93%E6%B5%B7%E6%B5%9C%E5%85%AC%E5%9C%92%20%E5%8B%95%E7%89%A9%E3%81%AE%E6%A3%AE",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "동물원 · 평점 4.4 (1,165)\n가이드 표기명: 우미노나카미치 해변공원 · 09:30~17:30\n좌표 정리(2026-09-10): 출처 불명의 저정밀 좌표(소수 4자리, place_id 없음)가 들어와 있어 삭제했다. #10 한큐 하카타와 #12 호텔 포르자가 같은 값이라 최소 하나는 틀린 값이었다. 정식 확보는 trip.py verify --ids 로 한다",
+      "tag": "자연/동물",
+      "evidence": [
+        "https://japantravel.navitime.com/ko/area/jp/spot/02301-1301579/",
+        "https://uminaka-park.jp/mt-static/support/theme_static/original/pdf/Korean_guide_240311.pdf",
+        "https://www.crossroadfukuoka.jp/kr/spot/12408"
+      ],
+      "days": [
+        {
+          "place_id": 15,
+          "day_no": 2,
+          "slot": "오전",
+          "seq": 0,
+          "memo": "09:30~17:30. 자연 속에서 즐기는 피크닉. 경로: 호텔 도보 3분(0.2km) → 하카타역 JR 가고시마본선(상행·고쿠라 방면) 약 11분 → 가시이역 JR 가시이선(사이토자키행) 환승 약 20분 → 우미노나카미치역 도보 약 5분(공원 입구까지)"
+        }
+      ],
+      "icon": "🌳"
+    },
+    {
+      "id": 16,
+      "name": "마키노우동 하카타버스터미널점",
+      "name_verified": "마키노우동 하카타버스터미널점 (牧のうどん)",
+      "category": "맛집",
+      "address": "후쿠오카현 후쿠오카시 하카타구 하카타에키추오가이 2-1, 하카타버스터미널 B1F",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%ED%98%84%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%ED%95%98%EC%B9%B4%ED%83%80%EA%B5%AC%20%ED%95%98%EC%B9%B4%ED%83%80%EC%97%90%ED%82%A4%EC%B6%94%EC%98%A4%EA%B0%80%EC%9D%B4%202-1%2C%20%ED%95%98%EC%B9%B4%ED%83%80%EB%B2%84%EC%8A%A4%ED%84%B0%EB%AF%B8%EB%84%90%20B1F%20%EB%A7%88%ED%82%A4%EB%85%B8%EC%9A%B0%EB%8F%99%20%ED%95%98%EC%B9%B4%ED%83%80%EB%B2%84%EC%8A%A4%ED%84%B0%EB%AF%B8%EB%84%90%EC%A0%90%20%28%E7%89%A7%E3%81%AE%E3%81%86%E3%81%A9%E3%82%93%29",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "우동 · ¥1~1,000 · 평점 4.2 (3,141)",
+      "tag": "우동",
+      "evidence": [
+        "https://ko.h-bt.jp/floor/shop62.html",
+        "https://www.tripstore.kr/blog/%ED%95%98%EC%B9%B4%ED%83%80-%EC%9A%B0%EB%8F%99-%EB%A7%9B%EC%A7%91-%ED%98%BC%ED%96%89-%EC%8B%AC%EC%95%BC-%EC%95%84%EC%B9%A8-%EC%83%81%ED%99%A9%EB%B3%84-%EA%B3%B5%EB%9E%B5"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 17,
+      "name": "요시즈카 우나기야",
+      "name_verified": "博多名代 吉塚うなぎ屋 (요시즈카 우나기야)",
+      "category": "맛집",
+      "address": "〒810-0801 Fukuoka, Hakata Ward, Nakasu 2-8-27",
+      "maps_url": "https://maps.app.goo.gl/LrsFN6R8oppkR7E17",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "민물장어 요리 전문식당 · ¥3,000~5,000 · 평점 4.4 (9,312)\n[리뷰] 1873년 창업한 150년 전통 장어덮밥 명가. 쫀득하면서도 부드러운 장어구이 식감과 특제 타레 소스가 일품. 나카스 강변 쾌적한 건물, 한국어 메뉴 구비되어 우나쥬/우나기동 주문 편리.",
+      "tag": "장어덮밥",
+      "evidence": [
+        "https://triple.guide/restaurants/1239f853-d0b3-40e3-9c96-1ae7bb0c24ef",
+        "https://www.siksinhot.com/P/342641",
+        "https://boborifood.com/14",
+        "https://fuk-info.com/fukuoka_food_yoshizukaunagiya/",
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=910s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 18,
+      "name": "치카에",
+      "name_verified": "稚加榮 (치카에)",
+      "category": "맛집",
+      "address": "〒810-0041 Fukuoka, Chuo Ward, Daimyo 2-2-17",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0041%20Fukuoka%2C%20Chuo%20Ward%2C%20Daimyo%202-2-17%20%E7%A8%9A%E5%8A%A0%E6%A6%AE%20%28%EC%B9%98%EC%B9%B4%EC%97%90%29",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "해산물 요리 · ¥10,000 이상 · 평점 4.3 (3,738)",
+      "tag": null,
+      "evidence": [
+        "https://www.tablecheck.com/en/chikae",
+        "https://www.siksinhot.com/P/342648",
+        "https://autoreserve.com/ko/restaurants/PLmMXUnTcarAwKBG5fFx",
+        "https://triple.guide/restaurants/b338d5d8-4565-4c86-94ce-e95152a6ecd7"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
       "id": 19,
       "name": "야마야 다이묘점",
       "name_verified": "야마야 다이묘점",
@@ -1391,6 +632,156 @@ window.APP_DATA = {
       "note": "주류 판매점 · 평점 4.1 (387)\n면세 10% + 1만엔↑ 5% 추가쿠폰\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보\n위스키 라인업 교차검증(2026-09-10): 닛카 요이치·미야기쿄·타케츠루(각 7,700엔)·프롬더배럴(4천엔대)·프론티어(2,200엔), 산토리 로얄(4천엔대)도 취급 가능성 높음. 야마자키·하쿠슈·히비키 프리미엄 라인은 품귀라 재고·정가 여부를 매장에서 직접 확인해야 한다 — 특히 야마자키12년은 정가(17,600엔)보다 시중가가 1.5~2배 높은 게 정상이라 정가 기대 금지",
       "tag": "특산물/식품",
       "evidence": [],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 20,
+      "name": "로피아 하카타 요도바시",
+      "name_verified": "ロピア ヨドバシ博多店 (로피아 하카타 요도바시점)",
+      "category": "쇼핑",
+      "address": "〒812-0012 Fukuoka, Hakata Ward, Hakataekichuogai 6-12",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0012%20Fukuoka%2C%20Hakata%20Ward%2C%20Hakataekichuogai%206-12%20%E3%83%AD%E3%83%94%E3%82%A2%20%E3%83%A8%E3%83%89%E3%83%90%E3%82%B7%E5%8D%9A%E5%A4%9A%E5%BA%97%20%28%EB%A1%9C%ED%94%BC%EC%95%84%20%ED%95%98%EC%B9%B4%ED%83%80%20%EC%9A%94%EB%8F%84%EB%B0%94%EC%8B%9C%EC%A0%90%29",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "슈퍼마켓 · 평점 4.2 (1,833)\n요도바시 4F. 산토리 올드 특가. 현금만, 면세 불가\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보",
+      "tag": "특산물/식품",
+      "evidence": [
+        "https://triple.guide/attractions/0e47a43e-fba8-49ae-8cee-020211d091c9",
+        "https://map.yahoo.co.jp/v3/place/R3OMPnOE-Gc",
+        "https://lopia.jp/shops/hakatayodobashi"
+      ],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 21,
+      "name": "빅카메라 텐진2호점",
+      "name_verified": "ビックカメラ 天神2号館 (빅카메라 텐진2호점)",
+      "category": "쇼핑",
+      "address": "〒810-0001 Fukuoka, Chuo Ward, Tenjin 2-4-5",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0001%20Fukuoka%2C%20Chuo%20Ward%2C%20Tenjin%202-4-5%20%E3%83%93%E3%83%83%E3%82%AF%E3%82%AB%E3%83%A1%E3%83%A9%20%E5%A4%A9%E7%A5%9E2%E5%8F%B7%E9%A4%A8%20%28%EB%B9%85%EC%B9%B4%EB%A9%94%EB%9D%BC%20%ED%85%90%EC%A7%842%ED%98%B8%EC%A0%90%29",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "전자제품 판매점 · 평점 3.8 (2,998)\n면세 10% + 주류 3% 추가쿠폰. 위스키·사케 코너 정돈 우수\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보\n산토리·닛카 스탠다드 라인업(로얄·요이치·미야기쿄·프론티어 등) 보유 가능성 높음. 프리미엄(야마자키·하쿠슈·히비키)은 매장별 재고 변동 큼",
+      "tag": "위스키",
+      "evidence": [
+        "https://kr.trip.com/moments/detail/fukuoka-576-124841257/"
+      ],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 22,
+      "name": "鉄板焼きもんじゃココきよ大名店",
+      "name_verified": "鉄板焼きもんじゃ ココきよ 大名店",
+      "category": "맛집",
+      "address": "후쿠오카시 주오구 다이묘 1-9-14 시티맨션 다이묘 별관",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%EC%A3%BC%EC%98%A4%EA%B5%AC%20%EB%8B%A4%EC%9D%B4%EB%AC%98%201-9-14%20%EC%8B%9C%ED%8B%B0%EB%A7%A8%EC%85%98%20%EB%8B%A4%EC%9D%B4%EB%AC%98%20%EB%B3%84%EA%B4%80%20%E9%89%84%E6%9D%BF%E7%84%BC%E3%81%8D%E3%82%82%E3%82%93%E3%81%98%E3%82%83%20%E3%82%B3%E3%82%B3%E3%81%8D%E3%82%88%20%E5%A4%A7%E5%90%8D%E5%BA%97",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "몬자야키 전문점 · ¥2,000~3,000 · 평점 4.6 (32)",
+      "tag": null,
+      "evidence": [
+        "https://tabelog.com/fukuoka/A4001/A400104/40064737/",
+        "https://www.hotpepper.jp/strJ004169173/",
+        "https://r.gnavi.co.jp/1uppfkde0000/"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 23,
+      "name": "Mizutaki Motsunabe Hakataro Nishinakasu",
+      "name_verified": "水炊き もつ鍋 博多流 西中洲 (Mizutaki Motsunabe Hakataro Nishinakasu)",
+      "category": "맛집",
+      "address": "후쿠오카현 후쿠오카시 주오구 니시나카스 13-1 SHIP'S GARDEN 2F",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%ED%98%84%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%EC%A3%BC%EC%98%A4%EA%B5%AC%20%EB%8B%88%EC%8B%9C%EB%82%98%EC%B9%B4%EC%8A%A4%2013-1%20SHIP%27S%20GARDEN%202F%20%E6%B0%B4%E7%82%8A%E3%81%8D%20%E3%82%82%E3%81%A4%E9%8D%8B%20%E5%8D%9A%E5%A4%9A%E6%B5%81%20%E8%A5%BF%E4%B8%AD%E6%B4%B2%20%28Mizutaki%20Motsunabe%20Hakataro%20Nishinakasu%29",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "일식 내장 냄비 요리(미즈타키·모츠나베) · ¥2,000~7,000 · 평점 4.2 (130)",
+      "tag": "모츠나베",
+      "evidence": [
+        "https://www.tablecheck.com/en/hakatarou-nishinakasu",
+        "https://tabelog.com/en/fukuoka/A4001/A400103/40066852/",
+        "https://arne.media/en/gourmet/511418/"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 24,
+      "name": "MIZUNO SPORTSTYLE FUKUOKA PARCO POP-UP",
+      "name_verified": "MIZUNO SPORTSTYLE FUKUOKA PARCO POP-UP",
+      "category": "쇼핑",
+      "address": "〒810-0001 후쿠오카시 주오구 텐진 2-11-1 후쿠오카 PARCO 본관",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0001%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%EC%A3%BC%EC%98%A4%EA%B5%AC%20%ED%85%90%EC%A7%84%202-11-1%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%20PARCO%20%EB%B3%B8%EA%B4%80%20MIZUNO%20SPORTSTYLE%20FUKUOKA%20PARCO%20POP-UP",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "신발 판매점 · 평점 4.8 (33) — 팝업이라 여행 시점에 영업 여부 확인 필요",
+      "tag": null,
+      "evidence": [
+        "https://jpn.mizuno.com/shop/mizunosportstyle_fukuokaparco",
+        "https://en.fukuoka.parco.jp/shop/detail/?cd=030872",
+        "https://tenjin.keizai.biz/headline/8335/"
+      ],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 25,
+      "name": "야키니쿠 바쿠로 하카타점",
+      "name_verified": "やきにくのバクロ 博多店",
+      "category": "맛집",
+      "address": "후쿠오카현 후쿠오카시 하카타구 스미요시 1-1-9 RJR하카타빌딩 2F",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%ED%98%84%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%ED%95%98%EC%B9%B4%ED%83%80%EA%B5%AC%20%EC%8A%A4%EB%AF%B8%EC%9A%94%EC%8B%9C%201-1-9%20RJR%ED%95%98%EC%B9%B4%ED%83%80%EB%B9%8C%EB%94%A9%202F%20%E3%82%84%E3%81%8D%E3%81%AB%E3%81%8F%E3%81%AE%E3%83%90%E3%82%AF%E3%83%AD%20%E5%8D%9A%E5%A4%9A%E5%BA%97",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "야키니쿠 · ¥3,000~9,000 · 평점 4.4 (1,127)",
+      "tag": null,
+      "evidence": [
+        "https://tabelog.com/en/fukuoka/A4001/A400101/40045144/",
+        "https://map.yahoo.co.jp/v3/place/DuPsUxeEU_E",
+        "https://www.bakuro09.com/shop/hakata/",
+        "https://hitosara.com/0031454747/"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 26,
+      "name": "오호리 우나기",
+      "name_verified": "大濠うなぎ (오호리 우나기)",
+      "category": "맛집",
+      "address": "〒810-0042 후쿠오카시 주오구 아카사카 1-15-1 아카사카코가빌딩 1F",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0042%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%EC%A3%BC%EC%98%A4%EA%B5%AC%20%EC%95%84%EC%B9%B4%EC%82%AC%EC%B9%B4%201-15-1%20%EC%95%84%EC%B9%B4%EC%82%AC%EC%B9%B4%EC%BD%94%EA%B0%80%EB%B9%8C%EB%94%A9%201F%20%E5%A4%A7%E6%BF%A0%E3%81%86%E3%81%AA%E3%81%8E%20%28%EC%98%A4%ED%98%B8%EB%A6%AC%20%EC%9A%B0%EB%82%98%EA%B8%B0%29",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "민물장어 요리 전문식당 · ¥5,000~6,000 · 평점 4.7 (325)",
+      "tag": "장어덮밥",
+      "evidence": [
+        "https://ohoriunagi.com/",
+        "https://www.tablecheck.com/en/ohoriunagi"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 27,
+      "name": "알펜 후쿠오카",
+      "name_verified": "Alpen FUKUOKA (스포츠데포 플래그십스토어 캐널시티 하카타점)",
+      "category": "쇼핑",
+      "address": "〒812-0018 후쿠오카시 하카타구 스미요시 1-2, 캐널시티 하카타 사우스빌딩",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0018%20%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4%EC%8B%9C%20%ED%95%98%EC%B9%B4%ED%83%80%EA%B5%AC%20%EC%8A%A4%EB%AF%B8%EC%9A%94%EC%8B%9C%201-2%2C%20%EC%BA%90%EB%84%90%EC%8B%9C%ED%8B%B0%20%ED%95%98%EC%B9%B4%ED%83%80%20%EC%82%AC%EC%9A%B0%EC%8A%A4%EB%B9%8C%EB%94%A9%20Alpen%20FUKUOKA%20%28%EC%8A%A4%ED%8F%AC%EC%B8%A0%EB%8D%B0%ED%8F%AC%20%ED%94%8C%EB%9E%98%EA%B7%B8%EC%8B%AD%EC%8A%A4%ED%86%A0%EC%96%B4%20%EC%BA%90%EB%84%90%EC%8B%9C%ED%8B%B0%20%ED%95%98%EC%B9%B4%ED%83%80%EC%A0%90%29",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "야외스포츠용품점 · 평점 4.1 (379)\n러닝화 1차 피팅·트랙 테스트\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보",
+      "tag": "패션/잡화",
+      "evidence": [
+        "https://store.alpen-group.jp/Form/RealShop/ShopDetail.aspx?rsid=5402",
+        "https://map.yahoo.co.jp/v3/place/sxyUK0ZxDDY",
+        "https://triple.guide/attractions/e65bba26-9e72-4b92-8cc3-7fda17b9ca12"
+      ],
       "days": [],
       "icon": "🛍️"
     },
@@ -1408,6 +799,36 @@ window.APP_DATA = {
       "evidence": [],
       "days": [],
       "icon": "🎡"
+    },
+    {
+      "id": 30,
+      "name": "카페 베로체 치쿠시구치",
+      "name_verified": "カフェ・ベローチェ 福岡薬院店",
+      "category": "맛집",
+      "address": "일본 후쿠오카시 하카타구 하카타역 치쿠시구치 1-11-1 (博多駅筑紫口 1-11-1)",
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJ57CBxKiRQTURFyz3l4Di9TA",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "카페 · 07:00~22:00 · 호텔 0.25km / 도보 3~5분\n지점 정정(2026-09-09): 저장돼 있던 것은 カフェ・ベローチェ 福岡薬院店(주오구 야쿠인, 호텔에서 2km+)이었다. 첨부 조식 가이드 기준 정확한 지점은 하카타역 치쿠시구치점(도보 3~5분, 250m). 좌표는 야쿠인점 값이라 삭제했다 — 재검증 필요",
+      "tag": "아침밥",
+      "evidence": [],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 33,
+      "name": "다이후쿠 우동 (大福うどん)",
+      "name_verified": "다이후쿠우동 딘키비루점",
+      "category": "맛집",
+      "address": "일본 후쿠오카시 하카타구 JR 하카타역 B1F 하카타 1번가",
+      "maps_url": "https://www.google.com/maps/place/?q=place_id:ChIJgx_py5uRQTUR-ZvopWyAj28",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "우동 · 07:00~22:00 · 호텔 0.35km / 도보 5~7분\n지점 정정(2026-09-09): 저장돼 있던 것은 다이후쿠우동 덴키빌딩점(주오구 와타나베도리, 텐진 쪽)이었다. 첨부 조식 가이드 기준 정확한 지점은 JR 하카타역 B1F 하카타 1번가점(도보 5~7분, 350m). 좌표는 덴키빌딩점 값이라 삭제했다 — 재검증 필요",
+      "tag": "우동",
+      "evidence": [],
+      "days": [],
+      "icon": "🍜"
     },
     {
       "id": 38,
@@ -1526,6 +947,585 @@ window.APP_DATA = {
       "saved_to_mymaps": 0,
       "note": "러닝 전문 · 평점 4.3 (260) · 11:00~20:00 · 호텔 3.01km · 면세 10%, 마라톤 전문\n러닝화 2차 피팅\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보",
       "tag": null,
+      "evidence": [],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 53,
+      "name": "하카타 아마노 KITTE 하카타점",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": null,
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "와쇼쿠 조식 · 07:00~10:00 · KITTE 하카타 B1F, 하카타역 직결 · 호텔 도보 6~8분 · 자가제 명란, 멘타이동 2,170엔 / 긴다라 미소정식 1,800엔",
+      "tag": "아침밥",
+      "evidence": [],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 54,
+      "name": "타냐HAKATA 하카타1번가",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": null,
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "조식 정식 · 평일 한정 07:00~10:00(LO) · JR하카타시티 B1F 하카타1번가 · 호텔 도보 5~7분 · 부타아부리 조식정식 690엔, 밥 곱빼기·식후 커피 무료",
+      "tag": "아침밥",
+      "evidence": [],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 55,
+      "name": "멘야 카네토라",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/jwPinEfxtxmLnP3i9",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "하카타에서 유명한 곱창 츠케멘 맛집으로 현지인과 관광객 모두에게 인기가 많음. 파르코점은 카드 결제 가능, 면 양(200g/250g) 추가 비용 없음. 매운맛 선택 시 마일드 단계 추천(적당히 매콤 짭짤한 소스). 테이블 육수로 간 조절 가능하며 탱글한 면발과 차슈가 일품.",
+      "tag": "라멘·츠케멘",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=54s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 56,
+      "name": "텐푸라 타카오",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/TTwJT9XbsA6oyDPx5",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "튀김 전문점으로 텐푸라 정식과 텐동 판매. 텐푸라 정식은 먹는 속도에 맞춰 튀김이 순차적으로 제공되어 항상 따뜻하게 즐길 수 있음. 튀김옷이 얇고 바삭하며 15시 전 주문 시 밥 무료 사이즈업. 새우튀김 텐동은 새우튀김 양이 넉넉하고 구성이 좋음.",
+      "tag": "튀김·텐동",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=131s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 57,
+      "name": "다이치노 우동",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/C8JwNFzoXj7WsHZs8",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "하카타역 지하 가성비 우동 맛집(7,000원대). 자판기 주문. 넘버원 '고기 우엉튀김 우동'과 넘버투 '고기 새우 야채 튀김 우동' 추천(넉넉한 튀김과 감칠맛 국물). 면발이 더 탱글하길 원하면 붓카케 우동 추천. 점심 피크 피하면 웨이팅 적음.",
+      "tag": "우동",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=178s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 58,
+      "name": "죠스이안 하카타 에키마에 본점",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/B1f1ANokri9dJCQV6",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "딸기 모찌의 진수. 가격대는 다소 높지만 쫀득한 모찌와 신선한 딸기 과즙의 조화가 강렬해 한번 맛보면 납득하게 됨. 선물용보다 매장에서 바로 먹는 것을 추천.",
+      "tag": "디저트·간식",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=243s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 59,
+      "name": "테무진 교자",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/xfZE1EwGAUBQHdWL9",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "후쿠오카 히토쿠치 교자(한입 만두)의 명가. 군만두는 겉바속촉의 정석이며, 물만두는 딘타이펑을 연상시키는 뛰어난 국물 맛을 자랑함.",
+      "tag": "교자·만두",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=348s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 60,
+      "name": "온카 커피",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/1cQVQxoMgDrTEbLg7",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "미나텐진 1층에 위치한 아늑한 분위기의 스페셜티 카페. 신선한 원두의 풍부한 맛과 향. 대표 메뉴는 쿠로(드립 커피)와 로(라떼). 라떼 끝맛의 미세한 단맛이 독특하고 매력적.",
+      "tag": "카페·커피",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=399s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 61,
+      "name": "베이크 치즈타르트 텐진지하점",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/av51rjTmCJrtioEk8",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "도쿄 시작 명품 치즈 타르트. 홋카이도산 치즈와 우유를 사용해 풍미가 뛰어남. 오리지널 치즈 타르트가 가장 인기 있으며 매장 취식 및 테이크아웃 가능.",
+      "tag": "디저트·간식",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=442s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 62,
+      "name": "효탄스시",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/Tej4gZarDRHQXtUP7",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "후쿠오카 대표 가성비 스시 명가. 솔라리아점은 실내 웨이팅이 가능하고 원하는 스시만 골라 주문 가능. 밥 양 조절 가능하며 보리새우 스시와 참치 대뱃살이 일품.",
+      "tag": "스시·해산물",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=486s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 63,
+      "name": "다코멧카",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/BaYiC5iJPaCRJmuG8",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "하카타 유명 베이커리 카페. 직화로 구운 소시지가 들어간 소시지빵이 시그니처. 커피 맛도 훌륭하며 빵 애호가라면 꼭 가볼 만한 곳.",
+      "tag": "베이커리·빵",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=578s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 64,
+      "name": "하카타 카와바타 도산코",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/HTyNabjeWk9W63mSA",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "현지인들이 즐겨 찾는 라멘 맛집. 된장(미소) 라멘이 가장 유명하며 부담 없는 국물과 차슈 퀄리티가 만족스러움. 중식 스타일의 볶음밥 세트 조합이 강력 추천 메뉴.",
+      "tag": "라멘·츠케멘",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=619s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 65,
+      "name": "하카타 모쯔나베 오오야마 킷테하카타점",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/54hrq95DcSgxdt7w9",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "후쿠오카 대표 모츠나베 맛집. 냄새 없는 부드러운 대창과 채소에서 우러나오는 진하고 깔끔한 국물이 일품. 마무리는 짬뽕면 사리 추천. KITTE 지하에 있어 접근성 우수.",
+      "tag": "모츠나베",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=658s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 66,
+      "name": "멘야 호리노",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/saPqQfU1Dcyqv2657",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "가성비 좋은 텐동과 우동을 함께 즐길 수 있는 곳(11:30~14:00 런치, 저녁은 이자카야). 텐동 세트 주문 시 미니 우동 제공. 하카타 닭고기 튀김(토리텐) 덮밥이 인기.",
+      "tag": "튀김·텐동",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=696s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 67,
+      "name": "오이시이 코오리야 텐진미나미점",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/FtBaqRRVFh3WJBiz5",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "천연 얼음 수제 빙수 전문점. 1인 1메뉴 주문 원칙. 휘핑크림 딸기 빙수와 망고 빙수가 인기이며, 너무 달지 않고 부드러운 우유 맛이 특징.",
+      "tag": "디저트·간식",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=763s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 68,
+      "name": "블랑제",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/GrMZEy1TLwBkbc1q8",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "텐진 지하상가에 위치한 인기 베이커리. 크루아상, 크루아상 코르네, 퀸아망 등 페이스트리류가 특히 맛있으며 도넛도 추천.",
+      "tag": "베이커리·빵",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=811s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 69,
+      "name": "이모야 킨지로",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/f2nRK1kg3ZqPXrGc8",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "고구마 튀김(이모켄피) 맛집. 바삭하고 중독성 강한 단짠의 매력. 시식이 가능하며 오리지널 켄피가 가장 인기. 진공 포장 제품은 여행 선물용으로도 최적.",
+      "tag": "디저트·간식",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=850s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 70,
+      "name": "이토킹",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/jFfdQevE7hxqKQuT8",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "후쿠오카 명물 아마오우 딸기 디저트 전문점. 생딸기 도라야키가 시그니처로 부드러운 빵 안에 딸기, 크림, 팥 앙금이 어우러진 고급스러운 풍미.",
+      "tag": "디저트·간식",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=876s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 71,
+      "name": "멘야가가 텐진점",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/GWC8RSoSwwPLtGaP6",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "이치란 창업자의 손주가 운영하는 라멘집. 면 익힘과 매운맛 단계 조절 가능. 이치란과 결이 비슷하나 돈코츠 육수가 조금 더 담백하고 덜 자극적. 토치로 구운 차슈 라멘 추천.",
+      "tag": "라멘·츠케멘",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=973s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 72,
+      "name": "후글렌",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/KHZMiJSnS8YX7Z4r9",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "도쿄/노르웨이 유명 카페의 후쿠오카 지점. 여유로운 북유럽 감성 인테리어. 진하고 고소한 플랫화이트/라떼가 일품이며, 기분 좋은 산미와 밸런스의 드립 커피 추천.",
+      "tag": "카페·커피",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1035s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 73,
+      "name": "우오츄",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/ThfHgGmANAUAynYr7",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "해산물 중심의 정갈한 일본 가정식 전문점. 우오츄 정식(사시미 선택)이 인기이며 고등어 소금구이, 카이센동, 도미 차즈케 등 모든 메뉴가 기본 이상으로 만족스러움.",
+      "tag": "일본가정식",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1062s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 74,
+      "name": "에비스야 우동",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/PsLb8VoJJfQ1G4jw9",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "갈비 우동으로 유명한 하카타 우동 명가. 달짝지근 짭조름한 갈비와 쫄깃한 면발의 조화. 냉우동(갈비 붓카케)을 특히 추천하며 우엉튀김 토핑 추가도 별미.",
+      "tag": "우동",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1113s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 75,
+      "name": "야키니쿠 코우시",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/GVJ1NmG9g3t1TeXG8",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "가성비 좋은 스키야키와 야키니쿠를 즐길 수 있는 식당. 직원분이 직접 구워주는 달콤 부드러운 고기가 특징.",
+      "tag": "야키니쿠·스키야키",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1183s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 76,
+      "name": "텐야스",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/oHDbAxkqFmoSF24G9",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "텐동 및 덴푸라 정식 전문점. 친절한 서비스와 다양한 튀김. 텐동은 부드럽고 촉촉한 식감, 덴푸라 정식은 바삭한 식감이 특징.",
+      "tag": "튀김·텐동",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1294s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 77,
+      "name": "아베키",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/a4Gdk3BQBHdv7NhF6",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "조용하고 차분한 분위기에서 사색하기 좋은 카페. 공간은 협소하지만 아늑함. 시그니처인 진한 치즈케이크와 깊은 맛의 핸드드립 커피가 명품 (이용시간 제한 있음).",
+      "tag": "카페·커피",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1335s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 78,
+      "name": "베레비안",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/GcZqyReBD8Mgv8ZLA",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "텐진 지하상가 가성비 베이커리. 저렴하고 맛있어 현지인들에게 인기. 크림치즈와 카레의 조화가 훌륭한 카레빵과 담백하고 고소한 소금빵 추천.",
+      "tag": "베이커리·빵",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1386s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 79,
+      "name": "시나리",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/C2jhirAEFWwUFyCQ7",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "2019년 미슐랭 가이드에 소개된 사누키 우동 명가. 웨이팅이 길어 오픈런 추천. 탱글하고 쫄깃한 면발과 깔끔한 쯔유 소스의 붓카케 우동, 바삭한 튀김, 명란 모찌가 일품.",
+      "tag": "우동",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1422s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 80,
+      "name": "키르훼봉",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/Jj1oePSZ2pxTdhC67",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "계절 생과일을 아낌없이 얹은 프리미엄 타르트 케이크 명가. 종합 과일 타르트와 제철 딸기 타르트가 대표 메뉴. 과하게 달지 않고 재료 본연의 맛을 살린 고급스러운 맛.",
+      "tag": "디저트·간식",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1512s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 81,
+      "name": "니쿠이치 야쿠인",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/X8oY5xnD1R4WKufY8",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "후쿠오카 1티어 프리미엄 흑우 야키니쿠 전문점. 특선 7종 모둠으로 시작해 선호 부위를 추가하는 방식 추천. 특히 부드럽고 육향 좋은 뒷다리살(우치모모)과 흰쌀밥 조합이 최고.",
+      "tag": "야키니쿠·스키야키",
+      "evidence": [
+        "https://www.youtube.com/watch?v=CC7wauCIJEM&t=1566s"
+      ],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 82,
+      "name": "이온 쇼퍼즈 후쿠오카점",
+      "name_verified": null,
+      "category": "쇼핑",
+      "address": null,
+      "maps_url": null,
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "대형마트 · 09:00~22:00(3~4F 21:00) · 텐진 4-4-11, 092-721-5411 · 현지인 장보기 정찰제라 프로모션 없이도 단가가 낮다 · 산토리 올드·로얄 같은 스탠다드 라인업 재고가 안정적(사용자 제공, 주류 코너 규모·면세 데스크는 현장 확인 필요)",
+      "tag": "위스키",
+      "evidence": [],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 83,
+      "name": "리쿼마운틴 나카스 국체도로점",
+      "name_verified": null,
+      "category": "쇼핑",
+      "address": null,
+      "maps_url": null,
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "주류 전문점 · 나카스 2-2-2 · 교토 기반 전국 체인, 면세점 운영 · 기성품 재고가 많아 올드·로얄 확보에 유리 · 영업시간 미확인",
+      "tag": "위스키",
+      "evidence": [],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 84,
+      "name": "빅카메라 텐진1호관",
+      "name_verified": null,
+      "category": "쇼핑",
+      "address": null,
+      "maps_url": null,
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "가전양판점 · 연중무휴 10:00~21:00 · 이마이즈미 1-25-1, 092-732-1112 · 면세 대응 매장 · 주류 취급 여부는 미확인(2호관은 주류 코너 확인됨) · 여행 플랫폼 주류 추가쿠폰(3~5%)이 일본 위스키에 적용되는지는 결제 시 확인 필요",
+      "tag": null,
+      "evidence": [],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 85,
+      "name": "돈키호테 후쿠오카 텐진 본점",
+      "name_verified": null,
+      "category": "쇼핑",
+      "address": null,
+      "maps_url": null,
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "종합·주류 · 24시간 연중무휴 · 이마이즈미 1-20-17 · 니시테츠 후쿠오카역 남쪽 출구 도보 4분 · 일정 마치고 밤늦게 들르기 좋다 · 단 마트·주류전문점보다 단가가 100~200엔 높을 때가 있다",
+      "tag": null,
+      "evidence": [],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 86,
+      "name": "트란도르",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/tXAZTAMmgXLLarU79",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": null,
+      "tag": "베이커리·빵",
+      "evidence": [],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
+      "id": 87,
+      "name": "스텝스포츠 후쿠오카점",
+      "name_verified": null,
+      "category": "쇼핑",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/e7xP6B3SjAzzpPz39",
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": null,
+      "tag": "패션/잡화",
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -1858,39 +1858,75 @@ window.APP_DATA = {
   "ROUTE": {
     "points": [
       {
+        "itin_id": 1,
+        "place_id": 12,
+        "day_no": 1,
+        "seq_in_day": 1,
+        "name": "호텔 포르자 하카타역 치쿠시구치Ⅱ",
+        "lat": 33.5903695,
+        "lng": 130.42327889999999,
+        "icon": "🏨",
+        "x": 452.5,
+        "y": 319.9
+      },
+      {
         "itin_id": 2,
         "place_id": 43,
         "day_no": 1,
-        "seq_in_day": 1,
+        "seq_in_day": 2,
         "name": "캐널시티 하카타",
         "lat": 33.5896305,
         "lng": 130.41094780000003,
         "icon": "🏬",
-        "x": 389.0,
+        "x": 411.7,
         "y": 322.8
+      },
+      {
+        "itin_id": 5,
+        "place_id": 15,
+        "day_no": 2,
+        "seq_in_day": 1,
+        "name": "동물의숲 우미노나카미치카이힌 공원",
+        "lat": 33.6596697,
+        "lng": 130.34969139999998,
+        "icon": "🌳",
+        "x": 209.1,
+        "y": 44.7
+      },
+      {
+        "itin_id": 19,
+        "place_id": 12,
+        "day_no": 2,
+        "seq_in_day": 2,
+        "name": "호텔 포르자 하카타역 치쿠시구치Ⅱ",
+        "lat": 33.5903695,
+        "lng": 130.42327889999999,
+        "icon": "🏨",
+        "x": 452.5,
+        "y": 319.9
       },
       {
         "itin_id": 20,
         "place_id": 52,
         "day_no": 2,
-        "seq_in_day": 1,
+        "seq_in_day": 3,
         "name": "라라포트 후쿠오카",
         "lat": 33.565167599999995,
         "lng": 130.4409414,
         "icon": "🤖",
-        "x": 488.2,
+        "x": 510.9,
         "y": 420.0
       },
       {
         "itin_id": 21,
         "place_id": 6,
         "day_no": 2,
-        "seq_in_day": 2,
+        "seq_in_day": 4,
         "name": "Moff animal cafe LaLaport Fukuoka",
         "lat": 33.565167,
         "lng": 130.440941,
         "icon": "🐹",
-        "x": 488.2,
+        "x": 510.9,
         "y": 420.0
       },
       {
@@ -1902,7 +1938,7 @@ window.APP_DATA = {
         "lat": 33.660851,
         "lng": 130.36341299999998,
         "icon": "🐬",
-        "x": 231.8,
+        "x": 254.5,
         "y": 40.0
       },
       {
@@ -1914,7 +1950,7 @@ window.APP_DATA = {
         "lat": 33.589571899999996,
         "lng": 130.3997484,
         "icon": "🛍️",
-        "x": 352.0,
+        "x": 374.7,
         "y": 323.1
       },
       {
@@ -1926,23 +1962,27 @@ window.APP_DATA = {
         "lat": 33.590537999999995,
         "lng": 130.4199371,
         "icon": "🎁",
-        "x": 418.7,
+        "x": 441.4,
         "y": 319.2
+      },
+      {
+        "itin_id": 17,
+        "place_id": 10,
+        "day_no": 4,
+        "seq_in_day": 2,
+        "name": "한큐 하카타",
+        "lat": 33.589363999999996,
+        "lng": 130.41983779999998,
+        "icon": "🎁",
+        "x": 441.1,
+        "y": 323.9
       }
     ],
     "missing": {
-      "1": [
-        "호텔 포르자 하카타역 치쿠시구치Ⅱ"
-      ],
-      "2": [
-        "동물의숲 우미노나카미치카이힌 공원",
-        "호텔 포르자 하카타역 치쿠시구치Ⅱ"
-      ],
       "3": [
         "텐진 맛집에서 저녁 식사"
       ],
       "4": [
-        "한큐 하카타",
         "후쿠오카 출발 18:00, 한국으로 귀국"
       ]
     }
