@@ -211,7 +211,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "슈퍼마켓 · 평점 4.2 (1,833)\n요도바시 4F. 산토리 올드 특가. 현금만, 면세 불가\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보",
-      "tag": null,
+      "tag": "위스키",
       "evidence": [
         "https://triple.guide/attractions/0e47a43e-fba8-49ae-8cee-020211d091c9",
         "https://map.yahoo.co.jp/v3/place/R3OMPnOE-Gc",
@@ -230,7 +230,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "전자제품 판매점 · 평점 3.8 (2,998)\n면세 10% + 주류 3% 추가쿠폰. 위스키·사케 코너 정돈 우수\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보\n산토리·닛카 스탠다드 라인업(로얄·요이치·미야기쿄·프론티어 등) 보유 가능성 높음. 프리미엄(야마자키·하쿠슈·히비키)은 매장별 재고 변동 큼",
-      "tag": null,
+      "tag": "위스키",
       "evidence": [
         "https://kr.trip.com/moments/detail/fukuoka-576-124841257/"
       ],
@@ -1202,6 +1202,66 @@ window.APP_DATA = {
       "icon": "🍜"
     },
     {
+      "id": 82,
+      "name": "이온 쇼퍼즈 후쿠오카점",
+      "name_verified": null,
+      "category": "쇼핑",
+      "address": null,
+      "maps_url": null,
+      "verify_status": "pending",
+      "saved_to_mymaps": 0,
+      "note": "대형마트 · 09:00~22:00(3~4F 21:00) · 텐진 4-4-11, 092-721-5411 · 현지인 장보기 정찰제라 프로모션 없이도 단가가 낮다 · 산토리 올드·로얄 같은 스탠다드 라인업 재고가 안정적(사용자 제공, 주류 코너 규모·면세 데스크는 현장 확인 필요)",
+      "tag": "위스키",
+      "evidence": [],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 83,
+      "name": "리쿼마운틴 나카스 국체도로점",
+      "name_verified": null,
+      "category": "쇼핑",
+      "address": null,
+      "maps_url": null,
+      "verify_status": "pending",
+      "saved_to_mymaps": 0,
+      "note": "주류 전문점 · 나카스 2-2-2 · 교토 기반 전국 체인, 면세점 운영 · 기성품 재고가 많아 올드·로얄 확보에 유리 · 영업시간 미확인",
+      "tag": "위스키",
+      "evidence": [],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 84,
+      "name": "빅카메라 텐진1호관",
+      "name_verified": null,
+      "category": "쇼핑",
+      "address": null,
+      "maps_url": null,
+      "verify_status": "pending",
+      "saved_to_mymaps": 0,
+      "note": "가전양판점 · 연중무휴 10:00~21:00 · 이마이즈미 1-25-1, 092-732-1112 · 면세 대응 매장 · 주류 취급 여부는 미확인(2호관은 주류 코너 확인됨) · 여행 플랫폼 주류 추가쿠폰(3~5%)이 일본 위스키에 적용되는지는 결제 시 확인 필요",
+      "tag": null,
+      "evidence": [],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 85,
+      "name": "돈키호테 후쿠오카 텐진 본점",
+      "name_verified": null,
+      "category": "쇼핑",
+      "address": null,
+      "maps_url": null,
+      "verify_status": "pending",
+      "saved_to_mymaps": 0,
+      "note": "종합·주류 · 24시간 연중무휴 · 이마이즈미 1-20-17 · 니시테츠 후쿠오카역 남쪽 출구 도보 4분 · 일정 마치고 밤늦게 들르기 좋다 · 단 마트·주류전문점보다 단가가 100~200엔 높을 때가 있다",
+      "tag": null,
+      "evidence": [],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
       "id": 5,
       "name": "후쿠오카시 동식물원",
       "name_verified": "후쿠오카시 동식물원",
@@ -1299,7 +1359,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "주류 판매점 · 평점 4.1 (387)\n면세 10% + 1만엔↑ 5% 추가쿠폰\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보\n위스키 라인업 교차검증(2026-09-10): 닛카 요이치·미야기쿄·타케츠루(각 7,700엔)·프롬더배럴(4천엔대)·프론티어(2,200엔), 산토리 로얄(4천엔대)도 취급 가능성 높음. 야마자키·하쿠슈·히비키 프리미엄 라인은 품귀라 재고·정가 여부를 매장에서 직접 확인해야 한다 — 특히 야마자키12년은 정가(17,600엔)보다 시중가가 1.5~2배 높은 게 정상이라 정가 기대 금지",
-      "tag": null,
+      "tag": "위스키",
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -1405,7 +1465,7 @@ window.APP_DATA = {
       "verify_status": "matched",
       "saved_to_mymaps": 0,
       "note": "종합·주류 · 평점 3.7 (7,669) · 24시간 영업 · 호텔 1.66km / 도보 22분\n24시간 영업이라 늦은 시간 구매 가능. 닛카 프론티어(2,200엔) 등 스탠다드 위스키 위주로 확인. 프리미엄 라인은 기대하지 않는 게 안전",
-      "tag": null,
+      "tag": "위스키",
       "evidence": [],
       "days": [],
       "icon": "🛍️"
@@ -2393,19 +2453,19 @@ window.APP_DATA = {
       "id": 19,
       "name": "산토리 로얄",
       "category": "살거",
-      "note": "43도, 정가 4,290엔(실판 3,690엔~). 바닐라·사과·캐러멜 향, 신사 모티프 병",
-      "tag": null,
+      "note": "43도 700ml. 면세가 3,500~3,800엔 / 세금포함 정가 4,290엔·실판 3,690엔~ — 면세가는 소비세 10% 제외분이라 모순이 아니다. 바닐라·사과·캐러멜 향, 신사 모티프 병이라 선물용으로 좋다. 구매처 우선순위는 올드와 동일: 이온 쇼퍼즈 → 리쿼마운틴·야마야 → 빅카메라 → 돈키호테",
+      "tag": "위스키",
       "done": 0,
-      "places": "빅카메라 텐진2호점, 야마야 다이묘점"
+      "places": "리쿼마운틴 나카스 국체도로점, 빅카메라 텐진2호점, 야마야 다이묘점, 이온 쇼퍼즈 후쿠오카점"
     },
     {
       "id": 18,
       "name": "산토리 올드",
       "category": "살거",
-      "note": "43도, 2,180엔. 꿀·캐러멜 단맛, 가격 대비 만족도 높은 입문용. 로피아 하카타 요도바시 특가(현금만, 면세 불가)",
-      "tag": null,
+      "note": "43도 700ml. 면세가 1,800~2,000엔 / 세금포함 정가 2,180엔 — 같은 값의 다른 표기다(면세가는 소비세 10% 제외). 꿀·캐러멜 단맛, 가격 대비 만족도 높은 입문용. 추천 구매처 순서: ① 이온 쇼퍼즈(정찰제라 단가 최저) ② 리쿼마운틴·야마야(전문점이라 재고 넉넉) ③ 빅카메라(면세 10% + 쿠폰 적용 시 최저 가능) ④ 돈키호테(24시간이라 밤에 가능, 단가 100~200엔 높을 수 있음)",
+      "tag": "위스키",
       "done": 0,
-      "places": "로피아 하카타 요도바시, 야마야 다이묘점"
+      "places": "돈키호테 나카스점, 로피아 하카타 요도바시, 리쿼마운틴 나카스 국체도로점, 빅카메라 텐진2호점, 야마야 다이묘점, 이온 쇼퍼즈 후쿠오카점"
     },
     {
       "id": 29,
@@ -7369,6 +7429,17 @@ window.APP_DATA = {
       "place_name": null
     },
     {
+      "id": 26,
+      "scope": "trip",
+      "day_no": null,
+      "category": "기타",
+      "text": "주류 매장에서 쓰는 일본어 — ① 재고 묻기: 「すみません、サントリーオールドはありますか」(스미마센, 산토리 오-루도와 아리마스카) ② 면세 확인: 「これ、免税できますか」(코레, 멘제- 데키마스카) ③ 선물용 상자: 「プレゼント用なんですが、箱入りのものはありますか」(프레젠토요- 난데스가, 하코이리노 모노와 아리마스카). 로얄은 신사 모티프 병이라 상자 포장을 요청하면 선물용으로 좋다",
+      "evidence_urls": [
+        "https://www.suntory.co.jp/whisky/royal/"
+      ],
+      "place_name": null
+    },
+    {
       "id": 21,
       "scope": "place",
       "day_no": null,
@@ -7542,6 +7613,19 @@ window.APP_DATA = {
       "place_name": "후쿠오카 호빵맨 어린이 박물관 in 쇼핑몰"
     },
     {
+      "id": 25,
+      "scope": "trip",
+      "day_no": null,
+      "category": "요금",
+      "text": "위스키 구매처 우선순위(산토리 올드·로얄 같은 스탠다드 라인업 기준): 고가 한정판을 다루는 리쿼샵보다 대형마트·양판점이 재고도 넉넉하고 단가도 낮다. ① 이온 쇼퍼즈 후쿠오카(텐진 4-4-11, 09:00~22:00) — 정찰제 ② 리쿼마운틴 나카스점·야마야 다이묘점 — 주류 전문이라 기성품 재고 최다, 면세 10% ③ 빅카메라 텐진 1·2호관 — 면세 10% + 주류 추가쿠폰(3~5%) 적용되면 최저가. 단 쿠폰에 일본 위스키가 제외되는 경우가 있어 결제 시 확인 ④ 돈키호테(텐진 본점·나카스점, 24시간) — 밤늦게 가능하지만 단가가 100~200엔 높을 때가 있다",
+      "evidence_urls": [
+        "https://tenpo.aeon-kyushu.info/detail/shoppers-fukuoka/",
+        "https://www.biccamera.com/bc/i/shop/shoplist/shop026.jsp",
+        "https://www.donki.com/store/shop_detail.php?shop_id=461"
+      ],
+      "place_name": null
+    },
+    {
       "id": 12,
       "scope": "trip",
       "day_no": null,
@@ -7657,6 +7741,6 @@ window.APP_DATA = {
     "pending": "미조사 — 주소가 아직 없다",
     "matched": "확인됨"
   },
-  "TOTAL": 81,
+  "TOTAL": 85,
   "API_KEY": "AIzaSyCUN-BFgGm3eFMKdDqalQerulX6nt5tEko"
 };
