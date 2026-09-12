@@ -92,11 +92,15 @@ const mascot = k => `<svg class="mascot" viewBox="0 0 74 74" aria-hidden="true">
 
 /* ---------- 일차 카드 ---------- */
 function renderDays() {
-  document.getElementById("days").innerHTML = DAYS.map(d => `
+  document.getElementById("days").innerHTML = DAYS.map(dayCard).join("");
+}
+
+function dayCard(d) {
+  return `
   <section class="day ${d.tone === "y" ? "y" : ""}" data-dayno="${d.day_no}">
     <div class="side">
       <div>
-        <div class="n">DAY ${d.day_no} <span class="hh">♥</span></div>
+        <div class="n">${esc(d.label || "DAY " + d.day_no)} <span class="hh">♥</span></div>
         <div class="d">${esc(d.date)}</div>
         ${d.holiday ? '<div class="holi"><i>●</i> 공휴일</div>' : ""}
       </div>
@@ -110,7 +114,7 @@ function renderDays() {
       ${d.items.length ? d.items.map(row).join("")
         : '<div class="row"><div class="main">일정 없음</div></div>'}
     </div>
-  </section>`).join("");
+  </section>`;
 }
 
 function row(it) {
@@ -634,7 +638,7 @@ document.addEventListener("click", e => {
   const picBtn = e.target.closest(".pic");
   if (picBtn) {
     const iid = Number(picBtn.dataset.itin);
-    for (const d of DAYS) {
+    for (const d of [...DAYS, ...RECO.map(r => ({ ...r, items: r.items.map((it, i) => ({ ...it, id: -(r.day_no * 100 + i) })) }))]) {
       const it = d.items.find(x => x.id === iid);
       if (it) return openPlace(it.place_id, { ...it, day_no: d.day_no });
     }
@@ -905,9 +909,106 @@ function renderMap() {
     : "";
 }
 
+
+/* ---------- LLM 추천 동선 ----------
+   확정 일정이 아니라 제안이다. DAY 카드(DAYS)는 원래 계획 그대로 둔다.
+   근거: DB 좌표 실거리(해변공원↔마린월드 1.28km / 호텔↔그 지역 9.6~10.3km),
+   tip 의 예보·혼잡·오픈시간. 여기 값은 전부 DB 에 있는 것만 쓴다. */
+const RECO = [
+  {
+    day_no: 1, label: "추천 DAY 1", date: "9/21 (월)", holiday: true,
+    tone: "v", mascot: "dog", mood: "비 60%\n실내로만 붙였다",
+    items: [
+      { slot: "오후", place_id: 12, title: "호텔 포르자 하카타역 치쿠시구치Ⅱ",
+        subtitle: "체크인 후 짐 풀기", hours: "14:00~15:00 체크인", star: true,
+        note: "첫날은 강수확률 60%. 실내 동선만 남겼다" },
+      { slot: "오후", place_id: 27, title: "알펜 후쿠오카",
+        subtitle: "미즈노 러닝화 — 첫날에 끝내기", hours: "–",
+        leg: "호텔 → 알펜", note: "호텔 1.16km. 10% 면세 + 웹·여권/JCB 5% 추가 쿠폰. 여기서 사면 추천 DAY 3 텐진 부담이 준다" },
+      { slot: "저녁", place_id: 43, title: "캐널시티 하카타",
+        subtitle: "혼잡 피크(14~17시)를 피해 늦게", hours: "쇼핑 10:00~21:00 / 식당 ~23:00",
+        leg: "알펜 → 캐널시티", note: "도보 18분·평지라 유모차 가능. 비 오면 택시. 저녁 식사까지 여기서 해결" }
+    ]
+  },
+  {
+    day_no: 2, label: "추천 DAY 2", date: "9/22 (화)", holiday: true,
+    tone: "v", mascot: "bunny", mood: "우미노나카미치\n하루에 몰아서",
+    items: [
+      { slot: "오전", place_id: 15, title: "동물의숲 우미노나카미치카이힌 공원",
+        subtitle: "도착하자마자 자전거부터 확보", hours: "09:30~17:30", star: true,
+        leg: "호텔 → 우미노나카미치",
+        chain: [{ name: "하카타역", detail: "JR 가고시마본선 약 11분", icon: "🚃" },
+                { name: "가시이역", detail: "JR 가시이선 환승 약 20분", icon: "🚃" },
+                { name: "우미노나카미치역", detail: "도보 약 5분", icon: "🚶" }],
+        note: "08:30 출발 → 09:20 도착 목표. 1,600대 있어도 늦으면 전부 대여된다. 자전거로 2~2.5시간" },
+      { slot: "오후", place_id: 14, title: "마린월드 우미노나카미치 (Marine World Uminonakamichi)",
+        subtitle: "공원에서 걸어서 이동", hours: "09:30~21:00(입장마감 20:00)", star: true,
+        leg: "해변공원 → 마린월드",
+        note: "실거리 1.28km·도보 15~20분. 13:30 입장 → 14:00 돌고래쇼(11:00/12:30/14:00/15:30, 계절마다 바뀌니 당일 홈페이지 확인). 비 오면 이걸 오전으로 당기고 공원을 줄인다" },
+      { slot: "저녁", place_id: 12, title: "호텔 포르자 하카타역 치쿠시구치Ⅱ",
+        subtitle: "복귀 후 휴식", hours: "–",
+        leg: "마린월드 → 호텔", note: "17:00 출발 → 18:00 도착. 왕복을 하루로 묶어 이동 1.5~2시간 절약한 만큼 저녁은 비워둔다" }
+    ]
+  },
+  {
+    day_no: 3, label: "추천 DAY 3", date: "9/23 (수)", holiday: true,
+    tone: "v", mascot: "cat", mood: "텐진 종일\n걸어서 다 된다",
+    items: [
+      { slot: "오전", place_id: 44, title: "텐진 지하상가",
+        subtitle: "전날 강행군 회복 — 늦게 출발", hours: "10:00~20:00 (식당 일부 ~21:00)",
+        leg: "호텔 → 텐진", note: "지하철 공항선 약 6분. 점심은 지하상가 베이커리(블랑제·베레비안)로 가볍게 — 키와미야 함바그는 예약 불가 + 웨이팅 1시간 30분이라 3세 동반엔 무리다" },
+      { slot: "오후", place_id: 50, title: "만다라케 후쿠오카 (다이묘)",
+        subtitle: "12시 오픈에 맞춰", hours: "12:00~20:00", star: true,
+        leg: "지하상가 → 다이묘", note: "지하상가에서 0.56km. 오전엔 닫혀 있어 순서를 여기 둔다" },
+      { slot: "오후", place_id: 48, title: "스루가야 신텐초",
+        subtitle: "트레카", hours: "14:00~20:30 (금~일 12:00)",
+        note: "지하상가에서 0.19km. 수요일이라 14:00 오픈" },
+      { slot: "오후", place_id: 51, title: "스텝스포츠 후쿠오카 (다이묘)",
+        subtitle: "러닝화 2차 피팅 — 추천 DAY 1 에 샀으면 생략", hours: "11:00~20:00",
+        note: "호텔 3.01km, 다이묘 도보권. 면세 10%" },
+      { slot: "저녁", place_id: 82, title: "이온 쇼퍼즈 후쿠오카점",
+        subtitle: "위스키는 마지막에 — 무겁다", hours: "09:00~22:00(3~4F 21:00)",
+        note: "한국 입국 기준 합산 2L 이하 + 400달러 이하를 둘 다 지켜야 한다(병 수 제한은 폐지). 저녁 식사 후 지하철 공항선 6분으로 복귀" }
+    ]
+  },
+  {
+    day_no: 4, label: "추천 DAY 4", date: "9/24 (목)", holiday: false,
+    tone: "y", mascot: "bear", mood: "기념품만 챙기고\n여유 있게",
+    items: [
+      { slot: "오전", place_id: 32, title: "TRAINDOR 하카타역점",
+        subtitle: "조식 — 06:30 부터 연다", hours: "06:30~22:30",
+        note: "호텔 0.30km / 도보 4~6분. 호텔 조식을 쓰면 생략" },
+      { slot: "오전", place_id: 10, title: "한큐 하카타",
+        subtitle: "지하 식품관 기념품", hours: "–", star: true,
+        note: "계산 전에 1층 10번 출입구 옆 서비스데스크에서 게스트쿠폰 5% 먼저 받을 것 — 면세와 별개 혜택이다" },
+      { slot: "오전", place_id: 42, title: "마잉구 (하카타 1번가)",
+        subtitle: "명과·기념 과자", hours: "09:00~21:00",
+        note: "호텔 0.4km. 11:00 체크아웃 → 짐은 호텔에 맡기고 움직인다" },
+      { slot: "오후", place_id: 12, title: "하카타역 → 후쿠오카공항",
+        subtitle: "귀국", hours: "18:00 출발", star: true,
+        leg: "하카타역 → 공항", note: "비행 3시간 전 기준 15:00 공항 도착. 택시 12~20분(4~5km). 점심은 하카타역 쿠우텐(9~10층, 통로 넓어 유모차 편함)" }
+    ]
+  }
+];
+
+function renderReco() {
+  const el = document.getElementById("reco");
+  if (!el) return;
+  el.innerHTML = RECO.map(d => dayCard({
+    ...d,
+    items: d.items.map((it, i) => ({
+      chain: [], leg: null, note: "", subtitle: "", star: false, ...it,
+      // 추천 카드는 DB 일정이 아니라 id 가 없다. 팝업이 장소를 찾게 음수 id 를 준다
+      id: -(d.day_no * 100 + i),
+      icon: (PLACES.find(p => p.id === it.place_id) || {}).icon || "📍"
+    }))
+  })).join("");
+}
+
 /* ---------- 글로벌 네비게이션 & 벚꽃 애니메이션 ---------- */
 const ALL_DAYS = [["all", "전체"], ...[1, 2, 3, 4].map(d => [String(d), `DAY ${d}`])];
-const EXTRA_TABS = [["tips", "참고사항"], ["items", "살거·먹을거·놀거"], ["places", "장소 목록"]];
+const EXTRA_TABS = [["reco", "LLM 추천 동선"], ["tips", "참고사항"],
+                   ["items", "살거·먹을거·놀거"], ["places", "장소 목록"]];
 
 function initNav() {
   document.getElementById("globalnav").innerHTML = ALL_DAYS.map(([f, label], i) =>
@@ -928,6 +1029,7 @@ function initNav() {
     
     // 섹션 토글
     document.getElementById("section-days").classList.toggle("section-hidden", !["all", "1", "2", "3", "4"].includes(nav));
+    document.getElementById("section-reco").classList.toggle("section-hidden", nav !== "reco");
     document.getElementById("section-tips").classList.toggle("section-hidden", nav !== "tips");
     document.getElementById("section-items").classList.toggle("section-hidden", nav !== "items");
     document.getElementById("section-places").classList.toggle("section-hidden", nav !== "places");
@@ -963,6 +1065,7 @@ try {
   document.getElementById("routemap").innerHTML = "<div style='padding:20px;text-align:center;'>지도 로딩 실패. 콘솔을 확인하세요.</div>";
 }
 renderDays();
+renderReco();
 initNav();
 renderTips();
 renderGrid();
