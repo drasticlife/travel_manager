@@ -796,7 +796,20 @@ document.getElementById("copy").addEventListener("click", () => {
 const DAY_COLOR = {1: "#7b5ea7", 2: "#4a7fb5", 3: "#5aa469", 4: "#c9962f"};
 let mapFilter = "all";
 
+// 키는 data.js(= .env 에서 생성)에만 있다. HTML 에 박지 않는다.
+let mapsLoading = false;
+function loadGoogleMaps() {
+  if (mapsLoading) return;
+  mapsLoading = true;
+  const s = document.createElement("script");
+  s.src = "https://maps.googleapis.com/maps/api/js?key="
+        + encodeURIComponent(window.APP_DATA.API_KEY || "");
+  s.onload = renderMap;
+  document.head.appendChild(s);
+}
+
 function renderMap() {
+  if (!window.google || !window.google.maps) return loadGoogleMaps();
   const container = document.getElementById("routemap");
   const pts = ROUTE.points.filter(
     p => mapFilter === "all" || p.day_no === Number(mapFilter));

@@ -78,6 +78,11 @@ flowchart LR
 - **Todoist 프로젝트는 아내와 공유 중이고 이미 수십 건이 있다.** `export.py todoist` 는
   기본이 미리보기이고 실제 쓰기는 `--push` 를 요구한다. 이 기본값을 뒤집지 마라.
   중복 방지도 로컬 `todoist_task_id` 만으로는 부족해 원격 제목까지 대조한다.
+- **Maps JS 키는 공개 페이지에 반드시 실린다.** 정적 GitHub Pages라 숨길 방법이 없다.
+  방어는 **HTTP 리퍼러 제한(`drasticlife.github.io/*`) + API 제한(Maps JavaScript API)**뿐이다.
+  키 literal 을 `index.html` 에 박지 마라 — `data.js` 의 `API_KEY`(= `.env` 에서 생성)만 쓰고
+  `app.js` 의 `loadGoogleMaps()` 가 런타임에 스크립트를 넣는다. 키 교체 = `.env` 수정 →
+  `python export_data.py` → `data.js` 커밋.
 - **Places API는 무료 한도만 써도 결제 수단 등록이 필수다.** 그래서 선택 경로다.
 - **구글지도 저장 목록에 쓰는 API는 없다.** 링크를 만들어주고 사람이 클릭해서 저장한다.
 
