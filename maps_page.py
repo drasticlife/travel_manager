@@ -1510,14 +1510,20 @@ renderCmd();
 
 
 def get_google_maps_key():
+    """공개 페이지용 키. 리퍼러 제한이 걸린 GOOGLE_MAPS_WEB_KEY 를 먼저 쓴다.
+
+    이 키는 브라우저로 내려간다 — 서버용(Places 과금) 키를 여기에 쓰지 마라.
+    """
+    keys = {}
     try:
         with open('.env', 'r', encoding='utf-8') as f:
             for line in f:
-                if line.startswith('GOOGLE_MAPS_API_KEY='):
-                    return line.strip().split('=', 1)[1]
+                name, sep, value = line.strip().partition('=')
+                if sep:
+                    keys[name] = value
     except Exception:
         pass
-    return ""
+    return keys.get('GOOGLE_MAPS_WEB_KEY') or keys.get('GOOGLE_MAPS_API_KEY', '')
 
 
 def build_page(conn, generated="", fragment=False):
