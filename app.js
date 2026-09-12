@@ -231,6 +231,14 @@ const FOOD_TAG_ICONS = {
   "디저트·간식": "🍰",
   "아침밥": "🍳",
   "함바그·스테이크": "🥩",
+  "위스키": "🥃",
+  "특산물/식품": "🛍️",
+  "패션/잡화": "👜",
+  "기념품/과자": "🎁",
+  "아기용품": "🧸",
+  "자연/동물": "🐬",
+  "키즈/테마파크": "🎡",
+  "구경/전시": "🤖",
 };
 
 /* ---------- 장소 목록 ---------- */
@@ -345,11 +353,6 @@ let itemSubFilter = "all";
 function renderItemSubtabs(items) {
   const subtabsEl = document.getElementById("item-subtabs");
   if (!subtabsEl) return;
-  
-  if (itemFilter !== "먹을거" && itemFilter !== "전체") {
-    subtabsEl.style.display = "none";
-    return;
-  }
   
   const tagsWithCount = {};
   items.forEach(i => {
