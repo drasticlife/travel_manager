@@ -748,7 +748,7 @@ def test_push_skips_tasks_already_on_remote():
         posted.append(task["content"])
         return {"id": f"t{len(posted)}"}
     r = export.push_todoist(conn, "TOK", "P1", dry_run=False, post=fake_post,
-                            existing={"우산 x1"})
+                            existing=[{"id": "r1", "content": "우산 x1"}])
     assert r["created"] == 1 and r["already_remote"] == 1, r
     assert posted == ["3일차 [점심] 이치란 라멘 나카스점"], posted
 
@@ -764,8 +764,34 @@ def test_todoist_existing_contents_follows_cursor():
         seen.append(url)
         return pages[len(seen) - 1]
     got = export.todoist_existing_contents("TOK", "P1", get=fake_get)
-    assert got == {"여권", "우산"}, got
+    assert [t["content"] for t in got] == ["여권", "우산"], got
     assert "cursor=c1" in seen[1], seen
+
+
+def test_push_puts_items_under_escaped_category_parent():
+    """Todoist 는 '01. 살거' 를 '01\. 살거' 로 돌려준다.
+
+    이 이스케이프를 안 벗기면 부모를 못 찾아 아이템이 '여행 중' 섹션 밖으로
+    떨어진다. 실제로 62건이 그렇게 샜다. 태그가 붙은 제목도 같은 항목으로 봐야
+    한다 — 안 그러면 태그 붙일 때마다 중복이 생긴다.
+    """
+    conn = trip.connect(":memory:")
+    trip.insert_payload(conn, dict(BASE, items=[
+        {"name": "위스키", "category": "살거", "tag": "위스키"},
+        {"name": "라멘", "category": "먹을거"}]))
+    sent = []
+
+    def fake_post(token, project_id, task):
+        sent.append(task)
+        return {"id": f"t{len(sent)}"}
+    export.push_todoist(conn, "TOK", "P1", dry_run=False, post=fake_post,
+                        existing=[{"id": "P_BUY", "content": "01\. 살거"},
+                                  {"id": "P_EAT", "content": "02\. 먹을거"},
+                                  {"id": "old", "content": "[먹을거] #라멘·츠케멘 라멘"}])
+    by = {t["content"]: t.get("parent_id") for t in sent}
+    assert by.get("[살거] #위스키 위스키") == "P_BUY", sent
+    # '[먹을거] 라멘' 이 원격에 이미 있으니 다시 만들지 않는다.
+    assert "[먹을거] 라멘" not in by, sent
 
 
 # ---------- 장소 확인 HTML ----------

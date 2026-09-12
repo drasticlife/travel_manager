@@ -96,6 +96,8 @@ def _real_post(token, project_id, task):
             "labels": task["labels"]}
     if task.get("description"):
         body["description"] = task["description"]
+    if task.get("parent_id"):
+        body["parent_id"] = task["parent_id"]
     req = urllib.request.Request(
         TODOIST_URL, data=json.dumps(body).encode("utf-8"),
         headers={"Content-Type": "application/json",
@@ -122,13 +124,34 @@ def todoist_projects(token, get=None):
 
 
 def todoist_existing_contents(token, project_id, get=None):
-    """프로젝트에 이미 있는 태스크 제목 집합.
+    """프로젝트에 이미 있는 태스크 목록.
 
     이 프로젝트는 아내와 공유 중이고 이미 수십 건이 들어 있다.
     같은 제목을 또 만들지 않기 위해 푸시 전에 대조한다.
     """
     url = f"{TODOIST_URL}?project_id={urllib.parse.quote(str(project_id))}"
-    return {(t.get("content") or "").strip() for t in get_all(url, token, get)}
+    try:
+        data = get_all(url, token, get)
+        return data.get("results", data) if isinstance(data, dict) else data
+    except Exception as e:
+        print(f"Failed to fetch existing tasks: {e}", file=sys.stderr)
+        return []
+
+
+def norm_content(content):
+    """중복 대조·부모 찾기용 제목 정규화.
+
+    Todoist 는 '01. 살거' 를 '01\. 살거' 로 이스케이프해서 돌려준다. 이걸 안 벗기면
+    부모 태스크를 못 찾아 아이템이 섹션 밖으로 떨어진다 — 실제로 62건이 그렇게 샜다.
+    '#태그' 는 나중에 제목에 붙인 거라, 벗기지 않으면 같은 항목이 태그 유무로
+    두 번 생긴다. 카테고리 대괄호는 남긴다 — 같은 이름이 살거·먹을거에 동시에
+    있을 수 있다.
+    """
+    c = content.replace("\\", "").strip()
+    head, sep, rest = c.partition("] ")
+    if sep and rest.startswith("#") and " " in rest:
+        return f"{head}] {rest.split(' ', 1)[1]}".strip()
+    return c
 
 
 def push_todoist(conn, token, project_id, dry_run=True, post=None, existing=None):
@@ -143,11 +166,27 @@ def push_todoist(conn, token, project_id, dry_run=True, post=None, existing=None
         " + (SELECT COUNT(*) FROM item)"
     ).fetchone()[0]
 
-    # 여기서 네트워크를 타지 않는다. 원격 제목은 호출자가 넘긴다(main 이 조회).
-    existing = existing or set()
+    existing_tasks = existing or []
+    existing_contents = {norm_content(t["content"]) for t in existing_tasks}
 
-    fresh = [t for t in tasks if t["content"].strip() not in existing]
-    dupes = [t for t in tasks if t["content"].strip() in existing]
+    # 아이템은 '여행 중' 섹션의 01/02/03 부모 태스크 밑으로 들어간다.
+    # parent_id 만 주면 섹션은 부모에서 상속된다 — section_id 를 따로 보내지 않는다.
+    category_to_parent_id = {}
+    for t in existing_tasks:
+        c = t["content"].replace("\\", "")
+        for prefix, cat in (("01. 살거", "살거"), ("02. 먹을거", "먹을거"),
+                            ("03. 놀거", "놀거")):
+            if c.startswith(prefix):
+                category_to_parent_id[cat] = t["id"]
+
+    for t in tasks:
+        # tasks 에서 t["category"] 가 살거, 먹을거, 놀거 인 경우
+        cat = t.get("labels", [""])[0] if t.get("labels") else ""
+        if cat in category_to_parent_id:
+            t["parent_id"] = category_to_parent_id[cat]
+
+    fresh = [t for t in tasks if norm_content(t["content"]) not in existing_contents]
+    dupes = [t for t in tasks if norm_content(t["content"]) in existing_contents]
 
     if dry_run:
         for t in fresh:
