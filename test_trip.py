@@ -769,7 +769,7 @@ def test_todoist_existing_contents_follows_cursor():
 
 
 def test_push_puts_items_under_escaped_category_parent():
-    """Todoist 는 '01. 살거' 를 '01\. 살거' 로 돌려준다.
+    r"""Todoist 는 '01. 살거' 를 '01\. 살거' 로 돌려준다.
 
     이 이스케이프를 안 벗기면 부모를 못 찾아 아이템이 '여행 중' 섹션 밖으로
     떨어진다. 실제로 62건이 그렇게 샜다. 태그가 붙은 제목도 같은 항목으로 봐야
@@ -785,8 +785,8 @@ def test_push_puts_items_under_escaped_category_parent():
         sent.append(task)
         return {"id": f"t{len(sent)}"}
     export.push_todoist(conn, "TOK", "P1", dry_run=False, post=fake_post,
-                        existing=[{"id": "P_BUY", "content": "01\. 살거"},
-                                  {"id": "P_EAT", "content": "02\. 먹을거"},
+                        existing=[{"id": "P_BUY", "content": r"01\. 살거"},
+                                  {"id": "P_EAT", "content": r"02\. 먹을거"},
                                   {"id": "old", "content": "[먹을거] #라멘·츠케멘 라멘"}])
     by = {t["content"]: t.get("parent_id") for t in sent}
     assert by.get("[살거] #위스키 위스키") == "P_BUY", sent
