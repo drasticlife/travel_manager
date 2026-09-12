@@ -385,18 +385,19 @@ function renderItemTile(i) {
     const names = i.places.split(", ");
     placeHtml = names.map(name => {
       const p = PLACES.find(x => x.name === name);
-      if (p) return `<button class="item-place-link" onclick="openPlace(${p.id}); return false;">📍 ${esc(name)}</button>`;
+      if (p) return `<button class="item-place-link" title="${esc(name)}" onclick="openPlace(${p.id}); return false;">📍 ${esc(name)}</button>`;
       return `<small style="margin-right:8px; color:var(--muted);">${esc(name)}</small>`;
     }).join("");
-    placeHtml = `<div class="item-actions">${placeHtml}</div>`;
   }
+  // 장소가 없어도 빈 줄을 남겨 카드마다 본문 시작 높이를 맞춘다
+  placeHtml = `<div class="item-actions">${placeHtml}</div>`;
   
   const icon = (i.tag && FOOD_TAG_ICONS[i.tag]) 
     || (i.category === "살거" ? "🛍️" : i.category === "먹을거" ? "🍜" : "🎡");
 
   return `<div class="tile${i.done ? " done" : ""}">
     <span class="e">${icon}</span>
-    <span style="display:flex; flex-direction:column; align-items:flex-start; width:100%;">
+    <span style="display:flex; flex-direction:column; align-items:flex-start; width:100%; min-width:0;">
       <b>${i.tag ? `<span class="tg">${esc(i.tag)}</span>` : ""}${esc(i.name)}</b>
       ${placeHtml}
       ${i.note ? `<div class="item-note">${esc(i.note)}</div>` : ""}
