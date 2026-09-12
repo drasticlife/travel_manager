@@ -342,7 +342,7 @@ window.APP_DATA = {
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "야외스포츠용품점 · 평점 4.1 (379)\n러닝화 1차 피팅·트랙 테스트\n가이드 확정안(핑크판) 일정에서 제외 — 시간 남으면 들를 후보",
-      "tag": null,
+      "tag": "패션/잡화",
       "evidence": [
         "https://store.alpen-group.jp/Form/RealShop/ShopDetail.aspx?rsid=5402",
         "https://map.yahoo.co.jp/v3/place/sxyUK0ZxDDY",
@@ -1275,6 +1275,21 @@ window.APP_DATA = {
       "evidence": [],
       "days": [],
       "icon": "🍜"
+    },
+    {
+      "id": 87,
+      "name": "스텝스포츠 후쿠오카점",
+      "name_verified": null,
+      "category": "쇼핑",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/e7xP6B3SjAzzpPz39",
+      "verify_status": "pending",
+      "saved_to_mymaps": 0,
+      "note": null,
+      "tag": "패션/잡화",
+      "evidence": [],
+      "days": [],
+      "icon": "🛍️"
     },
     {
       "id": 5,
@@ -2463,6 +2478,15 @@ window.APP_DATA = {
       "tag": "특산물/식품",
       "done": 0,
       "places": "로피아 하카타 요도바시, 야마야 다이묘점"
+    },
+    {
+      "id": 73,
+      "name": "미즈노 러닝화",
+      "category": "살거",
+      "note": null,
+      "tag": "패션/잡화",
+      "done": 0,
+      "places": "스텝스포츠 후쿠오카점, 알펜 후쿠오카"
     },
     {
       "id": 2,
@@ -7464,6 +7488,15 @@ window.APP_DATA = {
       "place_name": null
     },
     {
+      "id": 27,
+      "scope": "trip",
+      "day_no": null,
+      "category": "기타",
+      "text": "미즈노 러닝화를 싸게 사는 법:\n1. **알펜 후쿠오카 (캐널시티)**: 10% 면세 + 웹사이트나 여권/카드(JCB) 제시 시 5% 추가 할인 쿠폰 활용.\n2. **스텝스포츠 (텐진)**: 전문 러닝샵으로 종류가 다양하고 3D 발 측정 서비스 제공. 이월 상품이나 할인 모델 득템 가능. 면세 가능.\n3. **하카타 한큐 백화점**: 5% 게스트 쿠폰 + 면세 조합 (신제품의 경우 추천).",
+      "evidence_urls": [],
+      "place_name": null
+    },
+    {
       "id": 21,
       "scope": "place",
       "day_no": null,
@@ -7765,6 +7798,6 @@ window.APP_DATA = {
     "pending": "미조사 — 주소가 아직 없다",
     "matched": "확인됨"
   },
-  "TOTAL": 86,
+  "TOTAL": 87,
   "API_KEY": "AIzaSyCUN-BFgGm3eFMKdDqalQerulX6nt5tEko"
 };
