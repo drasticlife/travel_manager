@@ -20,6 +20,7 @@
    나머지는 전부 stdlib다. `requests`·ORM·pydantic·pytest 금지.
 5. **`git add .` 금지.** 자기가 고친 파일 경로만 명시해서 커밋한다.
 6. **`.env`를 커밋하지 않는다.** `.gitignore`에 있다. `.env.example`만 커밋한다.
+7. **작업 이력 동기화.** 코드 커밋(Push)이나 주요 변경사항 완료 후에는 반드시 `C:\Vault\Moon Life Planner\02. PARA\201. Projects\travel manager.md` 파일의 작업 이력 섹션에 내용을 업데이트해야 한다. (절대 잊지 말 것)
 
 ## 명령어
 
@@ -70,6 +71,10 @@ flowchart LR
 - **Todoist REST v2(`/rest/v2/...`)는 폐기됐다. 410 Gone 을 낸다.** `/api/v1/...` 를 쓴다.
   v1 은 목록을 `{results, next_cursor}` 로 감싸므로 `unwrap()` 을 거쳐야 한다.
   `project_id` 는 `6hR986mmJqCrxHc4` 형태 문자열이고 브라우저 URL 의 대시 뒤와 같다.
+- **Todoist 아이템은 `여행 중` 섹션의 `01. 살거`·`02. 먹을거`·`03. 놀거` 부모 밑에 넣는다.**
+  `parent_id` 만 주면 섹션은 부모에서 상속된다. Todoist 가 제목을 `01\. 살거` 로
+  이스케이프해 돌려주므로 `norm_content()` 로 벗기고 대조한다 — 안 그러면 부모를
+  못 찾아 최상위(섹션없음)로 샌다. 실제로 62건이 샜다.
 - **Todoist 프로젝트는 아내와 공유 중이고 이미 수십 건이 있다.** `export.py todoist` 는
   기본이 미리보기이고 실제 쓰기는 `--push` 를 요구한다. 이 기본값을 뒤집지 마라.
   중복 방지도 로컬 `todoist_task_id` 만으로는 부족해 원격 제목까지 대조한다.
