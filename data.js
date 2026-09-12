@@ -166,7 +166,7 @@ window.APP_DATA = {
       "name_verified": "博多名代 吉塚うなぎ屋 (요시즈카 우나기야)",
       "category": "맛집",
       "address": "〒810-0801 Fukuoka, Hakata Ward, Nakasu 2-8-27",
-      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0801%20Fukuoka%2C%20Hakata%20Ward%2C%20Nakasu%202-8-27%20%E5%8D%9A%E5%A4%9A%E5%90%8D%E4%BB%A3%20%E5%90%89%E5%A1%9A%E3%81%86%E3%81%AA%E3%81%8E%E5%B1%8B%20%28%EC%9A%94%EC%8B%9C%EC%A6%88%EC%B9%B4%20%EC%9A%B0%EB%82%98%EA%B8%B0%EC%95%BC%29",
+      "maps_url": "https://maps.app.goo.gl/LrsFN6R8oppkR7E17",
       "verify_status": "ambiguous",
       "saved_to_mymaps": 0,
       "note": "민물장어 요리 전문식당 · ¥3,000~5,000 · 평점 4.4 (9,312)\n[리뷰] 1873년 창업한 150년 전통 장어덮밥 명가. 쫀득하면서도 부드러운 장어구이 식감과 특제 타레 소스가 일품. 나카스 강변 쾌적한 건물, 한국어 메뉴 구비되어 우나쥬/우나기동 주문 편리.",
@@ -1262,6 +1262,21 @@ window.APP_DATA = {
       "icon": "🛍️"
     },
     {
+      "id": 86,
+      "name": "트란도르",
+      "name_verified": null,
+      "category": "맛집",
+      "address": null,
+      "maps_url": "https://maps.app.goo.gl/tXAZTAMmgXLLarU79",
+      "verify_status": "pending",
+      "saved_to_mymaps": 0,
+      "note": null,
+      "tag": null,
+      "evidence": [],
+      "days": [],
+      "icon": "🍜"
+    },
+    {
       "id": 5,
       "name": "후쿠오카시 동식물원",
       "name_verified": "후쿠오카시 동식물원",
@@ -2313,6 +2328,15 @@ window.APP_DATA = {
       "tag": "튀김·텐동",
       "done": 0,
       "places": "텐푸라 타카오"
+    },
+    {
+      "id": 72,
+      "name": "트란도르",
+      "category": "먹을거",
+      "note": null,
+      "tag": null,
+      "done": 0,
+      "places": "트란도르"
     },
     {
       "id": 7,
@@ -7741,6 +7765,6 @@ window.APP_DATA = {
     "pending": "미조사 — 주소가 아직 없다",
     "matched": "확인됨"
   },
-  "TOTAL": 85,
+  "TOTAL": 86,
   "API_KEY": "AIzaSyCUN-BFgGm3eFMKdDqalQerulX6nt5tEko"
 };
