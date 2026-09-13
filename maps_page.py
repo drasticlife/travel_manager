@@ -155,6 +155,8 @@ def collect(conn):
     out = []
     for r in conn.execute(
             "SELECT p.id, p.name, p.name_verified, p.category, p.address, p.maps_url, "
+            # lat/lng 는 '내 위치에서 가까운 순' 정렬에 쓴다. 없는 장소는 null 로 나간다
+            "p.lat, p.lng, "
             "p.verify_status, p.saved_to_mymaps, p.note, p.evidence_urls, "
             "(SELECT i.tag FROM item_place ip JOIN item i ON i.id = ip.item_id "
             " WHERE ip.place_id = p.id AND i.tag IS NOT NULL LIMIT 1) AS tag "

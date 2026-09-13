@@ -223,6 +223,13 @@ button.tile:hover { box-shadow: 0 5px 14px var(--btn-hover); }
 .group-badge { font-size: 11px; font-weight: 700; background: var(--v-soft); color: var(--v-ink); border-radius: 999px; padding: 2px 8px; }
 .group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
 
+/* 내 위치 기준 정렬 */
+.nearbar { display: flex; gap: 9px; align-items: center; flex-wrap: wrap; margin: -6px 0 12px; }
+.nearbar .btn.on { background: var(--v); color: #fff; border-color: var(--v); font-weight: 700; }
+.nearnote { font-size: 12px; color: var(--muted); }
+.dist { display: inline-block; font-size: 10.5px; font-weight: 700; background: var(--v-soft); color: var(--v-ink); border-radius: 999px; padding: 1px 7px; margin-right: 5px; }
+.dist.far { background: var(--bg); color: var(--muted); }
+
 /* 아이템 카드 내 노트 스타일 */
 .item-note { margin-top: 6px; font-size: 12px; color: var(--muted); line-height: 1.45; background: var(--bg); border-radius: 8px; padding: 6px 9px; border: 1px solid var(--line); width: 100%; box-sizing: border-box; }
 .item-actions { margin-top: 6px; display: flex; gap: 6px; min-height: 23px; max-width: 100%; }

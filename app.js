@@ -383,7 +383,7 @@ function renderItemSubtabs(items) {
   subtabsEl.innerHTML = html;
 }
 
-function renderItemTile(i) {
+function renderItemTile(i, km) {
   let placeHtml = "";
   if (i.places) {
     const names = i.places.split(", ");
@@ -402,10 +402,65 @@ function renderItemTile(i) {
   return `<div class="tile${i.done ? " done" : ""}">
     <span class="e">${icon}</span>
     <span style="display:flex; flex-direction:column; align-items:flex-start; width:100%; min-width:0;">
-      <b>${i.tag ? `<span class="tg">${esc(i.tag)}</span>` : ""}${esc(i.name)}</b>
+      <b>${km == null ? "" : `<span class="dist${km > 50 ? " far" : ""}">${fmtKm(km)}</span>`}${i.tag ? `<span class="tg">${esc(i.tag)}</span>` : ""}${esc(i.name)}</b>
       ${placeHtml}
       ${i.note ? `<div class="item-note">${esc(i.note)}</div>` : ""}
     </span></div>`;
+}
+
+/* ---------- 내 위치 기준 가까운 순 ----------
+   PLACES 에 실린 DB 좌표만 쓴다. 좌표 없는 장소는 거리 계산에서 빠진다. */
+let myPos = null;
+
+function haversineKm(a, b) {
+  const R = 6371, p = Math.PI / 180;
+  const h = 0.5 - Math.cos((b.lat - a.lat) * p) / 2
+    + Math.cos(a.lat * p) * Math.cos(b.lat * p) * (1 - Math.cos((b.lng - a.lng) * p)) / 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+// 아이템에 붙은 장소 중 가장 가까운 것까지의 거리. 장소·좌표가 없으면 null
+function itemDistanceKm(i) {
+  if (!myPos || !i.places) return null;
+  const d = i.places.split(", ")
+    .map(n => PLACES.find(p => p.name === n))
+    .filter(p => p && p.lat && p.lng)
+    .map(p => haversineKm(myPos, { lat: p.lat, lng: p.lng }));
+  return d.length ? Math.min(...d) : null;
+}
+
+function fmtKm(km) {
+  return km < 1 ? Math.round(km * 1000) + "m" : km.toFixed(km < 10 ? 1 : 0) + "km";
+}
+
+function initNear() {
+  const btn = document.getElementById("nearbtn");
+  const note = document.getElementById("nearnote");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    if (myPos) {                       // 다시 누르면 해제
+      myPos = null;
+      btn.classList.remove("on");
+      note.textContent = "";
+      renderItems();
+      return;
+    }
+    if (!navigator.geolocation) {
+      note.textContent = "이 브라우저는 위치를 지원하지 않는다";
+      return;
+    }
+    note.textContent = "위치 확인 중…";
+    navigator.geolocation.getCurrentPosition(pos => {
+      myPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      btn.classList.add("on");
+      note.textContent = "내 위치 기준 가까운 순. 다시 누르면 원래대로";
+      renderItems();
+    }, err => {
+      note.textContent = err.code === 1
+        ? "위치 권한이 거부됐다. 브라우저 주소창의 자물쇠에서 허용해라"
+        : "위치를 못 가져왔다 (" + esc(err.message) + ")";
+    }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
+  });
 }
 
 function renderItems() {
@@ -423,6 +478,14 @@ function renderItems() {
     return;
   }
   
+  if (myPos) {
+    const withDist = shown.map(i => ({ i, km: itemDistanceKm(i) }));
+    // 좌표가 없어 거리를 못 재는 것은 맨 뒤로 보낸다. 빼지는 않는다
+    withDist.sort((a, b) => (a.km ?? Infinity) - (b.km ?? Infinity));
+    container.innerHTML = withDist.map(({ i, km }) => renderItemTile(i, km)).join("");
+    return;
+  }
+
   if (itemFilter === "먹을거" && itemSubFilter === "all") {
     const groups = {};
     shown.forEach(i => {
@@ -1067,6 +1130,7 @@ try {
 renderDays();
 renderReco();
 initNav();
+initNear();
 renderTips();
 renderGrid();
 renderItems();
