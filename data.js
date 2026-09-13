@@ -1,6 +1,63 @@
 window.APP_DATA = {
   "PLACES": [
     {
+      "id": 91,
+      "name": "무인양품 라라포트 후쿠오카점",
+      "name_verified": "無印良品 ららぽーと福岡",
+      "category": "쇼핑",
+      "address": "福岡県福岡市博多区那珂6-23-1 ららぽーと福岡1階",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E5%8D%9A%E5%A4%9A%E5%8C%BA%E9%82%A3%E7%8F%826-23-1%20%E3%82%89%E3%82%89%E3%81%BD%E3%83%BC%E3%81%A8%E7%A6%8F%E5%B2%A11%E9%9A%8E%20%E7%84%A1%E5%8D%B0%E8%89%AF%E5%93%81%20%E3%82%89%E3%82%89%E3%81%BD%E3%83%BC%E3%81%A8%E7%A6%8F%E5%B2%A1",
+      "lat": null,
+      "lng": null,
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "라라포트 1F. DAY 2 저녁 라라포트 일정에 붙는다",
+      "tag": "패션/잡화",
+      "evidence": [
+        "https://www.muji.com/jp/ja/shop/detail/046679"
+      ],
+      "days": [],
+      "icon": "🤖"
+    },
+    {
+      "id": 92,
+      "name": "銀座いち利 후쿠오카 텐진점",
+      "name_verified": "銀座いち利 福岡天神店",
+      "category": "쇼핑",
+      "address": "〒810-0001 福岡県福岡市中央区天神1-1-1 アクロス福岡B1",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0001%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%A4%A9%E7%A5%9E1-1-1%20%E3%82%A2%E3%82%AF%E3%83%AD%E3%82%B9%E7%A6%8F%E5%B2%A1B1%20%E9%8A%80%E5%BA%A7%E3%81%84%E3%81%A1%E5%88%A9%20%E7%A6%8F%E5%B2%A1%E5%A4%A9%E7%A5%9E%E5%BA%97",
+      "lat": null,
+      "lng": null,
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "리유즈(중고) 기모노·오비·하오리. 아크로스 후쿠오카 B1. 리유즈 기모노 페스 9/23~9/27 11:00~18:00 — DAY 3(9/23 텐진 종일)과 정확히 겹친다. 빈티지 실크 하오리 1순위",
+      "tag": "패션/잡화",
+      "evidence": [
+        "https://www.ichiri.ne.jp/lp/reusekimonofes/fukuoka.php"
+      ],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 93,
+      "name": "탄스야 후쿠오카점",
+      "name_verified": "たんす屋 福岡店",
+      "category": "쇼핑",
+      "address": "〒810-0005 福岡県福岡市中央区清川1-10-9 清川サンロード商店街内 佐倉ビル1階",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0005%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E6%B8%85%E5%B7%9D1-10-9%20%E6%B8%85%E5%B7%9D%E3%82%B5%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89%E5%95%86%E5%BA%97%E8%A1%97%E5%86%85%20%E4%BD%90%E5%80%89%E3%83%93%E3%83%AB1%E9%9A%8E%20%E3%81%9F%E3%82%93%E3%81%99%E5%B1%8B%20%E7%A6%8F%E5%B2%A1%E5%BA%97",
+      "lat": null,
+      "lng": null,
+      "verify_status": "ambiguous",
+      "saved_to_mymaps": 0,
+      "note": "리사이클 기모노 전문. 하오리·코트 리유즈/신품. ★수요일 휴무라 DAY 3(9/23 수)에는 못 간다★ 기요카와는 텐진 남쪽이라 동선에서 벗어난다 — 굳이 갈 값어치는 낮다",
+      "tag": "패션/잡화",
+      "evidence": [
+        "https://tansuya.jp/store/tansuya-fukuoka/"
+      ],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
       "id": 1,
       "name": "일 포르노 델 미뇽",
       "name_verified": "il FORNO del MIGNON 하카타역점",
@@ -1724,6 +1781,67 @@ window.APP_DATA = {
       ],
       "days": [],
       "icon": "🏬"
+    },
+    {
+      "id": 89,
+      "name": "무인양품 텐진 다이묘점",
+      "name_verified": "無印良品 天神大名",
+      "category": "쇼핑",
+      "address": "福岡県福岡市中央区大名1-15-41 1~5F",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%A4%A7%E5%90%8D1-15-41%201~5F%20%E7%84%A1%E5%8D%B0%E8%89%AF%E5%93%81%20%E5%A4%A9%E7%A5%9E%E5%A4%A7%E5%90%8D",
+      "lat": null,
+      "lng": null,
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "후쿠오카 최대 규모 무인양품(1~5F). 의류 재고가 가장 많아 하오리·한텐 노리면 1순위. DAY 3 텐진 동선",
+      "tag": "패션/잡화",
+      "evidence": [
+        "https://www.muji.com/jp/ja/shop/preflist/40",
+        "https://shirasunote.com/archives/210"
+      ],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 90,
+      "name": "무인양품 캐널시티 하카타점",
+      "name_verified": "MUJI キャナルシティ博多",
+      "category": "쇼핑",
+      "address": "福岡県福岡市博多区住吉1-2-1 キャナルシティ博多 ノースビル3~4F",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E5%8D%9A%E5%A4%9A%E5%8C%BA%E4%BD%8F%E5%90%891-2-1%20%E3%82%AD%E3%83%A3%E3%83%8A%E3%83%AB%E3%82%B7%E3%83%86%E3%82%A3%E5%8D%9A%E5%A4%9A%20%E3%83%8E%E3%83%BC%E3%82%B9%E3%83%93%E3%83%AB3~4F%20MUJI%20%E3%82%AD%E3%83%A3%E3%83%8A%E3%83%AB%E3%82%B7%E3%83%86%E3%82%A3%E5%8D%9A%E5%A4%9A",
+      "lat": null,
+      "lng": null,
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "노스빌 3~4F. DAY 1 캐널시티 일정에서 바로 들를 수 있다. 다이묘점보다 의류 구색은 작다",
+      "tag": "패션/잡화",
+      "evidence": [
+        "https://www.muji.com/jp/ja/shop/preflist/40",
+        "https://shirasunote.com/archives/210"
+      ],
+      "days": [],
+      "icon": "🏬"
+    },
+    {
+      "id": 94,
+      "name": "다이마루 후쿠오카 텐진점",
+      "name_verified": "大丸福岡天神店 本館7階 和装売り場",
+      "category": "쇼핑",
+      "address": "〒810-8717 福岡県福岡市中央区天神1-4-1 大丸福岡天神店 本館7階",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-8717%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%A4%A9%E7%A5%9E1-4-1%20%E5%A4%A7%E4%B8%B8%E7%A6%8F%E5%B2%A1%E5%A4%A9%E7%A5%9E%E5%BA%97%20%E6%9C%AC%E9%A4%A87%E9%9A%8E%20%E5%A4%A7%E4%B8%B8%E7%A6%8F%E5%B2%A1%E5%A4%A9%E7%A5%9E%E5%BA%97%20%E6%9C%AC%E9%A4%A87%E9%9A%8E%20%E5%92%8C%E8%A3%85%E5%A3%B2%E3%82%8A%E5%A0%B4",
+      "lat": null,
+      "lng": null,
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "본관 7F 에 호리타마루쇼(기모노)와 화장잡화 매장. MUJI 가 아니어도 유사 화복 아우터를 볼 수 있는 백화점 선택지. DAY 3 텐진",
+      "tag": "패션/잡화",
+      "evidence": [
+        "https://www.daimaru-fukuoka.jp/floorguide/detail/?scd=000819",
+        "https://www.mapion.co.jp/phonebook/M02001/40133/ILSP0000348637_ipclm/",
+        "https://rurubu.jp/andmore/spot/80038016"
+      ],
+      "days": [],
+      "icon": "🛍️"
     }
   ],
   "DAYS": [
@@ -2643,6 +2761,15 @@ window.APP_DATA = {
       "places": "후글렌"
     },
     {
+      "id": 76,
+      "name": "MUJI 한텐/하오리 아우터",
+      "category": "살거",
+      "note": "공유 이미지 1·2번. 확인된 상품은 '인도면 플란넬 한텐' 6,990엔(중면 방한, M/L 낙낙핏이라 남녀 공용). ★9월 하순은 가을 전환기라 겨울 한텐이 아직 안 깔렸을 수 있다 — 출발 전 muji.com 에서 '羽織'·'はんてん' 검색해 현재 판매·재고 확인★",
+      "tag": "패션/잡화",
+      "done": 0,
+      "places": "무인양품 라라포트 후쿠오카점, 무인양품 캐널시티 하카타점, 무인양품 텐진 다이묘점"
+    },
+    {
       "id": 75,
       "name": "Zone8 애니 굿즈 (진격의 거인 등)",
       "category": "살거",
@@ -2749,6 +2876,15 @@ window.APP_DATA = {
       "tag": "패션/잡화",
       "done": 0,
       "places": "한큐 하카타"
+    },
+    {
+      "id": 77,
+      "name": "빈티지 실크 하오리",
+      "category": "살거",
+      "note": "공유 이미지 3번. 중고 기모노샵에서 찾는 물건. 銀座いち利 리유즈 페스가 9/23~27 이라 DAY 3 와 겹친다. 다이마루 본관 7F 화장매장은 신품 계열 대안",
+      "tag": "패션/잡화",
+      "done": 0,
+      "places": "銀座いち利 후쿠오카 텐진점, 다이마루 후쿠오카 텐진점, 탄스야 후쿠오카점"
     },
     {
       "id": 19,
@@ -8051,6 +8187,6 @@ window.APP_DATA = {
     "pending": "미조사 — 주소가 아직 없다",
     "matched": "확인됨"
   },
-  "TOTAL": 88,
+  "TOTAL": 94,
   "API_KEY": "AIzaSyAYx_bkziYGhem7heLR7tTNsoMFNeqxCPg"
 };
