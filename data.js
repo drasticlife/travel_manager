@@ -1842,6 +1842,69 @@ window.APP_DATA = {
       ],
       "days": [],
       "icon": "🛍️"
+    },
+    {
+      "id": 95,
+      "name": "미야타오리모노 하카타 리버레인점",
+      "name_verified": "宮田織物 博多リバレインモール店",
+      "category": "쇼핑",
+      "address": "〒812-0027 福岡県福岡市博多区下川端町3-1 博多リバレインモール B2F",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0027%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E5%8D%9A%E5%A4%9A%E5%8C%BA%E4%B8%8B%E5%B7%9D%E7%AB%AF%E7%94%BA3-1%20%E5%8D%9A%E5%A4%9A%E3%83%AA%E3%83%90%E3%83%AC%E3%82%A4%E3%83%B3%E3%83%A2%E3%83%BC%E3%83%AB%20B2F%20%E5%AE%AE%E7%94%B0%E7%B9%94%E7%89%A9%20%E5%8D%9A%E5%A4%9A%E3%83%AA%E3%83%90%E3%83%AC%E3%82%A4%E3%83%B3%E3%83%A2%E3%83%BC%E3%83%AB%E5%BA%97",
+      "lat": null,
+      "lng": null,
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "1913년 창업 구루메 직조 직영점. 와타이레 한텐(솜 넣은 정통 한텐) 전문 — 久留米綿入はんてん 은 후쿠오카현 지사 지정 특산민공예품. 하카타 리버레인 B2F, 10:00~19:00(월 1회 휴점), 092-292-4033. 나카스카와바타역 6번 출구 직결. 같은 건물 5~6F 가 호빵맨 어린이 박물관이다 — 묶어서 갈 수 있다",
+      "tag": "패션/잡화",
+      "evidence": [
+        "https://www.hakata-riverainmall.jp/floor/shop72.html",
+        "https://www.tnc.co.jp/store/shop/archives/26411",
+        "https://www.navitime.co.jp/poi?spot=02022-1243804"
+      ],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 96,
+      "name": "우나기노네도코 아크로스 후쿠오카점",
+      "name_verified": "うなぎの寝床 アクロス福岡店",
+      "category": "쇼핑",
+      "address": "〒810-0001 福岡県福岡市中央区天神1-1-1 アクロス福岡 1F 匠ギャラリー内",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92810-0001%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%A4%A9%E7%A5%9E1-1-1%20%E3%82%A2%E3%82%AF%E3%83%AD%E3%82%B9%E7%A6%8F%E5%B2%A1%201F%20%E5%8C%A0%E3%82%AE%E3%83%A3%E3%83%A9%E3%83%AA%E3%83%BC%E5%86%85%20%E3%81%86%E3%81%AA%E3%81%8E%E3%81%AE%E5%AF%9D%E5%BA%8A%20%E3%82%A2%E3%82%AF%E3%83%AD%E3%82%B9%E7%A6%8F%E5%B2%A1%E5%BA%97",
+      "lat": null,
+      "lng": null,
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "규슈 각지 장인 직물 편집숍. 구루메가스리 몬페와 패턴 한텐 취급. 아크로스 후쿠오카 1F 타쿠미 갤러리 내, 10:00~19:00, ★화요일 정기휴무★, 092-753-7223, 텐진역 16번 출구 도보 1분. 같은 건물 B1 이 銀座いち利(리유즈 기모노 페스 9/23~27) 이다 — 한 건물에서 신품·중고를 다 본다",
+      "tag": "패션/잡화",
+      "evidence": [
+        "https://unagino-nedoko.net/archives/46040/",
+        "https://fukuoka-leapup.jp/city/202303.1200",
+        "https://www.acros.or.jp/r_facilities/shop.html"
+      ],
+      "days": [],
+      "icon": "🛍️"
+    },
+    {
+      "id": 97,
+      "name": "우나기노네도코 라라포트 후쿠오카점",
+      "name_verified": "うなぎの寝床 ららぽーと福岡",
+      "category": "쇼핑",
+      "address": "〒812-0893 福岡県福岡市博多区那珂6-23-1 ららぽーと福岡 1F",
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=%E3%80%92812-0893%20%E7%A6%8F%E5%B2%A1%E7%9C%8C%E7%A6%8F%E5%B2%A1%E5%B8%82%E5%8D%9A%E5%A4%9A%E5%8C%BA%E9%82%A3%E7%8F%826-23-1%20%E3%82%89%E3%82%89%E3%81%BD%E3%83%BC%E3%81%A8%E7%A6%8F%E5%B2%A1%201F%20%E3%81%86%E3%81%AA%E3%81%8E%E3%81%AE%E5%AF%9D%E5%BA%8A%20%E3%82%89%E3%82%89%E3%81%BD%E3%83%BC%E3%81%A8%E7%A6%8F%E5%B2%A1",
+      "lat": null,
+      "lng": null,
+      "verify_status": "matched",
+      "saved_to_mymaps": 0,
+      "note": "라라포트 후쿠오카 1F, 10:00~21:00, 092-586-7860. 아크로스점보다 넓고 21시까지 열어 DAY 2 저녁 라라포트 일정에 그대로 붙는다. 규슈 중심 200곳 이상 작가·메이커 상품",
+      "tag": "패션/잡화",
+      "evidence": [
+        "https://mitsui-shopping-park.com/lalaport/fukuoka/shopguide/2098638.html",
+        "https://www.navitime.co.jp/poi?spot=06138-2098638",
+        "https://www.shakaika.jp/news/info/34325/"
+      ],
+      "days": [],
+      "icon": "🤖"
     }
   ],
   "DAYS": [
@@ -2975,6 +3038,15 @@ window.APP_DATA = {
       "tag": "위스키",
       "done": 0,
       "places": "야마야 다이묘점"
+    },
+    {
+      "id": 78,
+      "name": "한텐 (와타이레 한텐)",
+      "category": "살거",
+      "note": "솜 넣은 정통 한텐. MUJI 하오리(2021년 단종 추정)와 달리 이쪽은 상시 취급이다. 미야타오리모노가 제조 직영이라 소재·솜 품질과 사이즈 선택이 가장 낫고, 우나기노네도코는 패턴·디자인 쪽. 아크로스점은 화요일 휴무라 9/22 에는 못 가고, 라라포트점은 DAY 2 저녁에 붙는다",
+      "tag": "패션/잡화",
+      "done": 0,
+      "places": "미야타오리모노 하카타 리버레인점, 우나기노네도코 라라포트 후쿠오카점, 우나기노네도코 아크로스 후쿠오카점"
     },
     {
       "id": 28,
@@ -8187,6 +8259,6 @@ window.APP_DATA = {
     "pending": "미조사 — 주소가 아직 없다",
     "matched": "확인됨"
   },
-  "TOTAL": 94,
+  "TOTAL": 97,
   "API_KEY": "AIzaSyAYx_bkziYGhem7heLR7tTNsoMFNeqxCPg"
 };
