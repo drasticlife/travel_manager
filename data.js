@@ -2710,7 +2710,7 @@ window.APP_DATA = {
       "id": 40,
       "name": "조식 — 호텔 뷔페 (다정이 무료)",
       "category": "먹을거",
-      "note": "★도보 0분·가장 편하다★ 묵는 호텔 안. 06:30~10:30(라스트오더 10:00). 초등학생 미만 무료 → 다정이 무료, 초등학생 800엔. 성인 요금은 숙박 플랜에 따라 다르니 예약 내역 확인 필요(조식포함 플랜이면 추가 비용 0). 메뉴: 하카타 명물 타키교자·카시와고항·가메니·모츠나베·명란 + 야채 미소시루, 치킨카레, 양식. 추천 이유: 3살 아이와 아침에 나가는 게 가장 큰 부담인데 이건 방에서 내려가면 끝이다. 09:00 출발인 DAY2·DAY3 에 시간을 가장 아껴준다. 아이가 안 먹는 날에도 뷔페라 골라 먹일 수 있다",
+      "note": "★도보 0분·가장 편하다★ 묵는 호텔 안. 06:30~10:30(라스트오더 10:00). 초등학생 미만 무료 → 다정이 무료, 초등학생 800엔. 성인 요금은 숙박 플랜에 따라 다르니 예약 내역 확인 필요(조식포함 플랜이면 추가 비용 0). 메뉴: 하카타 명물 타키교자·카시와고항·가메니·모츠나베·명란 + 야채 미소시루, 치킨카레, 양식. 추천 이유: 3살 아이와 아침에 나가는 게 가장 큰 부담인데 이건 방에서 내려가면 끝이다. 09:00 출발인 DAY2·DAY3 에 시간을 가장 아껴준다. 아이가 안 먹는 날에도 뷔페라 골라 먹일 수 있다\n[2026-09-14 확정] 호텔 예약 확인 메일에 'Breakfast: Not included' — 조식 불포함 플랜이다. 성인 뷔페는 현장 결제, 아이는 초등학생 미만이라 무료. 유료면 TRAINDOR(06:30, 도보 4~6분)가 대안.",
       "tag": "아침밥",
       "done": 0,
       "places": "호텔 포르자 하카타역 치쿠시구치Ⅱ"
@@ -7958,6 +7958,30 @@ window.APP_DATA = {
       "place_name": null
     },
     {
+      "id": 28,
+      "scope": "trip",
+      "day_no": null,
+      "category": "기타",
+      "text": "호텔 예약 확정(2026-09-14 호텔 프런트 회신 메일로 확인). 9/21~24, 성인 2명 + 유아 1명, 포르자 트윈룸. ★조식 불포함 플랜★ 이다. 예약번호와 예약자명·회신 메일 주소는 공개 페이지에 올리지 않았다 — 볼트 노트와 메일함에 있다. 체크인 때 예약번호를 대면 된다.",
+      "evidence_urls": [
+        "https://drive.google.com/file/d/1bampEmb64F-RItHbkzGkDAwq2KJmto7Z/view"
+      ],
+      "place_name": null
+    },
+    {
+      "id": 31,
+      "scope": "trip",
+      "day_no": null,
+      "category": "기타",
+      "text": "eSIM 은 ★일본 도착 후★ 활성화한다. 안드로이드 순서: 1) 설정 > 연결 2) SIM 관리자 3) eSIM 회선 ON 4) 모바일 데이터 5) eSIM 1 선택 후 적용 → 뒤로가기 6) 데이터 전환 OFF 7) 연결 > 해외 로밍 8) 데이터 로밍 사용 ON 9) 해외로밍 데이터 이용 안내에서 '모두 동의' → 활성화 완료. 핵심은 6번(데이터 전환 OFF)과 8번(데이터 로밍 ON)이다 — 데이터 전환을 켜두면 eSIM 이 안 잡힐 때 국내 SIM 으로 넘어가 로밍 요금이 붙는다. 통화·문자는 SIM 1(국내 회선)에 그대로 두고 모바일 데이터만 eSIM 으로 돌리는 구성이다. QR·프로필 다운로드는 출국 전 와이파이에서 미리 해두고, 활성화만 현지에서 하는 게 안전하다.",
+      "evidence_urls": [
+        "https://drive.google.com/file/d/1SFZV7QU65hOaxvMCXgAZ0pAy3GnA7Mnp/view",
+        "https://drive.google.com/file/d/1b5hKGJzhxeBQ6dTNxX_WsWvlom2AQkEI/view",
+        "https://drive.google.com/file/d/1Y5AKGEDLECfZdppJmYfRxwjkfGjoXArt/view"
+      ],
+      "place_name": null
+    },
+    {
       "id": 21,
       "scope": "place",
       "day_no": null,
@@ -8006,6 +8030,17 @@ window.APP_DATA = {
         "https://www.hotelforza.jp/hakata2/breakfast/",
         "https://www.jalan.net/news/article/222117/",
         "https://hakata.jp-kitte.jp/shop/item_news.jsp?id=3394&shopid=400&inc=0"
+      ],
+      "place_name": null
+    },
+    {
+      "id": 29,
+      "scope": "trip",
+      "day_no": null,
+      "category": "식사",
+      "text": "조식이 예약에 포함돼 있지 않다(Breakfast: Not included). 호텔 뷔페를 먹으려면 현장에서 성인 요금을 따로 낸다. 아이는 초등학생 미만 무료라 영향 없다. 뷔페는 06:30~10:30(라스트오더 10:00). 숙소 도보권 조식 대안이 DB 에 9곳 있다 — TRAINDOR 06:30, 베로체·우에시마·다이후쿠우동·코메다·우치노타마고 07:00 등. 출발이 이른 DAY2·DAY3 는 호텔 뷔페가 시간을 가장 아껴주지만, 유료라면 TRAINDOR(06:30, 도보 4~6분)가 대안이다.",
+      "evidence_urls": [
+        "https://drive.google.com/file/d/1bampEmb64F-RItHbkzGkDAwq2KJmto7Z/view"
       ],
       "place_name": null
     },
@@ -8140,6 +8175,17 @@ window.APP_DATA = {
         "https://tenpo.aeon-kyushu.info/detail/shoppers-fukuoka/",
         "https://www.biccamera.com/bc/i/shop/shoplist/shop026.jsp",
         "https://www.donki.com/store/shop_detail.php?shop_id=461"
+      ],
+      "place_name": null
+    },
+    {
+      "id": 30,
+      "scope": "trip",
+      "day_no": null,
+      "category": "요금",
+      "text": "★나이 확인 필요★ 호텔 예약 확인 메일에는 아이가 '2-year-old(2세)' 로 적혀 있는데, DB 의 마린월드 요금 팁은 '3세' 기준으로 계산돼 있다. 마린월드는 3才以上 유아 700엔이고 3세 미만은 요금표에 없어 무료다. 실제로 2세면 마린월드 입장료가 0엔이 된다. 해변공원(중학생 이하 무료)과 교통(유아 무료)은 어느 쪽이든 동일. 호빵맨 박물관은 1세부터 유료라 역시 동일. 여행 시점 만 나이를 확인해서 이 팁을 정리할 것.",
+      "evidence_urls": [
+        "https://drive.google.com/file/d/1bampEmb64F-RItHbkzGkDAwq2KJmto7Z/view"
       ],
       "place_name": null
     },
